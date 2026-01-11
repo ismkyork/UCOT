@@ -11,10 +11,12 @@ class Profesor extends BaseController
     public function index() {
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
+        $info['menu']=view('Template/menu');
+
         return view('vistas/inicio', $info);
     }
 
-    public function pagos() {
+    public function citas() {
       
     $citasModel = new CitaModel(); 
 
@@ -32,12 +34,13 @@ class Profesor extends BaseController
         // 2. Preparar datos para la vista
         $data = [
             'titulo' => 'Solicitudes Pendientes',
-            'pagos'  => $resultados 
+            'citas'  => $resultados 
         ];
 
         $info['header'] = view('Template/header');
         $info['footer'] = view('Template/footer');
-        return view('vistas/profesor/pagos', array_merge($info, $data));
+        $info['menu']=view('Template/menu');
+        return view('vistas/profesor/citas', array_merge($info, $data));
     }
 
     public function procesar()
@@ -72,7 +75,8 @@ class Profesor extends BaseController
             'estado_cita' => $nuevoEstado
         ]);
 
-        return redirect()->to('/profesor/pagos')->with('msg', 'Solicitud procesada correctamente.');
+        return redirect()->to('/profesor/citas')->with('msg', 'Solicitud procesada correctamente.');
+
     }
 
     public function config_horarios() {
@@ -81,6 +85,7 @@ class Profesor extends BaseController
         
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
+        $info['menu']=view('Template/menu');
         return view('vistas/profesor/config_horarios', array_merge($info, $data));
     } 
 
@@ -93,6 +98,7 @@ class Profesor extends BaseController
             
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
+        $info['menu']=view('Template/menu');
         return view('vistas/profesor/dashboard', array_merge($info, $data));
     }
 }
