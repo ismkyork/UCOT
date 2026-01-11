@@ -11,8 +11,8 @@ $routes->get('/', 'Home::index');
 $routes->get('/profesor', 'Profesor::index');
 $routes->get('/profesor/config_horarios', 'Profesor::config_horarios');
 $routes->get('/profesor/dashboard', 'Profesor::dashboard'); 
-$routes->get('/profesor/pagos', 'Profesor::pagos');
-$routes->post('profesor/pagos/procesar', 'Profesor::procesar');
+$routes->get('/profesor/citas', 'Profesor::citas');
+$routes->post('profesor/citas/procesar', 'Profesor::procesar');
 
 //rutas Alumno
 

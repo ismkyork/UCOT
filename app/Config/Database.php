@@ -25,31 +25,31 @@ class Database extends Config
      * @var array<string, mixed>
      */
     public array $default = [
-    'DSN'          => '',
-    'hostname'     => 'localhost',
-    'username'     => 'root',    // <-- Agrega 'root'
-    'password'     => '0000',        // <-- Agrega tu contraseña (o vacío en XAMPP)
-    'database'     => 'ucot',    // <-- Agrega 'ucot'
-    'DBDriver'     => 'MySQLi',
-    'DBPrefix'     => '',
-    'pConnect'     => false,
-    'DBDebug'      => true,      // Esto te mostrará errores de SQL en pantalla naranja
-    'charset'      => 'utf8mb4',
-    'DBCollat'     => 'utf8mb4_general_ci',
-    'swapPre'      => '',
-    'encrypt'      => false,
-    'compress'     => false,
-    'strictOn'     => false,
-    'failover'     => [],
-    'port'         => 3306,
-    'numberNative' => false,
-    'foundRows'    => false,
-    'dateFormat'   => [
-        'date'     => 'Y-m-d',
-        'datetime' => 'Y-m-d H:i:s',
-        'time'     => 'H:i:s',
-    ],
-];
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'root',
+        'password'     => '123456789',
+        'database'     => 'ucot',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
 
     //    /**
     //     * Sample database connection for SQLite3.

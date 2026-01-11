@@ -1,8 +1,9 @@
 <?=$header?> 
-<a class="nav-link" href="<?= base_url('salir') ?>">
-     salir <span class="sr-only"></span>
+
+<?=$menu?>   
+
    <div class="card-body">
-    <?php if (empty($pagos)): ?>
+    <?php if (empty($citas)): ?>
         <div class="alert alert-info">No hay solicitudes pendientes.</div>
     <?php else: ?>
         <table class="table">
@@ -15,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($pagos as $cita): ?>
+                <?php foreach ($citas as $cita): ?>
                     <tr>
                         <td><?= esc($cita['estudiante_email']) ?></td>
                         
@@ -24,7 +25,7 @@
                         <td><?= esc($cita['fecha_hora_inicio']) ?></td>
 
                         <td>
-                            <form action="<?= base_url('profesor/pagos/procesar') ?>" method="post">
+                            <form action="<?= base_url('profesor/citas/procesar') ?>" method="post">
                                 
                                 <input type="hidden" name="id_cita" value="<?= $cita['id_cita'] ?>">
                                 
