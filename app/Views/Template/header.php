@@ -12,13 +12,12 @@
 
 </head>
 <body style="background: linear-gradient(to bottom, #B0C4DE, #E0FFFF);">
-<header class="bg-dark text-white p-4">
-            <div class="container d-flex align-items-center">
-                
-                <h1 class="mb-0 text-center flex-grow-1">
-                    <span class="badge text-bg-info fs-3 p-2 shadow-lg">UCOT</span>
+         <header class="bg-dark text-white p-4">
+            <div class="container d-flex align-items-center"> 
+                 <h1 class="mb-0 text-center flex-grow-1">
+                     <span class="badge text-bg-info fs-3 p-2 shadow-lg">UCOT</span>
                 </h1>
-                </div>
+            </div>
         </header>
     <div class="container mt-2">
 

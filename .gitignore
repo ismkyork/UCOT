@@ -128,4 +128,4 @@ _modules/*
 
 # Ignorar archivos de configuración personal/secretos
 .env
-
+app/config/Database.php

@@ -39,7 +39,7 @@ class Profesor extends BaseController
         $info['header'] = view('Template/header');
         $info['footer'] = view('Template/footer');
         $info['menu']=view('Template/menu');
-        return view('vistas/profesor/pagos', array_merge($info, $data));
+        return view('vistas/profesor/citas', array_merge($info, $data));
     }
 
     public function procesar()
@@ -74,7 +74,7 @@ class Profesor extends BaseController
             'estado_cita' => $nuevoEstado
         ]);
 
-        return redirect()->to('/profesor/pagos')->with('msg', 'Solicitud procesada correctamente.');
+        return redirect()->to('/profesor/citas')->with('msg', 'Solicitud procesada correctamente.');
     }
 
 //Horarios------------------------------------------------------------------------------------------------------------------------------------
@@ -99,6 +99,7 @@ class Profesor extends BaseController
         $data['profesores'] = $modelProfesor->findAll();
         $info['footer']=view('Template/footer');
         $info['header']=view('Template/header');
+        $info['menu']=view('Template/menu');
       return view('vistas/profesor/HorarioAgregar', array_merge($info, $data));
     }
 
@@ -129,6 +130,8 @@ class Profesor extends BaseController
       $data = [
           'header' => view('Template/header'),
           'footer' => view('Template/footer'),
+          'menu'   => view('Template/menu'),
+
       ];
 
       return view('vistas/profesor/HorarioConfirmacion', $data);
@@ -156,6 +159,7 @@ class Profesor extends BaseController
 
       $info['header'] = view('Template/header');
       $info['footer'] = view('Template/footer');
+      $info['menu']=view('Template/menu');
 
       return view('vistas/profesor/HorarioEditar', array_merge($info, [
         'horario' => $horario,
