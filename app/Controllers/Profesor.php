@@ -79,10 +79,10 @@ class Profesor extends BaseController
 
      //Para ver los horarios
     public function config_horarios() {
-        $model = new HorarioModel();
+        $model = new HorarioModel(); //Beyker
         $data['horarios'] = $model->where('id_profesor', session()->get('id_auth'))->findAll(); 
 
-        $modelHorario = new HorarioModel();
+        $modelHorario = new HorarioModel(); //Fernando
         $data['horarios'] = $modelHorario->orderBy('id_horario','ASC')->findAll();
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
