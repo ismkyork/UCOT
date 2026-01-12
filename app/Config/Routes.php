@@ -10,11 +10,9 @@ $routes->get('/', 'Home::index');
 //rutas profesor
 $routes->get('/profesor', 'Profesor::index');
 $routes->get('/profesor/dashboard', 'Profesor::dashboard'); 
-$routes->get('/profesor/pagos', 'Profesor::pagos');
-$routes->post('profesor/pagos/procesar', 'Profesor::procesar');
 $routes->get('/profesor/citas', 'Profesor::citas');
 $routes->post('profesor/citas/procesar', 'Profesor::procesar');
-$routes->get('/profesor/config_horarios', 'Profesor::config_horarios'); //crud horarios ver
+$routes->get('/profesor/HorarioLeer', 'Profesor::config_horarios'); //crud horarios ver
 $routes->get('/profesor/agg_horarios', 'Profesor::agg_horarios');  //crud horarios agregar
 $routes->post('/profesor/store_horarios', 'Profesor::store_horarios'); //crud horarios guardar
 $routes->get('/profesor/confirmacion_horario', 'Profesor::confirmacion_horario'); //crud horarios guardar confirmar
