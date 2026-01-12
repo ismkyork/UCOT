@@ -23,17 +23,36 @@ class Auth extends BaseController {
                 
                 $session->regenerate();
 
-                $ses_data = [
-                    'id_auth'    => $data['id_auth'],
-                    'email'      => $data['email'],
-                    'rol'        => $data['rol'],
-                    'isLoggedIn' => TRUE
-                ];
-                $session->set($ses_data);
+                $session->regenerate();
+
+                    // 1. Busca el nombre real según el rol
+                    $nombreReal = '';
+                    if ($data['rol'] == 'Profesor') {
+                        $modelP = new \App\Models\ProfesorModel();
+                        $perfil = $modelP->where('id_auth', $data['id_auth'])->first();
+                        $nombreReal = $perfil['nombre_profesor']; // Nombre en tu tabla profesor
+                    } else {
+                        $modelA = new \App\Models\AlumnoModel();
+                        $perfil = $modelA->where('id_auth', $data['id_auth'])->first();
+                        $nombreReal = $perfil['name']; // Nombre en tu tabla alumno
+                    }
+
+                    // 2. Guarda datos en sesión
+                    $ses_data = [
+                        'id_auth'    => $data['id_auth'],
+                        'email'      => $data['email'],
+                        'rol'        => $data['rol'],
+                        'name'       => $nombreReal, 
+                        'isLoggedIn' => TRUE
+                    ];
+                    $session->set($ses_data);
+
+                    // 3. MENSAJE DE BIENVENIDA 
+                    $session->setFlashdata('bienvenida', '¡Bienvenido(a) de nuevo, ' . $nombreReal . '!');
 
                 if ($data['rol'] == 'Profesor') {
                     return redirect()->to('/profesor/dashboard'); 
-                } elseif ($data['rol'] == 'cliente') {
+                } elseif ($data['rol'] == 'Estudiante') {
                     return redirect()->to('/alumno/factura');
                 } else {
                     return redirect()->to('/auth/login');
@@ -52,12 +71,13 @@ class Auth extends BaseController {
     public function salir() {
         $session = session();
         $session->destroy();
-        return redirect()->to('/auth/login');
+        return redirect()->to('./');
     }
 
     public function index(){
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/inicio',$info);
     }
 
@@ -65,6 +85,7 @@ class Auth extends BaseController {
     {
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/auth/login',$info);
     }
 
@@ -72,6 +93,7 @@ class Auth extends BaseController {
     {
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/auth/registro',$info);
     }
 

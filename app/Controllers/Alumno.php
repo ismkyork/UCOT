@@ -10,6 +10,7 @@ class Alumno extends BaseController
     public function index() {   
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/inicio',$info);
     }
 
@@ -17,12 +18,14 @@ class Alumno extends BaseController
       $info=[];
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/alumno/calendario',$info);
     }
 
     public function factura(){
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/alumno/factura',$info);
     }
         
@@ -31,6 +34,7 @@ class Alumno extends BaseController
       $data['citas'] = $model->where('id_alumno', session()->get('id_estudiante'))->findAll();
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
       return view('vistas/alumno/mis_citas',array_merge($info, $data));
     }
     /**
@@ -39,14 +43,37 @@ class Alumno extends BaseController
      */
     public function guardar()
     {
-        
+             // 1. Forzamos la zona horaria definida en tu Config/App.php
+        date_default_timezone_set('America/Caracas'); 
+
         $GuardarCita = new CitaModel(); 
         $BuscarAdmin = new LoginModel(); 
 
-        // 2. Obtener el ID del estudiante actual de forma segura
-        $studentId = session()->get('id_auth');
+        // 2. Captura de datos
+        $fechaPost = $this->request->getPost('fecha_hora_inicio');
+        $studentId = session()->get('id_auth'); // Usamos el ID de la sesión corregida
+    
+        $timestampPost = strtotime($fechaPost);
+        $timestampAhora = time(); 
 
-        // 3. ENCONTRAR AL PROFESOR (El paso clave de tu requerimiento)
+        // 3. VALIDACIÓN A: No permitir fechas pasadas
+        // Usamos un margen de 60 segundos para evitar errores si el usuario tarda en dar clic
+        if ($timestampPost < ($timestampAhora - 60)) {
+            return redirect()->back()
+                ->withInput()
+                ->with('msg_error', 'No puedes agendar en el pasado. La hora del sistema es: ' . date('h:i a', $timestampAhora));
+        }
+
+          // 4. VALIDACIÓN B: Intervalos de 30 minutos (:00 o :30)
+            $minutos = date('i', $timestampPost);
+            if ($minutos !== '00' && $minutos !== '30') {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('msg_error', 'Solo se permiten citas en la hora punto (:00) o media hora (:30).'); 
+            }
+
+
+        // 5. ENCONTRAR AL PROFESOR (El paso clave de tu requerimiento)
         $profesorAdmin = $BuscarAdmin->where('rol', 'Profesor')->first();
 
         if (!$profesorAdmin) {
@@ -56,7 +83,7 @@ class Alumno extends BaseController
         $professorId = $profesorAdmin['id_auth'];
 
 
-        // 4. Preparar los datos para insertar en la tabla citas
+        // 6. Preparar los datos para insertar en la tabla citas
         $datosCita = [
             'id_alumno'       => $studentId,
             'id_profesor'     => $professorId,
@@ -66,7 +93,7 @@ class Alumno extends BaseController
             'estado_cita'           => 'pendiente'
         ];
 
-        // 5. Intentar guardar en la base de datos
+        // 7. Intentar guardar en la base de datos
         if ($GuardarCita->save($datosCita)) {
             return redirect()->to('/alumno/mis_citas')->with('msg', 'Tu solicitud de cita ha sido enviada y está pendiente de aprobación.');
         } else {
