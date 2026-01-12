@@ -9,10 +9,16 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 //rutas profesor
 $routes->get('/profesor', 'Profesor::index');
-$routes->get('/profesor/config_horarios', 'Profesor::config_horarios');
 $routes->get('/profesor/dashboard', 'Profesor::dashboard'); 
-$routes->get('/profesor/citas', 'Profesor::citas');
-$routes->post('profesor/citas/procesar', 'Profesor::procesar');
+$routes->get('/profesor/pagos', 'Profesor::pagos');
+$routes->post('profesor/pagos/procesar', 'Profesor::procesar');
+$routes->get('/profesor/config_horarios', 'Profesor::config_horarios'); //crud horarios ver
+$routes->get('/profesor/agg_horarios', 'Profesor::agg_horarios');  //crud horarios agregar
+$routes->post('/profesor/store_horarios', 'Profesor::store_horarios'); //crud horarios guardar
+$routes->get('/profesor/confirmacion_horario', 'Profesor::confirmacion_horario'); //crud horarios guardar confirmar
+$routes->get('/profesor/dlt_horario/(:num)', 'Profesor::dlt_horario/$1'); //crud horarios eliminar
+$routes->get('/profesor/edit_horario/(:num)', 'Profesor::edit_horario/$1'); //crud horarios editar
+$routes->post('/profesor/update_horario/(:num)', 'Profesor::update_horario/$1'); //crud horarios editar confirmar
 
 //rutas Alumno
 
