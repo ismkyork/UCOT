@@ -180,7 +180,7 @@ class Profesor extends BaseController
 
       $modelHorario->update($id_horario, $data);
 
-      return redirect()->to(base_url('profesor/config_horarios'))
+      return redirect()->to(base_url('profesor/HorarioLeer'))
                      ->with('msg', 'Horario Editado Correctamente');//mensaje de confimación de la edición
     }
 
