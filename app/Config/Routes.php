@@ -11,6 +11,8 @@ $routes->get('/', 'Home::index');
 $routes->get('/profesor', 'Profesor::index');
 $routes->get('/profesor/dashboard', 'Profesor::dashboard'); 
 $routes->get('/profesor/citas', 'Profesor::citas');
+$routes->get('/profesor/opiniones', 'Profesor::opiniones');
+
 $routes->post('profesor/citas/procesar', 'Profesor::procesar');
 $routes->get('/profesor/HorarioLeer', 'Profesor::config_horarios'); //crud horarios ver
 $routes->get('/profesor/agg_horarios', 'Profesor::agg_horarios');  //crud horarios agregar
@@ -25,6 +27,8 @@ $routes->post('/profesor/update_horario/(:num)', 'Profesor::update_horario/$1');
 $routes->get('alumno', 'Alumno::index');
 $routes->get('alumno/calendario', 'Alumno::calendario'); 
 $routes->get('/alumno/factura', 'Alumno::factura');
+$routes->get('/alumno/pago_estatico', 'Alumno::pago_estatico');
+
 $routes->get('/alumno/mis_citas', 'Alumno::mis_citas');
 $routes->post('/alumno/citas/guardar', 'Alumno::guardar');
 

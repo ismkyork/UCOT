@@ -42,6 +42,14 @@ class Profesor extends BaseController
         return view('vistas/profesor/citas', array_merge($info, $data));
     }
 
+        public function opiniones() {
+      $info=[];
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
+      return view('vistas/profesor/opiniones',$info);
+    }
+
     public function procesar()
     {
         $citasModel = new CitaModel();
@@ -149,6 +157,8 @@ class Profesor extends BaseController
                      ->with('msg', 'Horario Eliminado Correctamente'); //mensaje de confimación de la eliminación
     }
 
+
+
     //Editar un horario
     public function edit_horario($id_horario = null){
       $modelHorario = new HorarioModel();
@@ -196,6 +206,8 @@ class Profesor extends BaseController
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu']=view('Template/menu');
+        $info['opiniones']=view('vistas/profesor/opiniones');
+
         return view('vistas/profesor/dashboard', array_merge($info, $data));
     }
 }
