@@ -10,7 +10,8 @@
             <link rel="stylesheet" href="<?php echo base_url('css/style.css'); ?>">
             <script src="https://kit.fontawesome.com/1457d8f62b.js" crossorigin="anonymous"></script>
 
-</head>
+            <link rel="stylesheet" href="<?php echo base_url('assets/css/feedback.css'); ?>">
+        </head>
 <body style="background: linear-gradient(to bottom, #B0C4DE, #E0FFFF);">
          <header class="bg-dark text-white p-4">
             <div class="container d-flex align-items-center"> 
@@ -20,4 +21,7 @@
             </div>
         </header>
     <div class="container mt-2">
+      <div class="row justify-content-center">
+      
 
+    

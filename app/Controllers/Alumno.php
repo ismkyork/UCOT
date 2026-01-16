@@ -37,6 +37,16 @@ class Alumno extends BaseController
       $info['menu']=view('Template/menu');
       return view('vistas/alumno/mis_citas',array_merge($info, $data));
     }
+
+
+     public function pago_estatico() {
+      
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
+      return view('vistas/alumno/pago_estatico',$info);
+    }
+
     /**
      * Procesa el formulario enviado por el estudiante.
      * Ruta: POST /alumno/citas/guardar
