@@ -26,6 +26,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
+
                                     <label for="fecha_hora_inicio">Indique la fecha y hora de inicio</label>
                                     <input id="fecha_hora_inicio" 
                                         value="<?= old('fecha_hora_inicio') ?>" 
@@ -36,9 +37,16 @@
                                         required>
                                     <small class="text-muted">Recuerde: Solo se permiten horas en punto (:00) o media hora (:30).</small>
                                 </div>
+
                                 <div class="form-group mb-3">
                                     <label for="materia">Indique la materia</label>
-                                    <input id="materia" value="<?=old('materia')?>" class="form-control" type="text" name="materia" placeholder="Ej: Química" required>
+                                    <input id="materia" 
+                                    value="<?=old('materia')?>" 
+                                    class="form-control" 
+                                    type="text"
+                                    name="materia" 
+                                    placeholder="Ej: Química" 
+                                    required>
                                 </div>
                                 
                                 <div class="form-group mb-3">
@@ -55,6 +63,7 @@
                                 <button type="submit" class="btn btn-success btn-lg w-100">
                                     <i class="fas fa-save me-2"></i> Reservar
                                 </button>
+                                
                             </div>
                     </div>
                 </form>
