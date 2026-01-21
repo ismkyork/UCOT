@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\CitaModel;
-use App\Models\AlumnoModel;
-use App\Models\LoginModel;
+use App\Models\HorarioModel;
 
 class Alumno extends BaseController
 {
@@ -29,15 +28,80 @@ class Alumno extends BaseController
       return view('vistas/alumno/factura',$info);
     }
         
-    public function mis_citas() {
-      $model = new CitaModel();
-      $data['citas'] = $model->where('id_alumno', session()->get('id_estudiante'))->findAll();
+//Citas----------------------------------------------------------------------------------------------
+ 
+//Para ver los bloques disponibles
+      public function mis_citas() {
+      $modelHorario = new HorarioModel();
+      $data['horarios'] = $modelHorario ->orderBy("FIELD(week_day, 'Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo')", '', false) ->orderBy('hora_inicio', 'ASC') ->findAll();
+
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
       $info['menu']=view('Template/menu');
       return view('vistas/alumno/mis_citas',array_merge($info, $data));
     }
 
+//Guardar citas
+
+public function store_citas()
+{
+    $citaModel    = new CitaModel();
+    $horarioModel = new HorarioModel();
+
+    // Datos enviados desde el formulario
+    $idAlumno   = session()->get('id_auth');             // obtener id_auth relacionado al id_alumno desde el login
+    $horarios   = $this->request->getPost('horarios');   // array de id_horario seleccionados
+    $materias   = $this->request->getPost('materias');   // array con materia escrita
+    $fechas     = $this->request->getPost('fecha');      // array con fecha seleccionada
+
+    if ($horarios) {
+        $db = \Config\Database::connect();
+        $db->transStart();
+
+        foreach ($horarios as $idHorario) {
+            //Traer datos del horario
+            $horario = $horarioModel->find($idHorario);
+            if (!$horario) continue;
+
+            //Valida que existan los índices del formulario
+            if (!isset($materias[$idHorario], $fechas[$idHorario])) {
+                continue;
+            }
+
+            //Calcular duración en minutos
+            $inicio   = new \DateTime($horario['hora_inicio']);
+            $fin      = new \DateTime($horario['hora_fin']);
+            $duracion = $inicio->diff($fin);
+            $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
+
+            //Construir fecha completa (fecha seleccionada + hora_inicio)
+            $fechaHoraInicio = (new \DateTime($fechas[$idHorario] . ' ' . $horario['hora_inicio']))
+                               ->format('Y-m-d H:i:s');
+
+            // Armar registro para la tabla citas
+            $data = [
+                'id_alumno'        => $idAlumno, //id_alumno relacionado con id_auth del alumno tomado desde el login
+                'id_profesor'      => $horario['id_profesor'], // tomado directamente del horario
+                'fecha_hora_inicio'=> $fechaHoraInicio,
+                'duracion_min'     => $totalMinutos,
+                'materia'          => $materias[$idHorario],
+                'estado_cita'      => 'pendiente'
+            ];
+
+            //Insertar y capturar errores si falla
+            if (!$citaModel->insert($data)) {
+                return redirect()->back()->withInput()->with('errors', $citaModel->errors());
+            }
+        }
+
+        $db->transComplete();
+    }
+
+    //Redirigir con mensaje de éxito
+    return redirect()->to('alumno/mis_citas')->with('success', 'Citas reservadas correctamente');
+}
+
+//----------------------------------------------------------------------------------------------------
 
      public function pago_estatico() {
       
@@ -46,77 +110,6 @@ class Alumno extends BaseController
       $info['menu']=view('Template/menu');
       return view('vistas/alumno/pago_estatico',$info);
     }
-
-    /**
-     * Procesa el formulario enviado por el estudiante.
-     * Ruta: POST /alumno/citas/guardar
-     */
-    public function guardar()
-    {
-             // 1. Forzamos la zona horaria definida en tu Config/App.php
-        date_default_timezone_set('America/Caracas'); 
-
-        $GuardarCita = new CitaModel(); 
-        $BuscarAdmin = new LoginModel(); 
-
-        // 2. Captura de datos
-        $fechaPost = $this->request->getPost('fecha_hora_inicio');
-        $studentId = session()->get('id_auth'); // Usamos el ID de la sesión corregida
-    
-        $timestampPost = strtotime($fechaPost);
-        $timestampAhora = time(); 
-
-        // 3. VALIDACIÓN A: No permitir fechas pasadas
-        // Usamos un margen de 60 segundos para evitar errores si el usuario tarda en dar clic
-        if ($timestampPost < ($timestampAhora - 60)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('msg_error', 'No puedes agendar en el pasado. La hora del sistema es: ' . date('h:i a', $timestampAhora));
-        }
-
-          // 4. VALIDACIÓN B: Intervalos de 30 minutos (:00 o :30)
-            $minutos = date('i', $timestampPost);
-            if ($minutos !== '00' && $minutos !== '30') {
-                return redirect()->back()
-                    ->withInput()
-                    ->with('msg_error', 'Solo se permiten citas en la hora punto (:00) o media hora (:30).'); 
-            }
-
-
-        // 5. ENCONTRAR AL PROFESOR (El paso clave de tu requerimiento)
-        $profesorAdmin = $BuscarAdmin->where('rol', 'Profesor')->first();
-
-        if (!$profesorAdmin) {
-            return redirect()->back()->with('error', 'Error crítico: No se encontró un profesor asignado en el sistema. Contacte soporte.');
-        }
-    
-        $professorId = $profesorAdmin['id_auth'];
-
-
-        // 6. Preparar los datos para insertar en la tabla citas
-        $datosCita = [
-            'id_alumno'       => $studentId,
-            'id_profesor'     => $professorId,
-            'fecha_hora_inicio' => $this->request->getPost('fecha_hora_inicio'), 
-            'materia'           => $this->request->getPost('materia'),     
-            'duracion_min'      => $this->request->getPost('duracion_min'),
-            'estado_cita'           => 'pendiente'
-        ];
-
-        // 7. Intentar guardar en la base de datos
-        if ($GuardarCita->save($datosCita)) {
-            return redirect()->to('/alumno/mis_citas')->with('msg', 'Tu solicitud de cita ha sido enviada y está pendiente de aprobación.');
-        } else {
-          echo "<h1>¡Error al Guardar!</h1>";
-        echo "<pre>";
-        print_r($GuardarCita->errors()); 
-        echo "</pre>";
-        die(); 
-            return redirect()->back()->withInput()->with('errors', $GuardarCita->errors());
-        }
-    }
-
-
 
 
 }

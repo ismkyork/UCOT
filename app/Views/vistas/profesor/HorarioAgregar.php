@@ -8,19 +8,6 @@
                 <div class="card-header bg-primary text-white">
                     <h2 class="mb-4">Añadir Nuevo Horario</h2>
                 </div>
-                    <div class="form-group mb-3">
-                        <!--Seleccionar profesor de la bdd-->
-                        <label for="id_profesor" class="form-label">Profesor</label>
-                        <select class="form-select" id="id_profesor" name="id_profesor" required>
-                            <option value="">Seleccione un profesor...</option>
-                                <?php foreach($profesores as $modelProfesor): ?>
-                                <option value="<?= $modelProfesor['id_profesor']; ?>">
-                                    <?= $modelProfesor['nombre_profesor']; ?>
-                                </option>
-                                <?php endforeach; ?>
-                        </select>
-                    </div>
-
 
                     <div class="form-group mb-3">
                         <label for="week_day" class="form-label">Día de la semana</label>

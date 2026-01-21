@@ -1,71 +1,128 @@
 <?=$header?> 
 <?=$menu?>   
 
+<h2>Citas Disponibles</h2>
 
-                        <?php if(session()->getFlashdata('msg_error')): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Error:</strong> <?= session()->getFlashdata('msg_error') ?>
+<!-- Mostrar errores -->
+<?php if(session('errors')): ?>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <?php foreach(session('errors') as $error): ?>
+                <li><?= esc($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
-                            </div>
-                        <?php endif; ?>
+<!-- Mostrar éxito -->
+<?php if(session('success')): ?>
+    <div class="alert alert-success">
+        <?= esc(session('success')) ?>
+    </div>
+<?php endif; ?>
 
-                        <?php if(session()->getFlashdata('msg')): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <?= session()->getFlashdata('msg') ?>
-                                <button type="button" class="btn-close" data-bs-alert="alert" aria-label="Close"> </button>
-                            </div>
-                
-                        <?php endif; ?>
-                                            
-                <h1>Mis Citas</h1>
-                
-                <form action="<?= base_url('alumno/citas/guardar') ?>" method="POST">
-                    <div class="card shadow-lg mb-4">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">Insertar Datos para agendar una clase</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group mb-3">
+<form action="<?= site_url('alumno/store_citas') ?>" method="POST">
+    <?= csrf_field() ?>
+<table class="table table-hover table-bordered align-middle">
 
-                                    <label for="fecha_hora_inicio">Indique la fecha y hora de inicio</label>
-                                    <input id="fecha_hora_inicio" 
-                                        value="<?= old('fecha_hora_inicio') ?>" 
-                                        class="form-control" 
-                                        type="datetime-local" 
-                                        name="fecha_hora_inicio" 
-                                        step="60" 
-                                        required>
-                                    <small class="text-muted">Recuerde: Solo se permiten horas en punto (:00) o media hora (:30).</small>
-                                </div>
+    <thead class="table-dark">
+        <tr>
+            <th>Fecha y Hora</th>
+            <th>Duración</th>
+            <th>Materia</th>
+            <th>Seleccionar</th>
+        </tr>
+    </thead>
 
-                                <div class="form-group mb-3">
-                                    <label for="materia">Indique la materia</label>
-                                    <input id="materia" 
-                                    value="<?=old('materia')?>" 
-                                    class="form-control" 
-                                    type="text"
-                                    name="materia" 
-                                    placeholder="Ej: Química" 
-                                    required>
-                                </div>
-                                
-                                <div class="form-group mb-3">
-                                    <label for="duracion_min">Duración de la cita:</label>
-                                    <select name="duracion_min" id="duracion_min" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona el tiempo...</option>
-                                        <option value="60">1 hora (60 min)</option>
-                                        <option value="120">2 horas (120 min)</option>
-                                        <option value="180">3 horas (180 min)</option>
+    <tbody>
+        <?php foreach($horarios as $modelHorario): ?>
+            <tr>
+                <td>
+                    <!-- Selector de fecha restringido al día -->
+                    <select name="fecha[<?= $modelHorario['id_horario']; ?>]" 
+                            class="form-select fecha-horario w-50 d-inline-block" 
+                            data-dia="<?= $modelHorario['week_day']; ?>">
+                        <option value="">Selecciona una fecha</option>
+                    </select>
+                    <span class="ms-2"><?= $modelHorario['hora_inicio']; ?></span>
+                </td>
 
-                                    </select>
-                                </div>
+                <td>
+                    <?php
+                        $inicio = new DateTime($modelHorario['hora_inicio']);
+                        $fin    = new DateTime($modelHorario['hora_fin']);
+                        $duracion = $inicio->diff($fin);
 
-                                <button type="submit" class="btn btn-success btn-lg w-100">
-                                    <i class="fas fa-save me-2"></i> Reservar
-                                </button>
-                                
-                            </div>
-                    </div>
-                </form>
-                        
-<?=$footer?>    
+                        $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
+                        echo $totalMinutos . ' min';
+                    ?>
+                </td>
+
+                <td>
+                    <input type="text" 
+                           name="materias[<?= $modelHorario['id_horario']; ?>]" 
+                           class="form-control" 
+                           placeholder="Escribe la materia aquí"
+                           value="">
+                </td>
+
+                <td class="text-center">
+                    <input type="checkbox" 
+                           name="horarios[]" 
+                           value="<?= $modelHorario['id_horario']; ?>" 
+                           class="form-check-input cita-checkbox">
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<!-- Campo oculto global para el alumno en sesión -->
+<input type="hidden" name="id_alumno" value="<?= session()->get('id_auth'); ?>">
+
+<button type="submit" class="btn btn-success btn-lg w-100 mt-3">
+    <i class="fas fa-check me-2"></i> Reservar
+</button>
+</form>
+
+<!-- Script para generar solo las fechas válidas -->
+<script>
+function normalizarDia(dia) {
+    return dia.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+document.querySelectorAll('.fecha-horario').forEach(select => {
+    const diaPermitido = normalizarDia(select.dataset.dia);
+    const diasSemana = ["domingo","lunes","martes","miercoles","jueves","viernes","sabado"];
+
+    let hoy = new Date();
+    for (let i = 0; i < 60; i++) {
+        let fecha = new Date();
+        fecha.setDate(hoy.getDate() + i);
+
+        let diaSeleccionado = diasSemana[fecha.getDay()];
+        if (diaSeleccionado === diaPermitido) {
+            let valor = fecha.toISOString().split('T')[0];
+            let opcion = document.createElement("option");
+            opcion.value = valor;
+            opcion.textContent = valor + " (" + diaSeleccionado + ")";
+            select.appendChild(opcion);
+        }
+    }
+});
+</script>
+
+<!-- Script para poner la fila en verde cuando se selecciona -->
+<script>
+document.querySelectorAll('.cita-checkbox').forEach(chk => {
+    chk.addEventListener('change', function() {
+        if (this.checked) {
+            this.closest('tr').classList.add('table-success');
+        } else {
+            this.closest('tr').classList.remove('table-success');
+        }
+    });
+});
+</script>
+
+<?=$footer?>
