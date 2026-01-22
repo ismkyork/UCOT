@@ -28,14 +28,26 @@ class Auth extends BaseController {
                     // 1. Busca el nombre real según el rol
                     $nombreReal = '';
                     if ($data['rol'] == 'Profesor') {
-                        $modelP = new \App\Models\ProfesorModel();
-                        $perfil = $modelP->where('id_auth', $data['id_auth'])->first();
-                        $nombreReal = $perfil['nombre_profesor']; // Nombre en tu tabla profesor
+                    $modelP = new \App\Models\ProfesorModel();
+                    $perfil = $modelP->where('id_auth', $data['id_auth'])->first();
+                    $nombreReal = $perfil['nombre_profesor'];
+
+                    //Guardar el id_profesor en sesión
+                    if ($perfil) {
+                        $session->set('id_profesor', $perfil['id_profesor']);
+                        }
                     } else {
                         $modelA = new \App\Models\AlumnoModel();
                         $perfil = $modelA->where('id_auth', $data['id_auth'])->first();
-                        $nombreReal = $perfil['name']; // Nombre en tu tabla alumno
+                        $nombreReal = $perfil['name'];
+
+                    //Guardar el id_alumno en sesión
+                    if ($perfil) {
+                        $session->set('id_alumno', $perfil['id_estudiante']);
                     }
+                    }
+
+
 
                     // 2. Guarda datos en sesión
                     $ses_data = [

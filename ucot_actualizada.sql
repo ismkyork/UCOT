@@ -302,6 +302,17 @@ ALTER TABLE `perfil_profesor`
   ADD CONSTRAINT `perfil_profesor_ibfk_1` FOREIGN KEY (`id_auth`) REFERENCES `auth` (`id_auth`) ON DELETE CASCADE;
 COMMIT;
 
+--
+-- Ajuste para la tabla `horarios`
+--
+ALTER TABLE `horarios` 
+DROP FOREIGN KEY `horarios_ibfk_1`;
+
+ALTER TABLE `horarios` 
+ADD CONSTRAINT `fk_horarios_profesor_auth`
+FOREIGN KEY (`id_profesor`) REFERENCES `auth`(`id_auth`)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

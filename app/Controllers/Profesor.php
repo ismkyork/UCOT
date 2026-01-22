@@ -15,7 +15,7 @@ class Profesor extends BaseController
         return view('vistas/inicio', $info);
     }
 
-    public function citas() {
+    public function citas() { //Beyker. Ver las citas pendientes---------------------------------------------------------------
       
     $citasModel = new CitaModel(); 
 
@@ -41,6 +41,7 @@ class Profesor extends BaseController
         $info['menu']=view('Template/menu');
         return view('vistas/profesor/citas', array_merge($info, $data));
     }
+//-------------------------------------------------------------------------------------------------------------------------------
 
         public function opiniones() {
       $info=[];
@@ -50,7 +51,7 @@ class Profesor extends BaseController
       return view('vistas/profesor/opiniones',$info);
     }
 
-    public function procesar()
+    public function procesar() //Procesar cita-----------------------------------------------------------------------------------
     {
         $citasModel = new CitaModel();
 
@@ -84,6 +85,7 @@ class Profesor extends BaseController
 
         return redirect()->to('/profesor/citas')->with('msg', 'Solicitud procesada correctamente.');
     }
+//---------------------------------------------------------------------------------------------------------------------------------
 
 //Horarios------------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,7 +95,7 @@ class Profesor extends BaseController
         $data['horarios'] = $model->where('id_profesor', session()->get('id_auth'))->findAll(); 
 
         $modelHorario = new HorarioModel(); //Fernando
-        $data['horarios'] = $modelHorario->orderBy('id_horario','ASC')->findAll();
+        $data['horarios'] = $modelHorario ->orderBy("FIELD(week_day, 'Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo')", '', false) ->orderBy('hora_inicio', 'ASC') ->findAll();
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu']=view('Template/menu');
@@ -103,20 +105,20 @@ class Profesor extends BaseController
     
     //Para seleccionar un profesor de la lista al añadir un horario
     public function agg_horarios(){
-        $modelProfesor = new ProfesorModel();
-        $data['profesores'] = $modelProfesor->findAll();
         $info['footer']=view('Template/footer');
         $info['header']=view('Template/header');
         $info['menu']=view('Template/menu');
-      return view('vistas/profesor/HorarioAgregar', array_merge($info, $data));
+      return view('vistas/profesor/HorarioAgregar', array_merge($info));
     }
 
     //Guardar el horario añadido
     public function store_horarios(){
         $modelHorario = new HorarioModel();
 
+        $idProfesorAuth = session()->get('id_auth');
+
         $data = [
-            'id_profesor' => $this->request->getPost('id_profesor'),
+            'id_profesor' => $idProfesorAuth,
             'week_day'    => $this->request->getPost('week_day'),
             'hora_inicio' => $this->request->getPost('hora_inicio'),
             'hora_fin'    => $this->request->getPost('hora_fin'),

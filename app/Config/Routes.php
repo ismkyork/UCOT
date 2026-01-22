@@ -29,8 +29,8 @@ $routes->get('alumno/calendario', 'Alumno::calendario');
 $routes->get('/alumno/factura', 'Alumno::factura');
 $routes->get('/alumno/pago_estatico', 'Alumno::pago_estatico');
 
-$routes->get('/alumno/mis_citas', 'Alumno::mis_citas');
-$routes->post('/alumno/citas/guardar', 'Alumno::guardar');
+$routes->get('/alumno/mis_citas', 'Alumno::mis_citas'); //ver bloques para citas disponibles
+$routes->post('/alumno/store_citas', 'Alumno::store_citas'); //guardar la cita
 
 //rutas Auth
 
