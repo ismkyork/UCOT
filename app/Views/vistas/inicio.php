@@ -1,9 +1,7 @@
-<?=$header?>
-<?=$menu?>   
+<?= $header ?>
 
-<div class="container mt-4">
-    <h1>Página de Inicio</h1>
-    <p>Bienvenido al sistema UCOT.</p>
+<h1 class="texto-animado">Bienvenido a UCOT</h1>
 
+ <?=$login?> 
 
 <?=$footer?>

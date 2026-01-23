@@ -17,14 +17,11 @@
 
 
                         <?php elseif ($rol == 'Profesor'): ?>
-                            <li class="nav-item"><a class="nav-link" href="HorarioLeer">Configuración Horarios</a></li>
+                            <li class="nav-item"><a class="nav-link" href="HorarioLeer"> Horarios</a></li>
                             <li class="nav-item"><a class="nav-link" href="dashboard">Dashboard</a></li>
                             <li class="nav-item"><a class="nav-link" href="citas">Citas</a></li>
                             <li class="nav-item"><a class="nav-link" href="<?= base_url('salir') ?>">Cerrar Sesion</a></li>
 
-                        <?php else: ?>
-                            <li class="nav-item"><a class="nav-link" href="auth/login">Inicia Sesión</a></li>
-                            <li class="nav-item"><a class="nav-link" href="auth/registro">Registro</a></li>
                         <?php endif; ?>
 
                     </ul>

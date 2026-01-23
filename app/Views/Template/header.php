@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>UCOT</title>
+            <title>UCOT - Gestión de Citas</title>
 
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             
-            <link rel="stylesheet" href="<?php echo base_url('css/style.css'); ?>">
             <script src="https://kit.fontawesome.com/1457d8f62b.js" crossorigin="anonymous"></script>
 
-            <link rel="stylesheet" href="<?php echo base_url('assets/css/feedback.css'); ?>">
-        </head>
-<body style="background: linear-gradient(to bottom, #B0C4DE, #E0FFFF);">
-         <header class="bg-dark text-white p-4">
-            <div class="container d-flex align-items-center"> 
-                 <h1 class="mb-0 text-center flex-grow-1">
-                     <span class="badge text-bg-info fs-3 p-2 shadow-lg">UCOT</span>
-                </h1>
-            </div>
-        </header>
-    <div class="container mt-2">
-      <div class="row justify-content-center">
-      
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    
+            <link rel="stylesheet" href="<?= base_url('assets/css/estilos_formularios.css') ?>">
+
+            <link rel="stylesheet" href="<?php echo base_url('assets/css/layout.css'); ?>">
+
+        </head>
+
+        <body style="background: linear-gradient(to bottom, #B0C4DE, #E0FFFF); min-height: 100vh; font-family: 'Poppins', sans-serif;">
+            <header class="bg-dark text-white p-4 shadow-sm">
+                <div class="container d-flex align-items-center"> 
+                    <h1 class="mb-0 text-center flex-grow-1">
+                        <span class="badge text-bg-info fs-3 p-2 shadow-lg" style="border-radius: 12px;">UCOT</span>
+                    </h1>
+                </div>
+            </header>
+            
+            <div class="container mt-4">
