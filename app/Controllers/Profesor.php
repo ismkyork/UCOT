@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\CitaModel;
 use App\Models\HorarioModel;
 use App\Models\ProfesorModel;
+use App\Models\LoginModel;
 
 class Profesor extends BaseController
 {
@@ -113,25 +114,35 @@ class Profesor extends BaseController
 
     //Guardar el horario añadido
     public function store_horarios(){
-        $modelHorario = new HorarioModel();
-
-        $idProfesorAuth = session()->get('id_auth');
+    try {
+        $modelHorario = new \App\Models\HorarioModel();
+        
+        // Según tu captura de phpMyAdmin, el ID del profesor es 11
+        // Forzamos este ID ya que solo manejarán un profesor en UCOT
+        $idProfesorFijo = 11; 
 
         $data = [
-            'id_profesor' => $idProfesorAuth,
+            'id_profesor' => $idProfesorFijo,
             'week_day'    => $this->request->getPost('week_day'),
             'hora_inicio' => $this->request->getPost('hora_inicio'),
             'hora_fin'    => $this->request->getPost('hora_fin'),
             'estado'      => $this->request->getPost('estado'),
         ];
 
+        // Intentamos insertar
         if (!$modelHorario->insert($data)) {
-            dd($modelHorario->errors()); // te muestra el error exacto si falla
+            // Si hay errores de validación en el modelo (campos requeridos, etc.)
+            dd($modelHorario->errors());
         }
 
-      return redirect()->to(base_url('profesor/confirmacion_horario'))
-                     ->with('msg', 'Horario Añadido Correctamente');
+        return redirect()->to(base_url('profesor/confirmacion_horario'))
+                         ->with('msg', 'Horario Añadido Correctamente');
+
+    } catch (\Exception $e) {
+        // Esto atrapará el error de "Foreign Key" si el ID 11 no existe en auth
+        return "Error de base de datos: " . $e->getMessage();
     }
+}
 
 
 
