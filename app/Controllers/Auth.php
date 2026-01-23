@@ -89,7 +89,7 @@ class Auth extends BaseController {
     public function index(){
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
-      $info['menu']=view('Template/menu');
+
       return view('vistas/inicio',$info);
     }
 
@@ -97,7 +97,6 @@ class Auth extends BaseController {
     {
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
-      $info['menu']=view('Template/menu');
       return view('vistas/auth/login',$info);
     }
 
@@ -105,7 +104,7 @@ class Auth extends BaseController {
     {
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
-      $info['menu']=view('Template/menu');
+
       return view('vistas/auth/registro',$info);
     }
 
