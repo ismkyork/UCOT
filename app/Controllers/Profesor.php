@@ -116,22 +116,31 @@ class Profesor extends BaseController
     public function store_horarios(){
     try {
         $modelHorario = new \App\Models\HorarioModel();
-        
-        // Según tu captura de phpMyAdmin, el ID del profesor es 11
-        // Forzamos este ID ya que solo manejarán un profesor en UCOT
-        $idProfesorFijo = 11; 
+        // Usamos el modelo de perfil para obtener el ID dinámicamente
+        $modelPerfil = new \App\Models\ProfesorModel();
+
+        // Buscamos el primer (y único) profesor en la tabla de perfiles
+        $perfil = $modelPerfil->first();
+
+        // Validación de seguridad por si la tabla está vacía
+        if (!$perfil) {
+            return "Error: No se encontró ningún profesor en la tabla 'perfil_profesor'. 
+                    Por favor, crea el perfil antes de asignar horarios.";
+        }
+
+        // Extraemos el ID que la base de datos tiene asignado
+        $idProfesorDinamico = $perfil['id_profesor'];
 
         $data = [
-            'id_profesor' => $idProfesorFijo,
+            'id_profesor' => $idProfesorDinamico, 
             'week_day'    => $this->request->getPost('week_day'),
             'hora_inicio' => $this->request->getPost('hora_inicio'),
             'hora_fin'    => $this->request->getPost('hora_fin'),
             'estado'      => $this->request->getPost('estado'),
         ];
 
-        // Intentamos insertar
         if (!$modelHorario->insert($data)) {
-            // Si hay errores de validación en el modelo (campos requeridos, etc.)
+            // Esto mostrará errores si fallan las reglas de validación del modelo
             dd($modelHorario->errors());
         }
 
@@ -139,8 +148,8 @@ class Profesor extends BaseController
                          ->with('msg', 'Horario Añadido Correctamente');
 
     } catch (\Exception $e) {
-        // Esto atrapará el error de "Foreign Key" si el ID 11 no existe en auth
-        return "Error de base de datos: " . $e->getMessage();
+        // Esto atrapará cualquier error de base de datos (como el de Foreign Key)
+        return "Error de sistema: " . $e->getMessage();
     }
 }
 
