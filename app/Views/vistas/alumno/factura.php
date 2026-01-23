@@ -8,7 +8,6 @@
                 </div>
             <?php endif; ?>
         <h1>Factura</h1>
- 
-
-
+                
+     
 <?=$footer?>
