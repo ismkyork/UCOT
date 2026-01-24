@@ -27,13 +27,15 @@ $routes->post('/profesor/update_horario/(:num)', 'Profesor::update_horario/$1');
 $routes->get('alumno', 'Alumno::index');
 $routes->get('alumno/calendario', 'Alumno::calendario'); 
 $routes->get('/alumno/factura', 'Alumno::factura');
+
+$routes->get('/alumno/pago_estatico/(:num)', 'Alumno::pago_estatico/$1');
 $routes->get('/alumno/pago_estatico', 'Alumno::pago_estatico');
 
 $routes->get('/alumno/mis_citas', 'Alumno::mis_citas'); //ver bloques para citas disponibles
 $routes->post('/alumno/store_citas', 'Alumno::store_citas'); //guardar la cita
+$routes->post('alumno/guardar_pago', 'Alumno::guardar_pago'); // Guardar pago estatico Alumno
 
 //rutas Auth
-
 $routes->get('/auth', 'Auth::index');
 $routes->get('/auth/login', 'Auth::login'); 
 $routes->get('/auth/registro', 'Auth::registro');
