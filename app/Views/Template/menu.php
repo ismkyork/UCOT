@@ -1,7 +1,7 @@
 
         <?php $rol = session()->get('rol'); ?>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
             <div class="container-fluid">
 
 

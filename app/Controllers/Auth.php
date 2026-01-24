@@ -67,16 +67,16 @@ class Auth extends BaseController {
                 } elseif ($data['rol'] == 'Estudiante') {
                     return redirect()->to('/alumno/factura');
                 } else {
-                    return redirect()->to('/auth/login');
+                    return redirect()->to('/');
                 }
 
             } else {
                 $session->setFlashdata('msg', 'Contraseña incorrecta');
-                return redirect()->to('/auth/login');
+                return redirect()->to('/');
             }
         } else {
             $session->setFlashdata('msg', 'Correo no encontrado');
-            return redirect()->to('/auth/login');
+            return redirect()->to('/');
         }
     }
 
