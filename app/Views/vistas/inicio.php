@@ -1,7 +1,5 @@
 <?= $header ?>
 
-<?= $header ?>
-
 <div id="cookie-joke" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 10000; font-family: Arial, sans-serif;">
     <div style="background: white; padding: 40px; border-radius: 20px; max-width: 500px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
         <h2 style="color: #333; margin-bottom: 20px;">🍪 ¡UCOT requiere Cookies!</h2>
