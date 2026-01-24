@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\CitaModel;
 use App\Models\HorarioModel;
 use App\Models\ProfesorModel;
+use App\Models\LoginModel;
 
 class Profesor extends BaseController
 {
@@ -113,12 +114,25 @@ class Profesor extends BaseController
 
     //Guardar el horario añadido
     public function store_horarios(){
-        $modelHorario = new HorarioModel();
+    try {
+        $modelHorario = new \App\Models\HorarioModel();
+        // Usamos el modelo de perfil para obtener el ID dinámicamente
+        $modelPerfil = new \App\Models\ProfesorModel();
 
-        $idProfesorAuth = session()->get('id_auth');
+        // Buscamos el primer (y único) profesor en la tabla de perfiles
+        $perfil = $modelPerfil->first();
+
+        // Validación de seguridad por si la tabla está vacía
+        if (!$perfil) {
+            return "Error: No se encontró ningún profesor en la tabla 'perfil_profesor'. 
+                    Por favor, crea el perfil antes de asignar horarios.";
+        }
+
+        // Extraemos el ID que la base de datos tiene asignado
+        $idProfesorDinamico = $perfil['id_profesor'];
 
         $data = [
-            'id_profesor' => $idProfesorAuth,
+            'id_profesor' => $idProfesorDinamico, 
             'week_day'    => $this->request->getPost('week_day'),
             'hora_inicio' => $this->request->getPost('hora_inicio'),
             'hora_fin'    => $this->request->getPost('hora_fin'),
@@ -126,12 +140,18 @@ class Profesor extends BaseController
         ];
 
         if (!$modelHorario->insert($data)) {
-            dd($modelHorario->errors()); // te muestra el error exacto si falla
+            // Esto mostrará errores si fallan las reglas de validación del modelo
+            dd($modelHorario->errors());
         }
 
-      return redirect()->to(base_url('profesor/confirmacion_horario'))
-                     ->with('msg', 'Horario Añadido Correctamente');
+        return redirect()->to(base_url('profesor/confirmacion_horario'))
+                         ->with('msg', 'Horario Añadido Correctamente');
+
+    } catch (\Exception $e) {
+        // Esto atrapará cualquier error de base de datos (como el de Foreign Key)
+        return "Error de sistema: " . $e->getMessage();
     }
+}
 
 
 
