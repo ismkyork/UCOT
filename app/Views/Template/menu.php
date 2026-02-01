@@ -1,7 +1,7 @@
 
         <?php $rol = session()->get('rol'); ?>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
             <div class="container-fluid">
 
 
@@ -9,7 +9,8 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         
                         <?php if ($rol == 'Estudiante'): ?>
-                        
+                            
+                             <li class="nav-item"><a class="nav-link" href="inicio_alumno">inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="calendario">Calendario</a></li>
                             <li class="nav-item"><a class="nav-link" href="factura">Factura</a></li>
                             <li class="nav-item"><a class="nav-link" href="mis_citas">Mis Citas</a></li>

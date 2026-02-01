@@ -1,0 +1,50 @@
+
+/* Vista FEEDBACK */
+
+/* Card principal */
+.card-personalizada {
+    background: #ffffff;
+    border-radius: 25px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    border: none !important;
+}
+
+/* El botón Cian de tu captura */
+.btn-concept-azul {
+    background-color: #33d9ff; /* El color de image_6c2ebf */
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(51, 217, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-concept-azul:hover {
+    background-color: #00c4f0;
+    transform: translateY(-2px);
+}
+
+/* Modal Estilo Concepto */
+.modal-overlay-concept {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(224, 247, 250, 0.8); /* Fondo claro azulado como tu imagen */
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content-concept {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}

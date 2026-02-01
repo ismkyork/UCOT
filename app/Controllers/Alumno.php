@@ -22,6 +22,23 @@ class Alumno extends BaseController
       return view('vistas/alumno/calendario',$info);
     }
 
+     public function inicio_alumno() {
+      $info=[];
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
+      $info['feedback']=view('vistas/alumno/feedback');
+
+      return view('vistas/alumno/inicio_alumno',$info);
+    }
+       public function feedback() {
+      $info=[];
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      $info['menu']=view('Template/menu');
+      return view('vistas/alumno/feedback',$info);
+    }
+
     public function factura(){
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');

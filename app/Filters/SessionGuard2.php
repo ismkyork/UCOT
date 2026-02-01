@@ -10,12 +10,12 @@ class SessionGuard2 implements FilterInterface
     {
       
         if (!session()->get('isLoggedIn')) {
-            return redirect()->to('/auth/login')->with('msg', 'Debes iniciar sesión para acceder.');
+            return redirect()->to('/')->with('msg', 'Debes iniciar sesión para acceder.');
         }
 
         if (session()->get('rol') !== 'Estudiante') {
            
-            return redirect()->to('auth/login')->with('msg', 'No tienes permisos de estudiante.');
+            return redirect()->to('/')->with('msg', 'No tienes permisos de estudiante.');
         }
         
 
