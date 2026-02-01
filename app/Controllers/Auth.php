@@ -100,12 +100,31 @@ class Auth extends BaseController {
       return view('vistas/auth/login',$info);
     }
 
+     public function actualizar_password()
+    {
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      return view('vistas/auth/actualizar_password',$info);
+    }
+    public function password_olvidada()
+    {
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      return view('vistas/auth/password_olvidada',$info);
+    }
     public function registro()
     {
       $info['footer']=view('Template/footer');
       $info['header']=view('Template/header');
 
       return view('vistas/auth/registro',$info);
+    }
+
+      public function codigo_sesion()
+    {
+      $info['footer']=view('Template/footer');
+      $info['header']=view('Template/header');
+      return view('vistas/auth/codigo_sesion',$info);
     }
 
   public function registrarUsuario() {
@@ -167,6 +186,6 @@ class Auth extends BaseController {
     }
 
     session()->setFlashdata('msg', 'Registro exitoso, ya puedes iniciar sesión');
-    return redirect()->to('/auth/login');
+    return redirect()->to('/');
 }
 }

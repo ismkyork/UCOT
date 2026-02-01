@@ -2,8 +2,8 @@
             <div class="row ">
                 <div class="col-md-5 offset-md-6">
                     <div class="card card-personalizada shadow-lg">
-                        
-                        <div class="card-body p-4">
+    
+                            <div class="card-body p-4">
                                 <?php if(session()->getFlashdata('msg')):?>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <?= session()->getFlashdata('msg') ?>
@@ -20,24 +20,36 @@
                                         id="email"
                                         type="email" name="email"
                                         class="form-control form-control-personalizado" 
-                                        placeholder="Ej: usuario@correo.com" 
+                                        placeholder="Ingresa tu email" 
                                         value="<?= old('email') ?>" required>
                                     </div>
 
+                                   
                                     <div class="form-group mb-4">
-
-                                        <label class="fw-bold mb-2">Contraseña</label>
-                                        <input 
-                                         id="password"
-                                        type="password" name="password"
-                                         class="form-control form-control-personalizado" 
-                                        placeholder="********" required>
-                                    </div>
+                                            <label for="password" class="fw-bold mb-2">Contraseña</label>
+                                        <div class="position-relative d-flex align-items-center">
+                                            <input type="password" name="password" id="password" 
+                                                class="form-control form-control-personalizado" 
+                                                placeholder="Ingresa tu clave" required>
+                                            
+                                            <div class="position-absolute end-0 me-3 d-flex align-items-center">
+                                                <i id="toggleIcon" class="fas fa-eye text-muted me-3" 
+                                                style="cursor: pointer; font-size: 1.1rem;" 
+                                                onclick="togglePassword()"></i>
+                                                                                           
+                                            </div>
+                                        </div>
+                                                    
+                                    </div>                                          
 
                                     <div class="d-grid">
                                         <button type="submit" class="btn btn-success btn-redondeado btn-lg shadow">
                                             <i class="fas fa-sign-in-alt me-2"></i> Iniciar sesión
                                         </button>
+                                    </div>
+
+                                     <div class="form-group mb-4 text-center py-3">
+                                      <a href="<?= base_url('auth/password_olvidada') ?>" class="text-success fw-bold">¿Has olvidado la contraseña?</a>
                                     </div>
                                 </form>
                             </div>
@@ -45,10 +57,22 @@
                             <div class="card-footer bg-light text-center py-3">
                                 <p class="mb-0 text-muted">¿No tienes cuenta? <a href="<?= base_url('auth/registro') ?>" class="text-success fw-bold">Regístrate</a></p>
                             </div>
-                         </div>      
                     </div>
                 </div>
             </div>
 
+    <script>
 
+        function togglePassword() {
+                const passInput = document.getElementById('password');
+                const icon = document.getElementById('toggleIcon');
+                if (passInput.type === "password") {
+                    passInput.type = "text";
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    passInput.type = "password";
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+        }
+    </script>
         

@@ -8,7 +8,7 @@
                 <div class="card-header card-header-personalizado bg-primary text-white text-center py-4">
                     <h3 class="mb-0">Añadir Nuevo Horario</h3>
                 </div>                              
-                        <!-- Formulario -->
+
                 <div class="card-body p-4">    
                     <form action="<?= base_url('profesor/store_horarios') ?>" method="POST" >
                                 
@@ -45,16 +45,18 @@
                             </select>
                         </div>
                      
-                        <td class="text-center">
+                        <td class="text-center">                   
+
                             <div class="card-footer bg-light d-flex justify-content-center align-items-center py-3 gap-2">
+                                 <a href="<?= base_url('profesor/HorarioLeer') ?>" 
+                                 class="btn btn-danger btn-redondeado btn-sm shadow text-decoration-none">
+                                    Cancelar
+                                </a>    
+
                                 <button type="submit" class="btn btn-success btn-redondeado btn-sm shadow">
                                     Guardar
                                 </button>
                                 
-                                <a href="<?= base_url('profesor/HorarioLeer') ?>" 
-                                class="btn btn-danger btn-redondeado btn-sm shadow text-decoration-none">
-                                    Cancelar
-                                </a>
                             </div>              
                         </td>
 

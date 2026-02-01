@@ -27,7 +27,9 @@ $routes->post('/profesor/update_horario/(:num)', 'Profesor::update_horario/$1');
 $routes->get('alumno', 'Alumno::index');
 $routes->get('alumno/calendario', 'Alumno::calendario'); 
 $routes->get('/alumno/factura', 'Alumno::factura');
+$routes->get('/alumno/feedback', 'Alumno::feedback');
 
+$routes->get('alumno/inicio_alumno', 'Alumno::inicio_alumno'); 
 $routes->get('/alumno/pago_estatico/(:num)', 'Alumno::pago_estatico/$1');
 $routes->get('/alumno/pago_estatico', 'Alumno::pago_estatico');
 
@@ -37,7 +39,10 @@ $routes->post('alumno/guardar_pago', 'Alumno::guardar_pago'); // Guardar pago es
 
 //rutas Auth
 $routes->get('/auth', 'Auth::index');
+$routes->get('/auth/actualizar_password', 'Auth::actualizar_password'); 
+$routes->get('/auth/codigo_sesion', 'Auth::codigo_sesion'); 
 $routes->get('/auth/login', 'Auth::login'); 
+$routes->get('/auth/password_olvidada', 'Auth::password_olvidada'); 
 $routes->get('/auth/registro', 'Auth::registro');
 $routes->post('/auth/procesarlogin', 'Auth::procesarlogin');
 $routes->post('/auth/registrarUsuario', 'Auth::registrarUsuario');
