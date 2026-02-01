@@ -13,6 +13,8 @@
 
             <link rel="stylesheet" href="<?= base_url('assets/css/estilos_formularios.css') ?>">
 
+            <link rel="stylesheet" href="<?= base_url('assets/css/estilos_alumno.css') ?>">
+
             <link rel="stylesheet" href="<?php echo base_url('assets/css/layout.css'); ?>">
 
         </head>
