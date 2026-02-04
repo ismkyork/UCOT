@@ -1,6 +1,6 @@
 
             <div class="row ">
-                <div class="col-md-5 offset-md-6">
+                <div class="col-12">
                     <div class="card card-personalizada shadow-lg">
     
                             <div class="card-body p-4">
@@ -57,22 +57,8 @@
                             <div class="card-footer bg-light text-center py-3">
                                 <p class="mb-0 text-muted">¿No tienes cuenta? <a href="<?= base_url('auth/registro') ?>" class="text-success fw-bold">Regístrate</a></p>
                             </div>
+                
                     </div>
                 </div>
             </div>
 
-    <script>
-
-        function togglePassword() {
-                const passInput = document.getElementById('password');
-                const icon = document.getElementById('toggleIcon');
-                if (passInput.type === "password") {
-                    passInput.type = "text";
-                    icon.classList.replace('fa-eye', 'fa-eye-slash');
-                } else {
-                    passInput.type = "password";
-                    icon.classList.replace('fa-eye-slash', 'fa-eye');
-                }
-        }
-    </script>
-        

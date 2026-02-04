@@ -1,11 +1,16 @@
 <?=$header?> 
 <?=$menu?>   
 
-<div class="container mt-4">
-    <h2>Citas Disponibles</h2>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="card-header-personalizado" style="font-size: 1.8rem;">Citas Disponibles</h2>
+            <p class="text-muted">Selecciona el horario y la materia para agendar tu asesoría.</p>
+        </div>
+    </div>
 
     <?php if(session('errors')): ?>
-        <div class="alert alert-danger">
+        <div class="alert alert-danger shadow-sm" style="border-radius: 15px;">
             <ul class="mb-0">
                 <?php foreach(session('errors') as $error): ?>
                     <li><?= esc($error) ?></li>
@@ -15,113 +20,81 @@
     <?php endif; ?>
 
     <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?= esc(session('success')) ?>
+        <div class="alert btn-ucot-success text-white shadow-sm" style="border-radius: 15px;">
+            <i class="fas fa-check-circle me-2"></i> <?= esc(session('success')) ?>
         </div>
     <?php endif; ?>
 
     <form action="<?= site_url('alumno/store_citas') ?>" method="POST">
         <?= csrf_field() ?>
       
-        <div class="table-responsive">
-            <table class="table table-hover table-personalizada align-middle">
-                <thead class="bg-primary text-white">
-                    <tr>
-                        <th style="width: 40%;">Fecha y Hora</th>
-                        <th>Duración</th>
-                        <th>Materia</th>
-                        <th class="text-center">Seleccionar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($horarios as $modelHorario): ?>
+        <div class="card-personalizada p-0 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-personalizada mb-0 align-middle">
+                    <thead>
                         <tr>
-                            <td>
-                                <select name="fecha[<?= $modelHorario['id_horario']; ?>]" 
-                                        class="form-select form-control-tabla fecha-horario w-75 d-inline-block" 
-                                        data-dia="<?= $modelHorario['week_day']; ?>">
-                                    <option value="">Selecciona fecha</option>
-                                </select>
-                                <span class="ms-2 fw-bold text-dark"><?= $modelHorario['hora_inicio']; ?></span>
-                            </td>
-
-                            <td class="text-muted">
-                                <?php
-                                    $inicio = new DateTime($modelHorario['hora_inicio']);
-                                    $fin    = new DateTime($modelHorario['hora_fin']);
-                                    $duracion = $inicio->diff($fin);
-                                    $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
-                                    echo '<span class="badge bg-light text-dark">' . $totalMinutos . ' min</span>';
-                                ?>
-                            </td>
-
-                            <td>
-                                <input type="text" 
-                                    name="materias[<?= $modelHorario['id_horario']; ?>]" 
-                                    class="form-control form-control-tabla" 
-                                    placeholder="Ej: Matemáticas"
-                                    value="">
-                            </td>
-
-                            <td class="text-center">
-                                <input type="checkbox" 
-                                    name="horarios[]" 
-                                    value="<?= $modelHorario['id_horario']; ?>" 
-                                    class="form-check-input cita-checkbox border-success">
-                            </td>
+                            <th style="width: 40%;">Fecha y Hora</th>
+                            <th>Duración</th>
+                            <th>Materia</th>
+                            <th class="text-center">Seleccionar</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach($horarios as $modelHorario): ?>
+                            <tr>
+                                <td>
+                                    <select name="fecha[<?= $modelHorario['id_horario']; ?>]" 
+                                            class="form-select form-control-tabla d-inline-block w-auto me-2" 
+                                            data-dia="<?= $modelHorario['week_day']; ?>">
+                                        <option value="">Selecciona fecha</option>
+                                    </select>
+                                    <span class="fw-bold" style="color: var(--ucot-negro);">
+                                        <i class="far fa-clock me-1 text-muted"></i> <?= $modelHorario['hora_inicio']; ?>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <?php
+                                        $inicio = new DateTime($modelHorario['hora_inicio']);
+                                        $fin    = new DateTime($modelHorario['hora_fin']);
+                                        $duracion = $inicio->diff($fin);
+                                        $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
+                                    ?>
+                                    <span class="badge-ucot badge-confirmada" style="background-color: #f8f9fa !important; color: #495057 !important; border: 1px solid #dee2e6;">
+                                        <?= $totalMinutos . ' min'; ?>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <input type="text" 
+                                        name="materias[<?= $modelHorario['id_horario']; ?>]" 
+                                        class="form-control form-control-tabla" 
+                                        placeholder="Ej: Matemáticas">
+                                </td>
+
+                                <td class="text-center">
+                                    <input type="checkbox" 
+                                        name="horarios[]" 
+                                        value="<?= $modelHorario['id_horario']; ?>" 
+                                        class="form-check-input cita-checkbox">
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <input type="hidden" name="id_alumno" value="<?= session()->get('id_auth'); ?>">
 
-        <div class="mt-4 mb-5">
-            <button type="submit" class="btn btn-success btn-lg shadow w-100">
-                <i class="fas fa-check-circle me-2"></i> Reservar y Continuar al Pago
+        <div class="mt-5 mb-5 d-flex justify-content-center">
+            <button type="submit" class="btn-redondeado btn-ucot-success btn-lg shadow" style="width: 100%; max-width: 400px;">
+                <i class="fas fa-credit-card me-2"></i> Reservar y Continuar al Pago
             </button>
         </div>
     </form>
 </div>
 
-
-
-<script>
-    function normalizarDia(dia) {
-        return dia.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    }
-
-    document.querySelectorAll('.fecha-horario').forEach(select => {
-        const diaPermitido = normalizarDia(select.dataset.dia);
-        const diasSemana = ["domingo","lunes","martes","miercoles","jueves","viernes","sabado"];
-
-        let hoy = new Date();
-        for (let i = 0; i < 60; i++) {
-            let fecha = new Date();
-            fecha.setDate(hoy.getDate() + i);
-
-            let diaSeleccionado = diasSemana[fecha.getDay()];
-            if (diaSeleccionado === diaPermitido) {
-                let valor = fecha.toISOString().split('T')[0];
-                let opcion = document.createElement("option");
-                opcion.value = valor;
-                opcion.textContent = valor + " (" + diaSeleccionado + ")";
-                select.appendChild(opcion);
-            }
-        }
-    });
-
-    // Script para resaltar la fila seleccionada
-    document.querySelectorAll('.cita-checkbox').forEach(chk => {
-        chk.addEventListener('change', function() {
-            if (this.checked) {
-                this.closest('tr').classList.add('table-success');
-            } else {
-                this.closest('tr').classList.remove('table-success');
-            }
-        });
-    });
-</script>
+<script src="<?= base_url('assets/js/revisar_citas.js') ?>"></script>  
 
 <?=$footer?>

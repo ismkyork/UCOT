@@ -1,0 +1,364 @@
+:root {
+    --ucot-blue: #3b82f6; /* El azul del logo UCOT */
+    --sidebar-bg: #1e1e2f; /* El tono oscuro azulado */
+    --sidebar-width: 280px;
+    --sidebar-compact-width: 80px;
+    --transition-speed: 0.3s;
+    --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*=========================================
+  ESTRUCTURA GENERAL
+=========================================*/
+body {
+    background-color: #f4f7fa; /* Fondo gris muy claro */
+    color: #2e3748;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-wrapper-ucot {
+    display: flex;
+    background-color: var(--sidebar-bg);
+    min-height: 100vh;
+}
+
+/*=========================================
+  SIDEBAR (MENÚ IZQUIERDO)
+=========================================*/
+.sidebar-ucot {
+    width: var(--sidebar-width);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition-speed) var(--transition-curve);
+    overflow-x: visible !important;
+}
+.sidebar-ucot, 
+.content-area-ucot {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Rotación del icono (opcional en lugar de cambiar la clase) */
+#icono-flecha {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-compacto #icono-flecha {
+    transform: rotate(180deg); /* Si prefieres rotar en vez de cambiar el icono */
+}
+
+/* Elementos del Menú */
+.nav-list {
+    padding: 0;
+    list-style: none;
+}
+.nav-section-label {
+    padding: 25px 30px 10px;
+    font-size: 0.7rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.nav-item-link {
+    margin: 5px 12px !important;
+    padding: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important; /* Siempre alineado a la izquierda */
+    gap: 15px !important;
+    min-height: 48px;
+}
+
+.nav-item-link.active {
+    background-color: var(--ucot-blue) !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
+}
+.nav-item-link:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+.nav-item-link i {
+    min-width: 25px !important; /* Ancho fijo para el icono */
+    font-size: 1.2rem !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.nav-item-link:hover, .nav-item-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-ucot span {
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+/* Botón de deslizar interno */
+.toggle-btn {
+    position: relative !important; 
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    margin: 15px auto !important; /* Centrado automático horizontal */
+    width: 42px !important;  /* Tamaño aumentado */
+    height: 42px !important; /* Tamaño aumentado */
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border-radius: 10px !important; /* Cuadrado con bordes suaves */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    border: none !important;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn i {
+    font-size: 1.2rem !important; /* Icono más visible */
+}
+
+.toggle-btn:hover {
+    background-color: var(--ucot-blue) !important;
+}
+
+.sidebar-compacto .logo-wrapper {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 0;
+    justify-content: center;
+}
+
+/* Mantener la posición cuando el menú se encoge */
+.sidebar-compacto .toggle-btn {
+    margin: 0 auto;
+}
+
+/*=========================================
+  CONTENIDO (HOJA BLANCA)
+=========================================*/
+.content-area-ucot {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    background-color: #ffffff;
+    border-radius: 40px 0 0 40px; /* Efecto de hoja redondeada */
+    min-height: 100vh;
+    padding: 40px;
+    transition: margin-left var(--transition-speed) var(--transition-curve);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+    z-index: 5;
+}
+
+/*=========================================
+  ESTADOS COLAPSADOS (JS)
+=========================================*/
+.sidebar-compacto {
+    width: var(--sidebar-compact-width) !important;
+}
+.sidebar-compacto .toggle-btn {
+    margin: 0 auto;
+}
+
+.sidebar-compacto span {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.content-area-ucot.expandido {
+    margin-left: var(--sidebar-compact-width);
+}
+
+.sidebar-compacto .user-info-text,
+.sidebar-compacto .arrow-icon,
+.sidebar-compacto .nav-section-label {
+    display: none;
+}
+
+.sidebar-compacto .profile-btn {
+   justify-content: center !important;
+    padding: 12px 0 !important;
+    width: 50px; /* Tamaño reducido para modo compacto */
+    margin: 0 auto;
+}
+
+.sidebar-compacto .profile-btn i:first-child {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.sidebar-compacto .nav-item-link {
+    margin: 5px 10px !important;
+    justify-content: center !important; /* Centra solo en modo pequeño */
+    padding: 12px 0 !important;
+}
+
+.sidebar-compacto .nav-item-link i {
+    margin: 0 !important; /* Evita desplazamientos extra */
+}
+
+.sidebar-compacto .nav-item-link span, 
+.sidebar-compacto .nav-section-label,
+.sidebar-compacto .user-info-text,
+.sidebar-compacto .arrow-icon {
+    display: none; /* Esconde texto en modo pequeño */
+}
+
+/*=========================================
+  COMPONENTES VISUALES (HEADER & INICIO)
+=========================================*/
+
+.logo-wrapper {
+    display: flex;
+    flex-direction: column; /* Botón y logo en columna para centrar mejor */
+    align-items: center;
+    padding: 20px 10px;
+    gap: 10px;
+}
+
+.sidebar-compacto .brand-name-img,
+.sidebar-compacto .nav-section-label {
+    display: none !important;
+}
+
+.logo-img-icon {
+    display: block !important; /* Asegura que no esté oculto */
+    width: 40px !important;    /* Dale un ancho fijo para probar */
+    height: 40px !important;   /* Dale un alto fijo para probar */
+    min-width: 40px;
+    min-height: 40px;
+    background-color: transparent; /* Por si el fondo es igual al logo */
+}
+
+.brand-name-img {
+    width: 100px; /* Ajusta según el espacio disponible */
+    height: auto;
+}
+
+/* Ocultar el texto cuando el menú esté colapsado (como en tu imagen 2) */
+#sidebar.collapsed .brand-name-img {
+    display: none;
+}
+
+
+
+.logo-texto {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--ucot-blue);
+    letter-spacing: -1px;
+}
+
+.modulo-texto {
+    color: #697386;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.texto-animado {
+    font-size: 4rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #ff8000, #0000ff , #ff8000);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradiente-movil 3s linear infinite;
+    display: inline-block;
+}
+
+@keyframes gradiente-movil {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.footer-personalizado {
+    background-color: #ffffff;
+    color: #697386 !important;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e3e8ee;
+    width: 100%;
+}
+
+/*=========================================
+  FOOTER Y PERFIL DROPDOWN
+=========================================*/
+.sidebar-footer {
+    padding: 20px 15px;
+    margin-top: auto;
+    position: relative; /* Referencia para el dropdown */
+}
+
+.profile-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.profile-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.user-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.user-role-label {
+    font-size: 0.7rem;
+    color: #888;
+}
+
+/* Contenedor que sale hacia arriba */
+.dropdown-content {
+    display: none; /* Lo activa el JS */
+    position: absolute;
+    bottom: 80px;  /* Ajustado para que flote sobre el botón */
+    left: 15px;
+    right: 15px;
+    background: #252538;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #eee;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background: var(--ucot-blue);
+    color: white;
+}
