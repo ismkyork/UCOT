@@ -1,6 +1,6 @@
-<?=$header?>
+<?= $this->extend('Template/main') ?>
 
-<?=$menu?>   
+<?= $this->section('content') ?>
             <?php if(session()->getFlashdata('bienvenida')): ?>
                 <div class="alert alert-success alert-dismissible fade show container mt-3" role="alert">
                     <strong>¡Hola!</strong> <?= session()->getFlashdata('bienvenida') ?>
@@ -71,4 +71,4 @@
      </div>
 
 <?=$opiniones?>
-<?=$footer?>    
+<?= $this->endSection() ?>

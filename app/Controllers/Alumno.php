@@ -186,7 +186,7 @@ class Alumno extends BaseController
             'monto'       => $montoLimpio,
             'fecha_pago'  => $this->request->getPost('fecha_pago'),
             'screenshot'  => $nombreImg,
-            'estado_pago' => 'pendiente'
+            'estado_pago' => 'confirmado'
         ];
 
         if ($modelPago->insert($data)) {
