@@ -1,136 +1,183 @@
-/* Estandarización de Tarjetas (Cards) */
+/* PALETA UCOT - DISEÑO REDONDEADO PROFESIONAL */
+:root {
+    --ucot-cian: #33C2D1;
+    --ucot-negro: #212529;
+    --ucot-cian-hover: #2bb0bd;
+}
+
+/*=========================================
+Formularios
+=========================================*/
+/* La Tarjeta: Bordes suaves y elegantes */
 .card-personalizada {
-    border-radius: 15px !important; /* Cambiado para suavizar esquinas */
-    border: none !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    background-color: #ffffff;
+    background-color: #ffffff !important;
+    border: 1px solid #e3e8ee !important;
+    border-radius: 20px !important; /* REDONDEADO */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+    padding: 20px !important;
     overflow: hidden;
 }
 
-/* Encabezados de formularios */
+/* Títulos */
 .card-header-personalizado {
-    font-weight: bold;
+    font-weight: 800 !important;
+    color: var(--ucot-negro) !important;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 1.5rem !important;
 }
 
-/* Botones Redondeados (Píldora) */
-.btn-redondeado {
-    border-radius: 50px !important;
-    padding: 10px 30px !important;
-    font-weight: bold;
+/* Inputs: Redondeados y cómodos */
+.form-control-personalizado {
+    border-radius: 12px !important; /* REDONDEADO */
+    border: 1px solid #d1d3e2 !important;
+    padding: 12px 15px !important;
     transition: all 0.3s ease;
 }
 
-.btn-redondeado:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+.form-control-personalizado:focus {
+    border-color: var(--ucot-cian) !important;
+    box-shadow: 0 0 0 3px rgba(51, 194, 209, 0.1) !important;
 }
 
-/* Estilo para los inputs */
-.form-control-personalizado {
-    border-radius: 10px !important;
-    padding: 12px !important;
-    border: 1px solid #dee2e6;
-}
-
-/* Estilo para el botón flotante de la esquina */
-.btn-volver-esquina {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    width: 35px;
-    height: 35px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 50%; /* Lo hace circular */
-    display: flex;
+/*=========================================
+  Botones
+=========================================*/
+.btn-redondeado {
+    border-radius: 50px !important; /* Estilo píldora */
+    padding: 10px 25px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border: none !important;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #6c757d;
+}
+
+/* Función: Acción Principal (UCOT CIAN) */
+.btn-ucot-primary {
+    background-color: #33C2D1 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(51, 194, 209, 0.3);
+}
+
+/* Función: Éxito/Guardar (VERDE) */
+.btn-ucot-success {
+    background-color: #28a745 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+/* Función: Peligro/Eliminar (ROJO) */
+.btn-ucot-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+}
+
+/* Efecto hover general */
+.btn-redondeado:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Etiquetas */
+.label-titulo {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ucot-negro);
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Footer de la tarjeta */
+.card-footer-limpio {
+    background: #f8f9fa !important;
+    border-top: 1px solid #eee !important;
+    border-radius: 0 0 20px 20px !important; /* Redondeado solo abajo */
+    padding: 15px !important;
+}
+
+/* Links en color Cian */
+.text-success.fw-bold, .link-ucot {
+    color: var(--ucot-cian) !important;
     text-decoration: none;
-    transition: all 0.3s ease;
-    z-index: 10;
 }
 
-.btn-volver-esquina:hover {
-    /* Efecto de cambio de color (degradado) en el borde y texto */
-    color: #42d392;
-    border-color: #6a9edb;
-    transform: scale(1.1);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-
-/* Clase con animación de movimiento */
-.texto-animado {
-    font-size: 3rem;
-    /* Gradiente con 3 colores para que el ciclo sea infinito y suave */
-    background: linear-gradient(to right, #ff8000, #0000ff , #ff8000);
-    background-size: 200% auto; /* Importante: estira el fondo para poder moverlo */
-    
-    /* Clipping para que solo afecte a las letras */
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    
-    /* Definición de la animación: nombre, duración, modo y repetición */
-    animation: gradiente-movil 3s linear infinite;
-    
-    font-weight: bold;
+.badge-ucot {
     display: inline-block;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 50px !important; /* Estilo píldora */
+    text-transform: uppercase;
 }
 
-/* Regla que mueve el fondo de izquierda a derecha */
-@keyframes gradiente-movil {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
+.badge-confirmada {
+    background-color: #28a745;
+    color: white;
 }
 
-/* Estilos para tablas*/
+/*=========================================
+  Tablas
+=========================================*/
 
 
-/* Estilo para la tabla personalizada */
 .table-personalizada {
-    border-radius: 15px;
-    overflow: hidden; /* Necesario para que el radio del borde se vea en las esquinas */
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 15px !important;
+    overflow: hidden; /* Crucial para que las esquinas del thead no tapen el radio */
+    border: 1px solid #e3e8ee !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    background-color: white;
 }
 
 .table-personalizada thead {
-    background-color: #212529; /* Color Dark de tus tarjetas */
+    background-color: var(--ucot-negro) !important; /* Negro institucional */
+    color: white !important;
 }
 
 .table-personalizada th {
     border: none;
-    padding: 15px !important;
-    font-weight: 500;
+    padding: 18px 15px !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
 }
 
 .table-personalizada td {
-    padding: 12px !important;
+    padding: 15px !important;
     vertical-align: middle;
+    border-bottom: 1px solid #f0f2f5;
+    color: #495057;
 }
 
 /* Estilo para los inputs dentro de la tabla */
 .form-control-tabla {
-    border-radius: 8px;
-    border: 1px solid #ced4da;
-    transition: all 0.3s;
+    border-radius: 10px !important; /* Redondeado suave */
+    border: 1px solid #d1d3e2;
+    padding: 8px 12px !important;
+    transition: all 0.3s ease;
 }
 
 .form-control-tabla:focus {
-    border-color: #28a745; /* Color Success */
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    border-color: var(--ucot-cian) !important; /* Cambio de verde a Cian */
+    box-shadow: 0 0 0 0.2rem rgba(51, 194, 209, 0.15);
+    outline: none;
 }
 
-/* Color temático para los checks */
+/* Color temático para los checks (Cian UCOT) */
 .cita-checkbox {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: #28a745; /* Color verde al marcarlo */
+    accent-color: var(--ucot-cian); /* Ahora marca en Cian */
 }
 
+/* Fila interactiva (opcional pero recomendado) */
+.table-personalizada tbody tr:hover {
+    background-color: rgba(51, 194, 209, 0.03); /* Un toque cian muy leve al pasar el mouse */
+    transition: background-color 0.2s ease;
+}

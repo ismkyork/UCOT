@@ -65,7 +65,7 @@ class Auth extends BaseController {
                 if ($data['rol'] == 'Profesor') {
                     return redirect()->to('/profesor/dashboard'); 
                 } elseif ($data['rol'] == 'Estudiante') {
-                    return redirect()->to('/alumno/factura');
+                    return redirect()->to('/alumno/inicio_alumno');
                 } else {
                     return redirect()->to('/');
                 }
@@ -95,36 +95,29 @@ class Auth extends BaseController {
 
     public function login()
     {
-      $info['footer']=view('Template/footer');
-      $info['header']=view('Template/header');
-      return view('vistas/auth/login',$info);
+     
+      return view('vistas/auth/login');
     }
 
      public function actualizar_password()
     {
-      $info['footer']=view('Template/footer');
-      $info['header']=view('Template/header');
-      return view('vistas/auth/actualizar_password',$info);
+      
+      return view('vistas/auth/actualizar_password');
     }
     public function password_olvidada()
     {
-      $info['footer']=view('Template/footer');
-      $info['header']=view('Template/header');
-      return view('vistas/auth/password_olvidada',$info);
+   
+      return view('vistas/auth/password_olvidada');
     }
     public function registro()
     {
-      $info['footer']=view('Template/footer');
-      $info['header']=view('Template/header');
-
-      return view('vistas/auth/registro',$info);
+      return view('vistas/auth/registro');
     }
 
       public function codigo_sesion()
     {
-      $info['footer']=view('Template/footer');
-      $info['header']=view('Template/header');
-      return view('vistas/auth/codigo_sesion',$info);
+     
+      return view('vistas/auth/codigo_sesion');
     }
 
   public function registrarUsuario() {
