@@ -47,8 +47,10 @@
                     <h5 class="fw-bold"><i class="fas fa-clock me-2 text-ucot"></i> Próxima Clase Programada</h5>
                 </div>
                 <div class="card-body px-4">
-                    <?php if ($proxima_cita): ?>
-                        <?php $nombre_completo = esc($proxima_cita['nombre_profesor'] . ' ' . ($proxima_cita['apellido_profesor'] ?? '')); ?>
+                    <?php if (!empty($proxima_cita)): ?>
+                        <?php 
+                            $nombre_completo = esc($proxima_cita['nombre_profesor'] . ' ' . ($proxima_cita['apellido_profesor'] ?? '')); 
+                        ?>
                         <div class="notificacion-item shadow-sm">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -60,7 +62,7 @@
                                         <i class="fas fa-calendar-day me-2"></i><?= date('d/m/Y - h:i A', strtotime($proxima_cita['fecha_hora_inicio'])) ?>
                                     </p>
                                 </div>
-                                <span class="badge bg-warning text-dark p-2 px-3 rounded-pill shadow-sm">En Agenda</span>
+                                <span class="badge bg-success text-white p-2 px-3 rounded-pill shadow-sm">Confirmada</span>
                             </div>
                         </div>
                     <?php else: ?>
@@ -83,9 +85,10 @@
             <div class="card card-dashboard shadow-sm border-0">
                 <div class="card-body text-center p-4">
                     <?php 
-                        $profe_display = ($proxima_cita) ? esc($proxima_cita['nombre_profesor'] . ' ' . ($proxima_cita['apellido_profesor'] ?? '')) : 'Profesor UCOT';
+                        $profe_display = (!empty($proxima_cita)) ? esc($proxima_cita['nombre_profesor'] . ' ' . ($proxima_cita['apellido_profesor'] ?? '')) : 'Soporte UCOT';
+                        $avatar_name = urlencode($profe_display);
                     ?>
-                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($profe_display) ?>&background=8e44ad&color=fff" class="rounded-circle mb-3 shadow" width="90">
+                    <img src="https://ui-avatars.com/api/?name=<?= $avatar_name ?>&background=8e44ad&color=fff" class="rounded-circle mb-3 shadow" width="90">
                     <h6 class="fw-bold mb-1">Información del Instructor</h6>
                     <p class="small text-muted mb-3"><?= $profe_display ?></p>
                     
@@ -96,10 +99,11 @@
                         </div>
                         <div>
                             <i class="fas fa-envelope text-primary me-2 small"></i>
-                            <span class="small fw-bold">soporte@ucot.com.ve</span>
+                            <span class="small fw-bold">
+                                <?= (!empty($proxima_cita['email_profesor'])) ? esc($proxima_cita['email_profesor']) : 'ayuda@ucot.com.ve' ?>
+                            </span>
                         </div>
                     </div>
-
                     <a href="<?= base_url('alumno/feedback') ?>" class="btn btn-warning w-100 rounded-pill fw-bold text-dark shadow-sm py-2">
                         <i class="fas fa-comment-dots me-2"></i> Realizar un comentario
                     </a>
