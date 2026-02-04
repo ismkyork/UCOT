@@ -70,5 +70,4 @@
         </div>
      </div>
 
-<?=$opiniones?>
 <?= $this->endSection() ?>

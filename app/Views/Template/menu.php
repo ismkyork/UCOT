@@ -49,6 +49,12 @@
                         <span>Citas</span>
                     </a>
                 </li>
+                 <li>
+                    <a href="<?= base_url('profesor/opiniones') ?>" class="nav-item-link <?= (uri_string() == 'profesor/opiniones') ? 'active' : '' ?>">
+                        <i class="fas fa-user-secret"></i>
+                        <span>Opiniones</span>
+                    </a>
+                </li>
             <?php endif; ?>
         </ul>
     </nav>

@@ -46,10 +46,8 @@ class Profesor extends BaseController
 
         public function opiniones() {
       $info=[];
-      $info['footer']=view('Template/footer');
-      $info['header']=view('Template/header');
-      $info['menu']=view('Template/menu');
-      return view('vistas/profesor/opiniones',$info);
+      
+      return view('vistas/profesor/opiniones');
     }
 
     public function procesar() //Procesar cita-----------------------------------------------------------------------------------
