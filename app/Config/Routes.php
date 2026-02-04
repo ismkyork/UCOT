@@ -22,20 +22,24 @@ $routes->get('/profesor/dlt_horario/(:num)', 'Profesor::dlt_horario/$1'); //crud
 $routes->get('/profesor/edit_horario/(:num)', 'Profesor::edit_horario/$1'); //crud horarios editar
 $routes->post('/profesor/update_horario/(:num)', 'Profesor::update_horario/$1'); //crud horarios editar confirmar
 
-//rutas Alumno
-
+// --- Rutas Alumno ---
 $routes->get('alumno', 'Alumno::index');
-$routes->get('alumno/calendario', 'Alumno::calendario'); 
-$routes->get('/alumno/factura', 'Alumno::factura');
-$routes->get('/alumno/feedback', 'Alumno::feedback');
-
 $routes->get('alumno/inicio_alumno', 'Alumno::inicio_alumno'); 
-$routes->get('/alumno/pago_estatico/(:num)', 'Alumno::pago_estatico/$1');
-$routes->get('/alumno/pago_estatico', 'Alumno::pago_estatico');
+$routes->get('alumno/calendario', 'Alumno::calendario'); 
+$routes->get('alumno/factura', 'Alumno::factura');
+$routes->get('alumno/feedback', 'Alumno::feedback');
 
-$routes->get('/alumno/mis_citas', 'Alumno::mis_citas'); //ver bloques para citas disponibles
-$routes->post('/alumno/store_citas', 'Alumno::store_citas'); //guardar la cita
-$routes->post('alumno/guardar_pago', 'Alumno::guardar_pago'); // Guardar pago estatico Alumno
+// Gestión de Citas
+$routes->get('alumno/mis_citas', 'Alumno::mis_citas'); 
+$routes->post('alumno/store_citas', 'Alumno::store_citas'); 
+
+// Flujo de Pagos (Manual y PayPal)
+$routes->get('alumno/pago_estatico/(:num)', 'Alumno::pago_estatico/$1');
+$routes->get('alumno/pago_estatico', 'Alumno::pago_estatico'); // Fallback por si no llega ID
+$routes->post('alumno/guardar_pago', 'Alumno::guardar_pago');
+
+// Confirmación Automática PayPal (Esta es la que agregamos)
+$routes->get('alumno/pago_paypal_exito/(:any)', 'Alumno::pago_paypal_exito/$1');
 
 //rutas Auth
 $routes->get('/auth', 'Auth::index');
