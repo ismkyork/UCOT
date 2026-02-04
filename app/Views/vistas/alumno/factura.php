@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-6 text-end">
                     <h4 class="fw-bold mb-0">FACTURA DIGITAL</h4>
-                    <p class="mb-0 fw-bold text-danger">N° 000<?= $pago['id_pago'] ?></p>
+                    <p class="mb-0 fw-bold text-danger">N° <?= str_pad($pago['id_pago'] ?? '0', 6, '0', STR_PAD_LEFT) ?></p>
                     <p class="text-muted small">Emisión: <?= date('d/m/Y', strtotime($pago['fecha_pago'])) ?></p>
                 </div>
             </div>
@@ -51,11 +51,15 @@
             <div class="row mb-5">
                 <div class="col-6">
                     <label class="label-titulo text-uppercase">Estudiante</label>
-                    <p class="h5 fw-bold"><?= esc($pago['nombre_alumno']) ?></p>
+                    <p class="h5 fw-bold">
+                        <?= esc($pago['nombre_alumno'] . ' ' . ($pago['apellido_alumno'] ?? '')) ?>
+                    </p>
                 </div>
                 <div class="col-6 text-end">
                     <label class="label-titulo text-uppercase">Profesor</label>
-                    <p class="h5 fw-bold"><?= esc($pago['nombre_profesor']) ?></p>
+                    <p class="h5 fw-bold">
+                        <?= esc(($pago['nombre_profesor'] ?? 'Instructor') . ' ' . ($pago['apellido_profesor'] ?? 'UCOT')) ?>
+                    </p>
                 </div>
             </div>
 
