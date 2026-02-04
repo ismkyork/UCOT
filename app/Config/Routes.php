@@ -19,6 +19,10 @@ $routes->post('/auth/procesarlogin', 'Auth::procesarlogin');
 $routes->post('/auth/registrarUsuario', 'Auth::registrarUsuario');
 $routes->get('/salir', 'Auth::salir');
 
+// --- RUTA DE CONFIGURACIÓN AGREGADA ---
+$routes->get('configuracion', 'Configuracion::index');
+$routes->post('configuracion/actualizar', 'Configuracion::actualizar');
+
 // --- RUTAS DEL PROFESOR ---
 $routes->group('profesor', function($routes) {
     $routes->get('/', 'Profesor::index');
