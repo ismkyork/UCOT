@@ -61,7 +61,7 @@ class Profesor extends BaseController
 
         $nuevoEstado = '';
         if ($accionTomada === 'aprobar') {
-            $nuevoEstado = 'aprobado';
+            $nuevoEstado = 'confirmado';
         } elseif ($accionTomada === 'rechazar') {
             $nuevoEstado = 'rechazado';
         } else {

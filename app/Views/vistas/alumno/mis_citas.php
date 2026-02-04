@@ -1,11 +1,11 @@
-<?=$header?> 
-<?=$menu?>   
+<?= $header ?>
+<?= $menu ?>
 
 <div class="container mt-5">
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="card-header-personalizado" style="font-size: 1.8rem;">Citas Disponibles</h2>
-            <p class="text-muted">Selecciona el horario y la materia para agendar tu asesoría.</p>
+            <h2 class="card-header-personalizado" style="font-size: 1.8rem;">Agendar Nueva Asesoría</h2>
+            <p class="text-muted">Selecciona el horario y la materia para tu próxima clase en UCOT.</p>
         </div>
     </div>
 
@@ -27,8 +27,8 @@
 
     <form action="<?= site_url('alumno/store_citas') ?>" method="POST">
         <?= csrf_field() ?>
-      
-        <div class="card-personalizada p-0 overflow-hidden">
+        
+        <div class="card-personalizada p-0 overflow-hidden shadow-sm">
             <div class="table-responsive">
                 <table class="table table-personalizada mb-0 align-middle">
                     <thead>
@@ -52,7 +52,6 @@
                                         <i class="far fa-clock me-1 text-muted"></i> <?= $modelHorario['hora_inicio']; ?>
                                     </span>
                                 </td>
-
                                 <td>
                                     <?php
                                         $inicio = new DateTime($modelHorario['hora_inicio']);
@@ -60,23 +59,17 @@
                                         $duracion = $inicio->diff($fin);
                                         $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
                                     ?>
-                                    <span class="badge-ucot badge-confirmada" style="background-color: #f8f9fa !important; color: #495057 !important; border: 1px solid #dee2e6;">
+                                    <span class="badge bg-light text-dark border">
                                         <?= $totalMinutos . ' min'; ?>
                                     </span>
                                 </td>
-
                                 <td>
-                                    <input type="text" 
-                                        name="materias[<?= $modelHorario['id_horario']; ?>]" 
-                                        class="form-control form-control-tabla" 
-                                        placeholder="Ej: Matemáticas">
+                                    <input type="text" name="materias[<?= $modelHorario['id_horario']; ?>]" 
+                                           class="form-control form-control-tabla" placeholder="Ej: Programación">
                                 </td>
-
                                 <td class="text-center">
-                                    <input type="checkbox" 
-                                        name="horarios[]" 
-                                        value="<?= $modelHorario['id_horario']; ?>" 
-                                        class="form-check-input cita-checkbox">
+                                    <input type="checkbox" name="horarios[]" value="<?= $modelHorario['id_horario']; ?>" 
+                                           class="form-check-input cita-checkbox">
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -85,16 +78,77 @@
             </div>
         </div>
 
-        <input type="hidden" name="id_alumno" value="<?= session()->get('id_auth'); ?>">
-
-        <div class="mt-5 mb-5 d-flex justify-content-center">
+        <div class="mt-4 d-flex justify-content-center">
             <button type="submit" class="btn-redondeado btn-ucot-success btn-lg shadow" style="width: 100%; max-width: 400px;">
-                <i class="fas fa-credit-card me-2"></i> Reservar y Continuar al Pago
+                <i class="fas fa-calendar-plus me-2"></i> Reservar y Pagar
             </button>
         </div>
     </form>
+
+    <hr class="my-5">
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="card-header-personalizado" style="font-size: 1.8rem;">Mis Comprobantes y Citas</h2>
+            <p class="text-muted">Consulta tus citas agendadas y descarga tus facturas de pago.</p>
+        </div>
+    </div>
+
+    <div class="card-personalizada p-0 overflow-hidden shadow-sm mb-5">
+        <div class="table-responsive">
+            <table class="table table-personalizada mb-0 align-middle">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Materia</th>
+                        <th class="text-center">Estado Cita</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($citas_reservadas)): ?>
+                        <?php foreach ($citas_reservadas as $cita): ?>
+                            <tr>
+                                <td>
+                                    <i class="far fa-calendar-alt me-2 text-primary"></i>
+                                    <?= date('d/m/Y H:i', strtotime($cita['fecha_hora_inicio'])) ?>
+                                </td>
+                                <td><strong><?= esc($cita['materia']) ?></strong></td>
+                                <td class="text-center">
+                                    <?php if ($cita['estado_cita'] === 'confirmado'): ?>
+                                        <span class="badge bg-success">CONFIRMADO</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-warning text-dark">PENDIENTE</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php if (!empty($cita['id_pago'])): ?>
+                                        <a href="<?= base_url('alumno/factura/' . $cita['id_pago']) ?>" 
+                                           class="btn btn-sm btn-info text-white shadow-sm">
+                                            <i class="fas fa-file-invoice-dollar me-1"></i> Ver Factura
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="<?= base_url('alumno/pago_estatico/' . $cita['id_cita']) ?>" 
+                                           class="btn btn-sm btn-danger shadow-sm">
+                                            <i class="fas fa-wallet me-1"></i> Pagar Cita
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">
+                                No tienes citas registradas actualmente.
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<script src="<?= base_url('assets/js/revisar_citas.js') ?>"></script>  
+<script src="<?= base_url('assets/js/revisar_citas.js') ?>"></script>
 
-<?=$footer?>
+<?= $footer ?>
