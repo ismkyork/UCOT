@@ -1,9 +1,19 @@
-<?=$header?>
+<?= $this->extend('Template/public_main') ?>
 
+<?= $this->section('content_publico') ?>
+
+    <div class="container py-5">
         <div class="row justify-content-center ">
             <div class="col-md-5">
                 <div class="card card-personalizada shadow-lg">
                     <div class="card-body p-4">
+
+                       <div class="form-group mb-4">
+                            <a href="<?= base_url('/') ?>" class="btn-volver-esquina" title="Volver al inicio">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>   
+                        </div>
+                            
                         <form action="<?= base_url('') ?>" method="POST">
 
                             <div class="form-group mb-4">
@@ -22,11 +32,6 @@
                             <td class="text-center">
                                 <div class="card-footer bg-light d-flex justify-content-center align-items-center py-3 gap-2">
                                     
-                                    <a href="<?= base_url('/') ?>" 
-                                    class="btn btn-danger btn-redondeado btn-sm shadow text-decoration-none">
-                                        Cancelar
-                                    </a>
-
                                     <button type="submit" class="btn btn-success btn-redondeado btn-sm shadow">
                                          Buscar
                                     </button>
@@ -39,5 +44,6 @@
                 </div>
             </div>
         </div>
+    </div>
 
-<?= $footer?>
+<?= $this->endSection() ?>
