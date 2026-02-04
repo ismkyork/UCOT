@@ -16,24 +16,38 @@ class Alumno extends BaseController
     }
 
     public function calendario() {
-        $info = [];
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu'] = view('Template/menu');
         return view('vistas/alumno/calendario', $info);
     }
 
+    /**
+     * DASHBOARD DINÁMICO DEL ALUMNO
+     */
     public function inicio_alumno() {
-        $info = [];
+        $idAlumno = session()->get('id_auth');
+        $db = \Config\Database::connect();
+
+        // Consulta mejorada para traer nombre y apellido (si están separados)
+        $builder = $db->table('citas c');
+        $builder->select('c.*, prof.nombre_profesor, prof.apellido_profesor'); // Asegúrate que existan estos campos
+        $builder->join('perfil_profesor prof', 'prof.id_auth = c.id_profesor', 'left');
+        $builder->where('c.id_alumno', $idAlumno);
+        $builder->where('c.fecha_hora_inicio >=', date('Y-m-d H:i:s')); 
+        $builder->orderBy('c.fecha_hora_inicio', 'ASC');
+        $builder->limit(1);
+        
+        $data['proxima_cita'] = $builder->get()->getRowArray();
+
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu'] = view('Template/menu');
-        $info['feedback'] = view('vistas/alumno/feedback');
-        return view('vistas/alumno/inicio_alumno', $info);
+        
+        return view('vistas/alumno/inicio_alumno', array_merge($info, $data));
     }
 
     public function feedback() {
-        $info = [];
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu'] = view('Template/menu');
@@ -59,6 +73,20 @@ class Alumno extends BaseController
         if (!$data['pago']) {
             return redirect()->to('/alumno/mis_citas')->with('error', 'La factura no existe.');
         }
+
+        // Lógica de Tasa BCV
+        $tasa_bcv = 45.00;
+        try {
+            $client = \Config\Services::curlrequest();
+            $response = $client->get('https://open.er-api.com/v6/latest/USD', ['timeout' => 3]);
+            $resultado = json_decode($response->getBody());
+            if (isset($resultado->rates->VES)) {
+                $tasa_bcv = $resultado->rates->VES;
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Fallo de API Tasa: ' . $e->getMessage());
+        }
+        $data['tasa_bcv'] = $tasa_bcv;
 
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');

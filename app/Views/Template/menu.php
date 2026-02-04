@@ -71,8 +71,8 @@
             </button>
             
             <div class="dropdown-content" id="profileMenu">
-                <a href="<?= base_url('perfil/gestionar') ?>" class="dropdown-item">
-                    <i class="fas fa-cog"></i> <span>Gestionar Cuenta</span>
+                <a href="<?= base_url('configuracion') ?>" class="dropdown-item">
+                     <i class="fas fa-cog"></i> <span>Gestionar Cuenta</span>
                 </a>
                 <a href="<?= base_url('salir') ?>" class="dropdown-item logout">
                     <i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span>
