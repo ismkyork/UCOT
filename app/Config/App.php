@@ -12,7 +12,7 @@ class App extends BaseConfig
      * --------------------------------------------------------------------------
      * Se deja vacío para que CodeIgniter tome automáticamente el valor del .env
      */
-    public string $baseURL = '';
+    public string $baseURL = 'http://localhost/UCOT/public/';
 
     /**
      * --------------------------------------------------------------------------

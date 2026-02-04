@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\CitaModel;
 use App\Models\HorarioModel;
 use App\Models\PagoEstaticoModel;
+use App\Models\FeedbackModel; 
 
 class Alumno extends BaseController
 {
@@ -22,9 +23,7 @@ class Alumno extends BaseController
         return view('vistas/alumno/calendario', $info);
     }
 
-    /**
-     * DASHBOARD DINÁMICO DEL ALUMNO
-     */
+   
     public function inicio_alumno() {
         $idAlumno = session()->get('id_auth');
         $db = \Config\Database::connect();
@@ -47,12 +46,50 @@ class Alumno extends BaseController
         return view('vistas/alumno/inicio_alumno', array_merge($info, $data));
     }
 
-    public function feedback() {
-        $info['footer'] = view('Template/footer');
+     public function feedback()
+    {
+        
+        $feedbackModel = new FeedbackModel();
+        $comentarios = $feedbackModel->orderBy('fecha_evaluacion', 'DESC')->findAll();
+        $data = [
+            'historial' => $comentarios
+        ];
+
+        $info = [];
         $info['header'] = view('Template/header');
-        $info['menu'] = view('Template/menu');
-        return view('vistas/alumno/feedback', $info);
+        $info['menu']   = view('Template/menu');
+        $info['footer'] = view('Template/footer');
+
+        return view('vistas/alumno/feedback', array_merge($info, $data));
     }
+    
+   public function guardar()
+    {
+      
+        $feedbackModel = new FeedbackModel();
+        $reglas = [
+            'puntuacion' => 'required|numeric',
+            'comentario' => 'required|min_length[5]'
+        ];
+
+        // Validar
+        if (!$this->validate($reglas)) {
+            return redirect()->back()
+                             ->withInput()
+                             ->with('error', 'Por favor selecciona una calificación y escribe un comentario.');
+        }
+
+        $datos = [
+            'puntuacion' => $this->request->getPost('puntuacion'),
+            'comentario' => $this->request->getPost('comentario')
+        ];
+        $feedbackModel->save($datos);
+
+        return redirect()->to('/alumno/feedback')->with('msg', '¡Gracias! Tu opinión ha sido enviada correctamente.');
+    }
+
+
+//-----------------------------------------------FACTURA-----------------------------------------------------------------------
 
     public function factura($id_pago = null) {
         if (!$id_pago) {

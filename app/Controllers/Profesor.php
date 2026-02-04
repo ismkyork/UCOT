@@ -5,6 +5,8 @@ use App\Models\CitaModel;
 use App\Models\HorarioModel;
 use App\Models\ProfesorModel;
 use App\Models\LoginModel;
+use App\Models\FeedbackModel; 
+
 
 class Profesor extends BaseController
 {
@@ -44,10 +46,23 @@ class Profesor extends BaseController
     }
 //-------------------------------------------------------------------------------------------------------------------------------
 
-        public function opiniones() {
-      $info=[];
-      
-      return view('vistas/profesor/opiniones');
+       
+
+    public function opiniones()
+    {
+   
+        $feedbackModel = new FeedbackModel();
+        $datos = $feedbackModel->orderBy('fecha_evaluacion', 'DESC')->findAll();
+        $data = [
+            'comentarios' => $datos
+        ];
+
+        $info = [];
+        $info['header'] = view('Template/header');
+        $info['menu']   = view('Template/menu'); 
+        $info['footer'] = view('Template/footer');
+
+        return view('vistas/profesor/opiniones', array_merge($info, $data));
     }
 
     public function procesar() //Procesar cita-----------------------------------------------------------------------------------
@@ -226,7 +241,7 @@ class Profesor extends BaseController
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu']=view('Template/menu');
-        $info['opiniones']=view('vistas/profesor/opiniones');
+        $info['dashboard']=view('vistas/profesor/dashboard');
 
         return view('vistas/profesor/dashboard', array_merge($info, $data));
     }

@@ -30,7 +30,8 @@ $routes->group('profesor', function($routes) {
     $routes->get('citas', 'Profesor::citas');
     $routes->post('citas/procesar', 'Profesor::procesar');
     $routes->get('opiniones', 'Profesor::opiniones');
-
+    $routes->get('profesor/opiniones', 'Profesor::opiniones');
+   
     // Gestión de Horarios (CRUD)
     $routes->get('HorarioLeer', 'Profesor::config_horarios');
     $routes->get('agg_horarios', 'Profesor::agg_horarios');
@@ -42,11 +43,12 @@ $routes->group('profesor', function($routes) {
 });
 
 // --- RUTAS DEL ALUMNO ---
-$routes->group('alumno', function($routes) {
+    $routes->group('alumno', function($routes) {
     $routes->get('/', 'Alumno::index');
     $routes->get('inicio_alumno', 'Alumno::inicio_alumno'); 
     $routes->get('calendario', 'Alumno::calendario'); 
     $routes->get('feedback', 'Alumno::feedback');
+    $routes->post('feedback/guardar', 'Alumno::guardar');
     $routes->get('mis_citas', 'Alumno::mis_citas'); 
     $routes->post('store_citas', 'Alumno::store_citas'); 
 
