@@ -23,28 +23,31 @@ class Alumno extends BaseController
         return view('vistas/alumno/calendario', $info);
     }
 
-   
-    public function inicio_alumno() {
-        $idAlumno = session()->get('id_auth');
-        $db = \Config\Database::connect();
+    /**
+     * DASHBOARD DINÁMICO DEL ALUMNO
+     */
+   public function inicio_alumno() {
+    // Obtenemos los IDs de la sesión
+    $idAuth = session()->get('id_auth');
+    $idAlumno = session()->get('id_alumno'); 
 
-        // Consulta mejorada para traer nombre y apellido (si están separados)
-        $builder = $db->table('citas c');
-        $builder->select('c.*, prof.nombre_profesor, prof.apellido_profesor'); // Asegúrate que existan estos campos
-        $builder->join('perfil_profesor prof', 'prof.id_auth = c.id_profesor', 'left');
-        $builder->where('c.id_alumno', $idAlumno);
-        $builder->where('c.fecha_hora_inicio >=', date('Y-m-d H:i:s')); 
-        $builder->orderBy('c.fecha_hora_inicio', 'ASC');
-        $builder->limit(1);
-        
-        $data['proxima_cita'] = $builder->get()->getRowArray();
+    $db = \Config\Database::connect();
+    $builder = $db->table('citas c');
+    
+    $builder->select('c.*, p.nombre_profesor, p.apellido_profesor, a.email as email_profesor');
+    
+    $builder->join('perfil_profesor p', 'p.id_auth = c.id_profesor', 'left');
+    $builder->join('auth a', 'a.id_auth = c.id_profesor', 'left');
+    
+    $builder->groupStart()
+                ->where('c.id_alumno', $idAlumno)
+                ->orWhere('c.id_alumno', $idAuth)
+            ->groupEnd();
 
-        $info['footer'] = view('Template/footer');
-        $info['header'] = view('Template/header');
-        $info['menu'] = view('Template/menu');
-        
-        return view('vistas/alumno/inicio_alumno', array_merge($info, $data));
-    }
+    $builder->orderBy('c.id_cita', 'DESC'); 
+    $builder->limit(1);
+    
+    $data['proxima_cita'] = $builder->get()->getRowArray();
 
      public function feedback()
     {
@@ -91,6 +94,9 @@ class Alumno extends BaseController
 
 //-----------------------------------------------FACTURA-----------------------------------------------------------------------
 
+    /**
+     * FACTURA DIGITAL CORREGIDA
+     */
     public function factura($id_pago = null) {
         if (!$id_pago) {
             return redirect()->to('/alumno/mis_citas')->with('error', 'No se especificó un comprobante.');
@@ -99,19 +105,23 @@ class Alumno extends BaseController
         $db = \Config\Database::connect();
         $builder = $db->table('pago_estatico p');
         
-        $builder->select('p.*, c.fecha_hora_inicio, c.materia, prof.nombre_profesor, est.name as nombre_alumno');
-        $builder->join('citas c', 'c.id_cita = p.id_cita');
-        $builder->join('perfil_profesor prof', 'prof.id_auth = c.id_profesor'); 
-        $builder->join('perfiles_estudiantes est', 'est.id_auth = c.id_alumno');   
-        $builder->where('p.id_pago', $id_pago);
+        // CORRECCIÓN: Agregados prof.apellido_profesor y est.apellido
+        $builder->select('p.*, c.fecha_hora_inicio, c.materia, 
+                          prof.nombre_profesor, prof.apellido_profesor, 
+                          est.name as nombre_alumno, est.apellido as apellido_alumno');
         
+        $builder->join('citas c', 'c.id_cita = p.id_cita', 'left');
+        $builder->join('perfil_profesor prof', 'prof.id_auth = c.id_profesor', 'left'); 
+        $builder->join('perfiles_estudiantes est', 'est.id_estudiante = c.id_alumno', 'left');   
+        
+        $builder->where('p.id_pago', $id_pago);
         $data['pago'] = $builder->get()->getRowArray();
 
         if (!$data['pago']) {
             return redirect()->to('/alumno/mis_citas')->with('error', 'La factura no existe.');
         }
 
-        // Lógica de Tasa BCV
+        // Tasa BCV Dinámica
         $tasa_bcv = 45.00;
         try {
             $client = \Config\Services::curlrequest();
@@ -132,8 +142,11 @@ class Alumno extends BaseController
         return view('vistas/alumno/factura', array_merge($info, $data));
     }
 
+    /**
+     * MIS CITAS CORREGIDA
+     */
     public function mis_citas() {
-        $idAlumno = session()->get('id_auth');
+        $idAlumno = session()->get('id_alumno');
         $modelHorario = new HorarioModel();
         $db = \Config\Database::connect();
 
@@ -142,11 +155,19 @@ class Alumno extends BaseController
                                          ->findAll();
 
         $builder = $db->table('citas c');
-        $builder->select('c.*, p.id_pago, p.estado_pago, prof.nombre_profesor');
+        
+        // CORRECCIÓN: Nombres de columnas según tu BDD (apellido y apellido_profesor)
+        $builder->select('c.*, p.id_pago, p.estado_pago, 
+                          prof.nombre_profesor, prof.apellido_profesor, 
+                          est.name as nombre_estudiante, est.apellido as apellido_estudiante');
+        
         $builder->join('pago_estatico p', 'p.id_cita = c.id_cita', 'left'); 
         $builder->join('perfil_profesor prof', 'prof.id_auth = c.id_profesor', 'left');
+        $builder->join('perfiles_estudiantes est', 'est.id_estudiante = c.id_alumno', 'left');
+
         $builder->where('c.id_alumno', $idAlumno);
         $builder->orderBy('c.fecha_hora_inicio', 'DESC');
+        
         $data['citas_reservadas'] = $builder->get()->getResultArray();
 
         $info['footer'] = view('Template/footer');
@@ -159,49 +180,46 @@ class Alumno extends BaseController
     public function store_citas() {
         $citaModel = new CitaModel();
         $horarioModel = new HorarioModel();
-        $idAlumno = session()->get('id_auth');
+        $idAlumno = session()->get('id_alumno');
+        
         $horarios = $this->request->getPost('horarios');
         $materias = $this->request->getPost('materias');
         $fechas = $this->request->getPost('fecha');
 
-        if ($horarios) {
-            $db = \Config\Database::connect();
-            $db->transStart(); 
-            $ultimaCitaId = null;
-
-            foreach ($horarios as $idHorario) {
-                $horario = $horarioModel->find($idHorario);
-                if (!$horario) continue;
-
-                $inicio = new \DateTime($horario['hora_inicio']);
-                $fin = new \DateTime($horario['hora_fin']);
-                $duracion = $inicio->diff($fin);
-                $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
-
-                $fechaHoraInicio = (new \DateTime($fechas[$idHorario] . ' ' . $horario['hora_inicio']))->format('Y-m-d H:i:s');
-
-                $data = [
-                    'id_alumno'         => $idAlumno,
-                    'id_profesor'       => $horario['id_profesor'],
-                    'id_horario'        => $idHorario,
-                    'fecha_hora_inicio' => $fechaHoraInicio,
-                    'duracion_min'      => $totalMinutos,
-                    'materia'           => $materias[$idHorario],
-                    'estado_cita'       => 'pendiente'
-                ];
-
-                $citaModel->insert($data);
-                $ultimaCitaId = $db->insertID();
-            }
-
-            $db->transComplete(); 
-            if ($db->transStatus() === false) {
-                return redirect()->back()->with('error', 'Error al crear la reserva.');
-            }
-
-            return redirect()->to(base_url('alumno/pago_estatico/' . $ultimaCitaId));
+        if (!$horarios) {
+            return redirect()->back()->with('error', 'No seleccionaste horarios.');
         }
-        return redirect()->to('alumno/mis_citas');
+
+        $db = \Config\Database::connect();
+        
+        foreach ($horarios as $idHorario) {
+            $horario = $horarioModel->find($idHorario);
+            if (!$horario) continue;
+
+            $inicio = new \DateTime($horario['hora_inicio']);
+            $fin = new \DateTime($horario['hora_fin']);
+            $totalMinutos = ($inicio->diff($fin)->h * 60) + $inicio->diff($fin)->i;
+
+            $fechaHoraInicio = $fechas[$idHorario] . ' ' . $horario['hora_inicio'];
+
+            $data = [
+                'id_alumno'         => $idAlumno,
+                'id_profesor'       => $horario['id_profesor'],
+                'id_horario'        => $idHorario,
+                'fecha_hora_inicio' => $fechaHoraInicio,
+                'duracion_min'      => $totalMinutos,
+                'materia'           => $materias[$idHorario] ?? 'Clase Particular',
+                'estado_cita'       => 'pendiente'
+            ];
+
+            if (!$citaModel->insert($data)) {
+                dd($citaModel->errors(), $db->error(), "ID Alumno enviado: " . $idAlumno);
+            }
+            
+            $ultimaCitaId = $db->insertID();
+        }
+
+        return redirect()->to(base_url('alumno/pago_estatico/' . $ultimaCitaId));
     }
 
     public function pago_estatico($id_cita = null) {
@@ -222,6 +240,7 @@ class Alumno extends BaseController
 
     public function guardar_pago() {
         $modelPago = new PagoEstaticoModel();
+        $modelCita = new CitaModel(); // Necesario para actualizar el estado
         $id_cita = $this->request->getPost('id_cita');
         $id_pago = $this->request->getPost('id_pago');
         $montoRaw = $this->request->getPost('monto');
@@ -254,7 +273,16 @@ class Alumno extends BaseController
             'estado_pago' => 'confirmado'
         ];
 
-        if ($modelPago->insert($data)) {
+        $db = \Config\Database::connect();
+        $db->transStart();
+
+        $modelPago->insert($data);
+        // CORRECCIÓN: Actualizar estado de la cita a confirmada tras el pago
+        $modelCita->update($id_cita, ['estado_cita' => 'confirmado']);
+
+        $db->transComplete();
+
+        if ($db->transStatus() === true) {
             $img->move(ROOTPATH . 'public/uploads/comprobantes', $nombreImg);
             session()->remove('id_cita_pendiente'); 
             return redirect()->to(base_url('alumno/factura/' . $id_pago))->with('success', 'Pago enviado.');

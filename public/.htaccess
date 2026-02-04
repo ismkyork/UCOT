@@ -9,9 +9,8 @@ Options -Indexes
     Options +FollowSymlinks
     RewriteEngine On
 
-    # --- CORRECCIÓN IMPORTANTE ---
-    # Asegúrate de respetar las mayúsculas "UCOT" si así se llama tu carpeta en Windows.
-    RewriteBase /UCOT/public/
+    # Esta línea es la que soluciona tu problema en subcarpetas
+    RewriteBase /ucot/public/
 
     # Redirect Trailing Slashes...
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -23,10 +22,7 @@ Options -Indexes
     # request to the front controller, index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    
-    # --- SIMPLIFICACIÓN ---
-    # Esta versión es más estándar y suele fallar menos en Laragon/XAMPP
-    RewriteRule ^([\s\S]*)$ index.php?/$1 [L,NC,QSA]
+    RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
 
     # Ensure Authorization header is passed along
     RewriteCond %{HTTP:Authorization} .
