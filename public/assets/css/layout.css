@@ -68,19 +68,27 @@ body {
 }
 
 .nav-item-link {
+    border-radius: 50px !important; 
+    
     margin: 5px 12px !important;
     padding: 12px !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-start !important; /* Siempre alineado a la izquierda */
+    justify-content: flex-start !important; 
     gap: 15px !important;
     min-height: 48px;
+    text-decoration: none !important; /* Asegura que no haya subrayados */
+    color: #c4c7c5; /* Color base del texto */
+    transition: all 0.3s ease;
 }
 
 .nav-item-link.active {
     background-color: var(--ucot-blue) !important;
+    color: #ffffff !important;
+    border-radius: 50px !important; 
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
 }
+
 .nav-item-link:hover:not(.active) {
     background-color: rgba(255, 255, 255, 0.08) !important;
     color: #ffffff !important;
@@ -362,3 +370,4 @@ body {
     background: var(--ucot-blue);
     color: white;
 }
+

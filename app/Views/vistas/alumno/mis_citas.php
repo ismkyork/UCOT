@@ -1,92 +1,77 @@
 <?= $this->extend('Template/main') ?>
 
 <?= $this->section('content') ?>
-<div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2 class="card-header-personalizado" style="font-size: 1.8rem;">Agendar Nueva Asesoría</h2>
-            <p class="text-muted">Selecciona el horario y la materia para tu próxima clase en UCOT.</p>
-        </div>
+<div class="card-personalizada">
+    <div class="table-responsive">
+        <table class="table table-personalizada align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Bloque de Fecha</th>
+                    <th>Horario Disponible</th>
+                    <th>Materia a Tratar</th>
+                    <th class="text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($horarios as $h): 
+                    $dias_traduccion = [
+                        'LUNES' => 'Monday', 'MARTES' => 'Tuesday', 'MIÉRCOLES' => 'Wednesday', 
+                        'MIERCOLES' => 'Wednesday', 'JUEVES' => 'Thursday', 'VIERNES' => 'Friday', 
+                        'SÁBADO' => 'Saturday', 'SABADO' => 'Saturday', 'DOMINGO' => 'Sunday'
+                    ];
+                    $dia_ingles = $dias_traduccion[strtoupper($h['week_day'])] ?? 'today';
+                    // Esto asegura que si hoy es el día, tome hoy, no el de la otra semana
+                    $fecha_proxima = (date('l') == $dia_ingles) ? date('Y-m-d') : date('Y-m-d', strtotime("next $dia_ingles"));
+                ?> 
+                
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3" style="font-size: 1.2rem; color: var(--ucot-cian);">
+                                <i class="far fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-uppercase d-block" style="font-size: 0.9rem; color: var(--ucot-negro);">
+                                    <?= esc($h['week_day']); ?>
+                                </span>
+                                <small class="fw-bold" style="color: var(--ucot-cian);">
+                                    <?= date('d/m/Y', strtotime($fecha_proxima)); ?>
+                                </small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge-ucot" style="background-color: #f1f4f9; color: var(--ucot-negro);">
+                            <i class="far fa-clock me-1"></i> <?= esc($h['hora_inicio']); ?> - <?= esc($h['hora_fin']); ?>
+                        </span>
+                    </td>
+                    
+                    <td colspan="2">
+                        <form action="<?= site_url('alumno/store_citas') ?>" method="POST" class="d-flex align-items-center gap-2 m-0">
+                            <?= csrf_field() ?>
+                            
+                            <input type="hidden" name="horarios[]" value="<?= $h['id_horario']; ?>">
+                            <input type="hidden" name="fecha[<?= $h['id_horario']; ?>]" value="<?= $fecha_proxima; ?>">
+                            
+                            <div class="flex-grow-1">
+                                <input type="text" name="materias[<?= $h['id_horario']; ?>]" 
+                                       class="form-control" 
+                                       placeholder="Ej: Cálculo Diferencial" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus-circle me-1"></i> Agendar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?> 
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <?php if(session('errors')): ?>
-        <div class="alert alert-danger shadow-sm border-0" style="border-radius: 15px;">
-            <div class="fw-bold mb-1"><i class="fas fa-exclamation-triangle me-2"></i> Por favor corrige lo siguiente:</div>
-            <ul class="mb-0 small">
-                <?php foreach(session('errors') as $error): ?>
-                    <li><?= esc($error) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
 
-    <?php if(session('success')): ?>
-        <div class="alert btn-ucot-success text-white shadow-sm border-0" style="border-radius: 15px; opacity: 1;">
-            <i class="fas fa-check-circle me-2"></i> <?= esc(session('success')) ?>
-        </div>
-    <?php endif; ?>
-
-    <form action="<?= site_url('alumno/store_citas') ?>" method="POST">
-        <?= csrf_field() ?>
-        
-        <div class="card-personalizada p-0 overflow-hidden shadow-sm">
-            <div class="table-responsive">
-                <table class="table table-personalizada mb-0 align-middle">
-                    <thead>
-                        <tr>
-                            <th style="width: 40%;">Fecha y Hora</th>
-                            <th>Duración</th>
-                            <th>Materia</th>
-                            <th class="text-center">Seleccionar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($horarios as $modelHorario): ?>
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <select name="fecha[<?= $modelHorario['id_horario']; ?>]" 
-                                                class="form-select form-control-tabla d-inline-block w-auto me-2" 
-                                                data-dia="<?= $modelHorario['week_day']; ?>">
-                                            <option value="">Selecciona fecha</option>
-                                        </select>
-                                        <span class="fw-bold" style="color: var(--ucot-negro);">
-                                            <i class="far fa-clock me-1 text-muted"></i> <?= $modelHorario['hora_inicio']; ?>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <?php
-                                        $inicio = new DateTime($modelHorario['hora_inicio']);
-                                        $fin    = new DateTime($modelHorario['hora_fin']);
-                                        $duracion = $inicio->diff($fin);
-                                        $totalMinutos = ($duracion->days * 24 * 60) + ($duracion->h * 60) + $duracion->i;
-                                    ?>
-                                    <span class="badge-ucot" style="background: #e9ecef; color: var(--ucot-negro);">
-                                        <?= $totalMinutos . ' min'; ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <input type="text" name="materias[<?= $modelHorario['id_horario']; ?>]" 
-                                           class="form-control form-control-tabla" placeholder="Ej: Programación">
-                                </td>
-                                <td class="text-center">
-                                    <input type="checkbox" name="horarios[]" value="<?= $modelHorario['id_horario']; ?>" 
-                                           class="form-check-input cita-checkbox">
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="mt-4 d-flex justify-content-center">
-            <button type="submit" class="btn-redondeado btn-ucot-success btn-lg shadow px-5">
-                <i class="fas fa-calendar-plus me-2"></i> Reservar y Pagar
-            </button>
-        </div>
-    </form>
 
     <hr class="my-5" style="border-top: 2px dashed #dee2e6;">
 

@@ -1,5 +1,7 @@
-<?= $header?>
-<?=$menu?>   
+<?= $this->extend('Template/main') ?>
+
+<?= $this->section('content') ?>
+ 
 
         <!--Tabla para datos-->
         
@@ -68,6 +70,5 @@
 
     <script src="<?= base_url('assets/js/revisar_citas.js') ?>"></script>  
 
-<?= $footer?>
-
+<?= $this->endSection() ?>
 

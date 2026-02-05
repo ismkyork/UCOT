@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\CitaModel;
 use App\Models\HorarioModel;
 use App\Models\PagoEstaticoModel;
+use App\Models\FeedbackModel;
+
 
 class Alumno extends BaseController
 {
@@ -15,12 +17,12 @@ class Alumno extends BaseController
         return view('vistas/inicio', $info);
     }
 
-    public function calendario() {
-        $info['footer'] = view('Template/footer');
-        $info['header'] = view('Template/header');
-        $info['menu'] = view('Template/menu');
-        return view('vistas/alumno/calendario', $info);
+    public function calendario_alumno() {
+        $info = [];
+   
+        return view('vistas/alumno/calendario_alumno');
     }
+
 
     /**
      * DASHBOARD DINÁMICO DEL ALUMNO
@@ -31,27 +33,62 @@ class Alumno extends BaseController
 
         // Consulta mejorada para traer nombre y apellido (si están separados)
         $builder = $db->table('citas c');
-        $builder->select('c.*, prof.nombre_profesor, prof.apellido_profesor'); // Asegúrate que existan estos campos
+        $builder->select('c.*, prof.nombre_profesor, prof.apellido_profesor'); //  existen estos campos
         $builder->join('perfil_profesor prof', 'prof.id_auth = c.id_profesor', 'left');
         $builder->where('c.id_alumno', $idAlumno);
         $builder->where('c.fecha_hora_inicio >=', date('Y-m-d H:i:s')); 
         $builder->orderBy('c.fecha_hora_inicio', 'ASC');
         $builder->limit(1);
-        
+
         $data['proxima_cita'] = $builder->get()->getRowArray();
 
         $info['footer'] = view('Template/footer');
         $info['header'] = view('Template/header');
         $info['menu'] = view('Template/menu');
-        
+
         return view('vistas/alumno/inicio_alumno', array_merge($info, $data));
     }
 
-    public function feedback() {
-        $info['footer'] = view('Template/footer');
+    public function feedback()
+    {
+        
+        $feedbackModel = new FeedbackModel();
+        $comentarios = $feedbackModel->orderBy('fecha_evaluacion', 'DESC')->findAll();
+        $data = [
+            'historial' => $comentarios
+        ];
+
+        $info = [];
         $info['header'] = view('Template/header');
-        $info['menu'] = view('Template/menu');
-        return view('vistas/alumno/feedback', $info);
+        $info['menu']   = view('Template/menu');
+        $info['footer'] = view('Template/footer');
+
+        return view('vistas/alumno/feedback', array_merge($info, $data));
+    }
+    
+   public function guardar()
+    {
+      
+        $feedbackModel = new FeedbackModel();
+        $reglas = [
+            'puntuacion' => 'required|numeric',
+            'comentario' => 'required|min_length[5]'
+        ];
+
+        // Validar
+        if (!$this->validate($reglas)) {
+            return redirect()->back()
+                             ->withInput()
+                             ->with('error', 'Por favor selecciona una calificación y escribe un comentario.');
+        }
+
+        $datos = [
+            'puntuacion' => $this->request->getPost('puntuacion'),
+            'comentario' => $this->request->getPost('comentario')
+        ];
+        $feedbackModel->save($datos);
+
+        return redirect()->to('/alumno/feedback')->with('msg', '¡Gracias! Tu opinión ha sido enviada correctamente.');
     }
 
     public function factura($id_pago = null) {
@@ -214,7 +251,7 @@ class Alumno extends BaseController
             'monto'       => $montoLimpio,
             'fecha_pago'  => $this->request->getPost('fecha_pago'),
             'screenshot'  => $nombreImg,
-            'estado_pago' => 'confirmado'
+            'estado_pago' => 'pendiente'
         ];
 
         if ($modelPago->insert($data)) {

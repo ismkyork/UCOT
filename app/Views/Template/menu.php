@@ -18,7 +18,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('alumno/calendario') ?>" class="nav-item-link <?= (uri_string() == 'alumno/calendario') ? 'active' : '' ?>">
+                    <a href="<?= base_url('alumno/calendario_alumno') ?>" class="nav-item-link <?= (uri_string() == 'alumno/calendario_alumno') ? 'active' : '' ?>">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Calendario</span>
                     </a>
@@ -26,7 +26,7 @@
                 <li>
                     <a href="<?= base_url('alumno/mis_citas') ?>" class="nav-item-link <?= (uri_string() == 'alumno/mis_citas') ? 'active' : '' ?>">
                         <i class="fas fa-clock"></i>
-                        <span>Mis Citas</span>
+                        <span>Agendar Citas</span>
                     </a>
                 </li>
 
@@ -35,6 +35,12 @@
                     <a href="<?= base_url('profesor/dashboard') ?>" class="nav-item-link <?= (uri_string() == 'profesor/dashboard') ? 'active' : '' ?>">
                         <i class="fas fa-chart-pie"></i>
                         <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('profesor/calendario_profesor') ?>" class="nav-item-link <?= (uri_string() == 'profesor/calendario_profesor') ? 'active' : '' ?>">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Calendario</span>
                     </a>
                 </li>
                 <li>
@@ -72,7 +78,7 @@
             
             <div class="dropdown-content" id="profileMenu">
                 <a href="<?= base_url('configuracion') ?>" class="dropdown-item">
-                     <i class="fas fa-cog"></i> <span>Gestionar Cuenta</span>
+                    <i class="fas fa-cog"></i> <span>Gestionar Cuenta</span>
                 </a>
                 <a href="<?= base_url('salir') ?>" class="dropdown-item logout">
                     <i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span>

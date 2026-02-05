@@ -1,5 +1,6 @@
-<?= $header ?> 
-<?= $menu ?>  
+<?= $this->extend('Template/main') ?>
+
+<?= $this->section('content') ?>
 
 <div class="row justify-content-center mt-4">
     <div class="col-md-6"> 
@@ -126,4 +127,4 @@
     }
 </script>
 
-<?= $footer ?>
+<?= $this->endSection() ?>

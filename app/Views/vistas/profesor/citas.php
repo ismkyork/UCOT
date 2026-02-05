@@ -1,6 +1,6 @@
-<?=$header?> 
+<?= $this->extend('Template/main') ?>
 
-<?=$menu?>   
+<?= $this->section('content') ?>
 
    <div class="card-body">
     <?php if (empty($citas)): ?>
@@ -40,4 +40,4 @@
     <?php endif; ?>
 </div>
 
- <?=$footer?>    
+<?= $this->endSection() ?>

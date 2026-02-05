@@ -1,6 +1,8 @@
 
-    <?= $header ?>
+<?= $this->extend('Template/main') ?>
 
+<?= $this->section('content') ?>
+ 
   
         <div class="alert alert-success text-black fw-bolder text-center rounded shadow">
             ✅ El horario se guardó correctamente.
@@ -11,5 +13,4 @@
         </div>
    
 
-    <?= $footer ?>
-
+<?= $this->endSection() ?>
