@@ -12,7 +12,7 @@
 <div class="row mb-4">
     <div class="col-12">
         <h2 style="font-weight: 700; color: #2e3748;">Panel de Control</h2>
-        <p style="color: #858796;">Bienvenido de nuevo, Admin. Aquí está el resumen de hoy.</p>
+        <p style="color: #858796;">Bienvenido de nuevo, Profesor. Aquí está el resumen de hoy.</p>
     </div>
 </div>
 
@@ -42,18 +42,17 @@
             <div class="card-personalizada p-0">
                 <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
                     <h5 class="mb-0" style="font-weight: 700;">Próximas Citas</h5>
-                    <button class="btn-redondeado" style="width: auto; padding: 8px 20px !important;">
-                        + Nueva Cita
+                   
                     </button>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-personalizada mb-0">
                         <thead>
                             <tr>
-                                <th>Paciente</th>
+                                <th>Estudiante</th>
                                 <th>Hora</th>
                                 <th>Estado</th>
-                                <th>Acción</th>
+                              
                             </tr>
                         </thead>
                         <tbody>
@@ -61,7 +60,7 @@
                                 <td>Juan Pérez</td>
                                 <td>10:00 AM</td>
                                 <td><span class="badge text-bg-success" style="border-radius:0;">Confirmada</span></td>
-                                <td><a href="#" class="text-primary"><i class="fa-solid fa-eye"></i></a></td>
+                               
                             </tr>
                         </tbody>
                     </table>

@@ -11,7 +11,7 @@ class HorarioModel extends Model
     // Estos son los campos de la tabla SQL que se van a editar
     protected $allowedFields = [
         'id_profesor', 
-        'week_day', 
+        'fecha', 
         'hora_inicio', 
         'hora_fin', 
         'estado'

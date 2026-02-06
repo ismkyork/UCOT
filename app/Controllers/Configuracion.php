@@ -26,7 +26,7 @@ class Configuracion extends BaseController
 
         $nombre = $this->request->getPost('nombre');
         $apellido = $this->request->getPost('apellido');
-        $password = $this->request->getPost('password');
+        $password = $this->request->getPost('contraseña');
 
         // 1. Actualizar Perfil (Nombre/Apellido)
         if ($rol == 'Profesor') {
@@ -38,8 +38,8 @@ class Configuracion extends BaseController
         } else {
             $model = new AlumnoModel();
             $model->where('id_auth', $id_auth)->set([
-                'name' => $nombre,
-                'apellido' => $apellido
+                'nombre_estudiante' => $nombre,
+                'apellido_estudiante' => $apellido
             ])->update();
         }
 
@@ -47,7 +47,7 @@ class Configuracion extends BaseController
         if (!empty($password)) {
             $loginModel = new LoginModel();
             $loginModel->update($id_auth, [
-                'password' => password_hash($password, PASSWORD_DEFAULT)
+                'contraseña' => password_hash($password, PASSWORD_DEFAULT)
             ]);
         }
 

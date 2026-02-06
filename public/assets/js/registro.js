@@ -1,5 +1,5 @@
 function actualizarSeguridad(input) {
-    // Si pasaste 'this' desde el HTML, 'input' es el elemento
+    
     const pass = input.value; 
     const bar = document.getElementById('password-strength-bar');
     const feedback = document.getElementById('password-feedback');
@@ -13,11 +13,10 @@ function actualizarSeguridad(input) {
     bar.style.width = strength + "%";
     bar.classList.remove('bg-danger', 'bg-warning', 'bg-info', 'bg-success');
 
-    // Cambiamos texto Y color de la letra simultáneamente
     if (strength === 0) {
         bar.classList.add('bg-danger');
         feedback.innerText = "Seguridad: Muy débil";
-        feedback.style.setProperty('color', '#dc3545', 'important'); // Forzamos el color
+        feedback.style.setProperty('color', '#dc3545', 'important'); 
     } else if (strength <= 25) {
         bar.classList.add('bg-danger');
         feedback.innerText = "Seguridad: Débil";
@@ -33,6 +32,6 @@ function actualizarSeguridad(input) {
     } else {
         bar.classList.add('bg-success');
         feedback.innerText = "Seguridad: Excelente";
-        feedback.style.setProperty('color', '#198754', 'important'); // Verde final
+        feedback.style.setProperty('color', '#198754', 'important'); 
     }
 }

@@ -29,28 +29,42 @@ class Profesor extends BaseController
     }
 
     public function citas()
-    {
-        $citasModel = new CitaModel();
-        $myAdminId = session()->get('id_auth');
+{
+    $citasModel = new CitaModel();
+    $db = \Config\Database::connect();
 
-        $resultados = $citasModel
-            ->select('citas.*, auth.email as estudiante_email')
-            ->join('auth', 'auth.id_auth = citas.id_alumno')
-            ->where('citas.estado_cita', 'pendiente')
-            ->where('citas.id_profesor', $myAdminId)
-            ->orderBy('citas.created_at', 'DESC')
-            ->findAll();
+    // 1. Buscamos el ID real del profesor vinculado a esta cuenta auth
+    $perfil = $db->table('perfil_profesor')
+                 ->where('id_auth', session()->get('id_auth'))
+                 ->get()
+                 ->getRowArray();
 
-        $data = [
-            'titulo' => 'Solicitudes Pendientes',
-            'citas'  => $resultados
-        ];
-
-        $info['header'] = view('Template/header');
-        $info['footer'] = view('Template/footer');
-        $info['menu'] = view('Template/menu');
-        return view('vistas/profesor/citas', array_merge($info, $data));
+    if (!$perfil) {
+        return redirect()->to('/')->with('error', 'No se encontró perfil de profesor.');
     }
+
+    $idProfesorReal = $perfil['id_profesor'];
+
+    // 2. Filtramos las citas usando el ID real
+    $resultados = $citasModel
+        ->select('citas.*, auth.correo as estudiante_email')
+        ->join('perfiles_estudiantes est', 'est.id_estudiante = citas.id_alumno') // Unimos con perfil de estudiante
+        ->join('auth', 'auth.id_auth = est.id_auth') // Traemos el correo desde auth
+        ->where('citas.estado_cita', 'pendiente')
+        ->where('citas.id_profesor', $idProfesorReal) // <--- Cambio clave
+        ->orderBy('citas.created_at', 'DESC')
+        ->findAll();
+
+    $data = [
+        'titulo' => 'Solicitudes Pendientes',
+        'citas'  => $resultados
+    ];
+
+    $info['header'] = view('Template/header');
+    $info['footer'] = view('Template/footer');
+    $info['menu'] = view('Template/menu');
+    return view('vistas/profesor/citas', array_merge($info, $data));
+}
 
     
 
@@ -79,33 +93,44 @@ class Profesor extends BaseController
 
 
     public function procesar()
-    {
-        $citasModel = new CitaModel();
-        $citaId = $this->request->getPost('id_cita');
-        $accionTomada = $this->request->getPost('accion');
+{
+    $citasModel = new CitaModel();
+    $db = \Config\Database::connect();
+    
+    $citaId = $this->request->getPost('id_cita');
+    $accionTomada = $this->request->getPost('accion');
 
-        $nuevoEstado = ($accionTomada === 'aprobar') ? 'confirmado' : (($accionTomada === 'rechazar') ? 'rechazado' : '');
+    $nuevoEstado = ($accionTomada === 'aprobar') ? 'confirmado' : (($accionTomada === 'rechazar') ? 'rechazado' : '');
 
-        if (empty($nuevoEstado)) {
-            return redirect()->back()->with('error', 'Acción no válida.');
-        }
+    // Buscamos el perfil del profe logueado para validar permisos
+    $perfil = $db->table('perfil_profesor')
+                 ->where('id_auth', session()->get('id_auth'))
+                 ->get()
+                 ->getRowArray();
 
-        $cita = $citasModel->find($citaId);
-        if (!$cita) return redirect()->back()->with('error', 'Cita no encontrada.');
+    $cita = $citasModel->find($citaId);
+    if (!$cita || !$perfil) return redirect()->back()->with('error', 'Cita o Perfil no encontrado.');
 
-        if ($cita['id_profesor'] != session()->get('id_auth')) {
-            return redirect()->back()->with('error', 'No tienes permisos.');
-        }
-
-        $citasModel->update($citaId, ['estado_cita' => $nuevoEstado]);
-        return redirect()->to('/profesor/citas')->with('msg', 'Solicitud procesada correctamente.');
+    // Validamos que la cita le pertenezca al profesor real
+    if ($cita['id_profesor'] != $perfil['id_profesor']) {
+        return redirect()->back()->with('error', 'No tienes permisos sobre esta cita.');
     }
+
+    $citasModel->update($citaId, ['estado_cita' => $nuevoEstado]);
+    return redirect()->to('/profesor/citas')->with('msg', 'Solicitud procesada correctamente.');
+}
 
     public function config_horarios()
     {
+        $db = \Config\Database::connect();
+        // Buscamos el perfil primero para filtrar bien
+        $perfil = $db->table('perfil_profesor')->where('id_auth', session()->get('id_auth'))->get()->getRowArray();
+        
+        $id_real = $perfil ? $perfil['id_profesor'] : 0;
+
         $data['horarios'] = $this->horarioModel
-            ->where('id_profesor', session()->get('id_auth'))
-            ->orderBy("FIELD(week_day, 'Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo')", '', false)
+            ->where('id_profesor', $id_real)
+            ->orderBy("FIELD(fecha, 'LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO','DOMINGO')", '', false)
             ->orderBy('hora_inicio', 'ASC')
             ->findAll();
 
@@ -133,6 +158,20 @@ class Profesor extends BaseController
                 return redirect()->back()->with('error', 'Debes seleccionar al menos un horario.');
             }
 
+            // --- SOLUCIÓN AL ERROR DE FOREIGN KEY ---
+            $db = \Config\Database::connect();
+            $perfil = $db->table('perfil_profesor')
+                         ->where('id_auth', session()->get('id_auth'))
+                         ->get()
+                         ->getRowArray();
+
+            if (!$perfil) {
+                return redirect()->back()->with('error', 'No se encontró tu perfil de profesor en el sistema.');
+            }
+
+            $idProfesorReal = $perfil['id_profesor']; 
+            // ----------------------------------------
+
             $diasSemana = [
                 1 => 'LUNES', 2 => 'MARTES', 3 => 'MIÉRCOLES',
                 4 => 'JUEVES', 5 => 'VIERNES', 6 => 'SÁBADO', 7 => 'DOMINGO'
@@ -140,14 +179,11 @@ class Profesor extends BaseController
             $numDia = date('N', strtotime($fechaSeleccionada));
             $nombreDia = $diasSemana[$numDia];
 
-            // Obtener ID del profesor de la sesión
-            $idProfesor = session()->get('id_auth');
-
             foreach ($bloques as $bloque) {
                 $partes = explode('-', $bloque);
                 $data = [
-                    'id_profesor' => $idProfesor,
-                    'week_day'    => $nombreDia,
+                    'id_profesor' => $idProfesorReal, // ID de la tabla perfil_profesor
+                    'fecha'       => $nombreDia,
                     'hora_inicio' => $partes[0],
                     'hora_fin'    => $partes[1],
                     'estado'      => 'Disponible'
@@ -159,6 +195,8 @@ class Profesor extends BaseController
                 ->with('mensaje', 'Horarios guardados correctamente para el día ' . $nombreDia);
 
         } catch (\Exception $e) {
+            // Esto te ayudará a ver errores más específicos en desarrollo
+            log_message('error', $e->getMessage());
             return "Error de sistema: " . $e->getMessage();
         }
     }
@@ -199,7 +237,7 @@ class Profesor extends BaseController
     public function update_horario($id_horario = null)
     {
         $data = [
-            'week_day'    => $this->request->getPost('week_day'),
+            'fecha'       => $this->request->getPost('fecha'),
             'hora_inicio' => $this->request->getPost('hora_inicio'),
             'hora_fin'    => $this->request->getPost('hora_fin'),
             'estado'      => $this->request->getPost('estado'),

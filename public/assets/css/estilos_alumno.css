@@ -9,9 +9,9 @@
     border: none !important;
 }
 
-/* El botón Cian de tu captura */
+
 .btn-concept-azul {
-    background-color: #33d9ff; /* El color de image_6c2ebf */
+    background-color: #33d9ff; 
     color: white;
     border: none;
     padding: 12px 40px;
@@ -33,7 +33,7 @@
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(224, 247, 250, 0.8); /* Fondo claro azulado como tu imagen */
+    background: rgba(224, 247, 250, 0.8); 
     z-index: 10000;
     justify-content: center;
     align-items: center;

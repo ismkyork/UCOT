@@ -4,7 +4,7 @@
 
 <style>
     .welcome-banner {
-        background: linear-gradient(135deg, #f39c12 0%, #8e44ad 100%);
+        background: linear-gradient(135deg, #f39cz12 0%, #8e44ad 100%);
         border-radius: 20px; padding: 40px; color: white;
         margin-bottom: 30px; box-shadow: 0 10px 25px rgba(142, 68, 173, 0.2);
     }

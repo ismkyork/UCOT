@@ -1,70 +1,93 @@
 <?= $this->extend('Template/main') ?>
 
 <?= $this->section('content') ?>
- 
 
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card card-personalizada shadow-lg">
-                <div class="card-header card-header-personalizado bg-primary text-white text-center py-4">
-                    <h3 class="mb-0">Editar Horario</h3>
-                </div>   
-                <!--Tabla para datos-->
-                <div class="card-body p-4">    
-                    <form action="<?= base_url('profesor/update_horario/'.$horario['id_horario']) ?>" method="post" >
-                                
-                        <div class="form-group mb-4">
-                            <label for="week_day" class="fw-bold mb-2">Día de la semana</label>
-                            <select class="form-select form-control-personalizado" id="week_day" name="week_day" required>
-                                <option value="">Seleccione...</option>
-                                <option value="Lunes" <?= $horario['week_day']=='Lunes'?'selected':'' ?>>Lunes</option>
-                                <option value="Martes" <?= $horario['week_day']=='Martes'?'selected':'' ?>>Martes</option>
-                                <option value="Miércoles" <?= $horario['week_day']=='Miércoles'?'selected':'' ?>>Miércoles</option>
-                                <option value="Jueves" <?= $horario['week_day']=='Jueves'?'selected':'' ?>>Jueves</option>
-                                <option value="Viernes" <?= $horario['week_day']=='Viernes'?'selected':'' ?>>Viernes</option>
-                                <option value="Sábado" <?= $horario['week_day']=='Sábado"'?'selected':'' ?>>Sábado</option>
-                                <option value="Domingo" <?= $horario['week_day']=='Domingo'?'selected':'' ?>>Domingo</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label for="hora_inicio" class="fw-bold mb-2">Hora Inicio</label>
-                            <input type="time" class="form-control form-control-personalizado" id="hora_inicio" name="hora_inicio" 
-                                value="<?= $horario['hora_inicio'] ?>" required>
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label for="hora_fin" class="fw-bold mb-2">Hora Fin</label>
-                            <input type="time" class="form-control form-control-personalizado" id="hora_fin" name="hora_fin" 
-                                value="<?= $horario['hora_fin'] ?>" required>
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label for="estado" class="fw-bold mb-2">Estado</label>
-                            <select class="form-select form-control-personalizado" id="estado" name="estado" required>
-                                <option value="Disponible" <?= $horario['estado']=='Disponible'?'selected':'' ?>>Disponible</option>
-                                <option value="Reservado" <?= $horario['estado']=='Reservado'?'selected':'' ?>>Reservado</option>
-                                <option value="No_Trabaja" <?= $horario['estado']=='No_Trabaja'?'selected':'' ?>>No_Trabaja</option>
-                            </select>
-                        </div>
-
-                        <td class="text-center">
-                            <div class="card-footer bg-light d-flex justify-content-center align-items-center py-3 gap-2">
-                                <button type="submit" class="btn btn-success btn-redondeado btn-sm shadow">
-                                    Guardar Cambios
-                                </button>
-                                
-                                <a href="<?= base_url('profesor/HorarioLeer') ?>" 
-                                class="btn btn-danger btn-redondeado btn-sm shadow text-decoration-none">
-                                    Cancelar
-                                </a>
-                            </div>              
-                        </td>
-
-                    </form>
-                </div>
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card card-personalizada border-0">
+            
+            <div class="card-header card-header-personalizado bg-white border-0 text-center pt-4 pb-3">
+                <h3 class="mb-0" style="font-size: 1.5rem;">
+                    <i class="fas fa-edit me-2 text-info"></i>Editar Bloque Horario
+                </h3>
+                <p class="text-muted small">Modifica el día o selecciona un nuevo rango de tiempo</p>
             </div>
+            
+            <div class="card-body p-4">    
+                <form action="<?= base_url('profesor/update_horario/'.$horario['id_horario']) ?>" method="post">
+                    
+                    <div class="mb-4">
+                        <label for="week_day" class="label-titulo">Día de la semana</label>
+                        <select class="form-select form-control-personalizado" id="week_day" name="week_day" required>
+                            <option value="">Seleccione...</option>
+                            <?php 
+                                $dias = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO'];
+                                foreach($dias as $dia): 
+                                    $selected = (strtoupper($horario['week_day']) == $dia) ? 'selected' : '';
+                            ?>
+                                <option value="<?= $dia ?>" <?= $selected ?>><?= ucfirst(strtolower($dia)) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <label class="label-titulo mb-3">Selecciona el nuevo Horario:</label>
+                    
+                    <div class="row g-2">
+                        <?php 
+                        // Definición de bloques igual a horarioAgregar
+                        $bloques_predefinidos = [
+                            "Mañana" => ["07:15-08:00", "08:00-08:45", "08:45-09:30", "09:30-10:15", "10:15-11:00", "11:00-11:45"],
+                            "Tarde/Noche" => ["12:45-13:30", "13:30-14:15", "14:15-15:00", "15:00-15:45", "15:45-16:30", "16:30-17:15", "17:15-18:00", "18:00-18:45", "18:45-19:30", "19:30-20:15", "20:15-21:00", "21:00-21:45", "21:45-22:30"]
+                        ];
+
+                        // Construimos el bloque actual para marcarlo como seleccionado
+                        // Limpiamos segundos si vienen de la BD (07:15:00 -> 07:15)
+                        $inicio_db = substr($horario['hora_inicio'], 0, 5);
+                        $fin_db = substr($horario['hora_fin'], 0, 5);
+                        $bloque_actual = $inicio_db . "-" . $fin_db;
+
+                        foreach ($bloques_predefinidos as $turno => $bloques): ?>
+                            <div class="col-12 mt-3 mb-1">
+                                <small class="fw-bold text-uppercase text-muted" style="letter-spacing: 1px; font-size: 0.7rem;"><?= $turno ?></small>
+                                <hr class="mt-1 mb-2 opacity-25">
+                            </div>
+                            
+                            <?php foreach ($bloques as $bloque): 
+                                $id_unico = "chk_" . str_replace([':', '-'], '', $bloque); 
+                                // Verificamos si este bloque es el que ya está guardado
+                                $checked = ($bloque == $bloque_actual) ? 'checked' : '';
+                            ?>
+                                <div class="col-6 col-sm-4">
+                                    <div class="bloque-check-wrapper">
+                                        <input type="radio" name="bloque_horario_combo" value="<?= $bloque ?>" id="<?= $id_unico ?>" class="input-oculto" <?= $checked ?> required onchange="splitTime(this.value)">
+                                        <label for="<?= $id_unico ?>" class="label-bloque">
+                                            <?= str_replace('-', ' - ', $bloque) ?>
+                                        </label>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <input type="hidden" name="hora_inicio" id="hora_inicio" value="<?= $horario['hora_inicio'] ?>">
+                    <input type="hidden" name="hora_fin" id="hora_fin" value="<?= $horario['hora_fin'] ?>">
+                    <input type="hidden" name="estado" value="Disponible">
+
+                    <div class="card-footer-limpio d-flex justify-content-center align-items-center gap-3 mt-5">
+                        <a href="<?= base_url('profesor/HorarioLeer') ?>" 
+                           class="btn btn-ucot-danger btn-redondeado text-decoration-none shadow-sm">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </a>
+                        
+                        <button type="submit" class="btn btn-ucot-success btn-redondeado shadow-sm">
+                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>              
+                </form>                  
+            </div>                   
         </div>
     </div>
+</div>
+
 
 <?= $this->endSection() ?>

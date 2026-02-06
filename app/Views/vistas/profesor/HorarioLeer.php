@@ -32,7 +32,7 @@
                                 <tbody>
                                     <?php foreach($horarios as $modelHorario): ?>
                                     <tr>
-                                        <td><?= $modelHorario['week_day'];?></td>
+                                        <td><?= $modelHorario['fecha'];?></td>
                                         <td><?= $modelHorario['hora_inicio'];?></td>
                                         <td><?= $modelHorario['hora_fin'];?></td>
                                         <td>

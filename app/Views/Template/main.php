@@ -14,7 +14,7 @@
              <div class="logo-seccion d-flex align-items-center">
             <img src="<?= base_url('assets/images/UCOT-Original.svg') ?>" alt="UCOT" style="height: 40px; margin-right: 10px;">
                 <span class="separador">|</span>
-                <span class="modulo-texto">Gestión de Citas Académicas</span>
+                <span class="modulo-texto">UCOT - U CLASS ON TIME</span>
             </div>
             
             

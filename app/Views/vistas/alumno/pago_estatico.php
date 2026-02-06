@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="text-center my-4 text-muted d-flex align-items-center justify-content-center">
-                    <hr class="flex-grow-1"> <span class="mx-3 small fw-bold text-uppercase">O Pago Manual</span> <hr class="flex-grow-1">
+                    <hr class="flex-grow-1"> <span class="mx-3 small fw-bold text-uppercase">O Pago Movil</span> <hr class="flex-grow-1">
                 </div>
 
                 <?php if(session()->getFlashdata('errors')): ?>
@@ -49,7 +49,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="monto" class="fw-bold mb-1 small text-uppercase">Monto (Bs.)</label>
+                                <label for="monto" class="fw-bold mb-1 small text-uppercase">Monto ($.)</label>
                                 <input type="text" id="monto" name="monto" value="0,00" class="form-control text-end fw-bold" inputmode="numeric" oninput="validarYFormatearMonto(this)" required>
                                 <div id="error-monto" style="color: red; display: none; font-size: 12px; margin-top: 5px;">El monto debe ser mayor a 0</div>
                             </div>
@@ -77,7 +77,7 @@
         </div>
     </div>
 </div>
-
+ <!-- PayPal API -->
 <script src="https://www.paypal.com/sdk/js?client-id=AY5m-6e4MzC8fB7TRV4fURarPgj88_NgeMp4PoNduNhdgwFQXuSnaoIC8mGg1_CWaNtBBIMpHdFsBO7x&currency=USD"></script>
 
 <script>

@@ -12,3 +12,4 @@
     <script src="<?= base_url('assets/js/menu.js') ?>"></script>  
     <script src="<?= base_url('assets/js/revisar_citas.js') ?>"></script>  
     <script src="<?= base_url('assets/js/calendario.js') ?>"></script>  
+    <script src="<?= base_url('assets/js/H_editar.js') ?>"></script>  

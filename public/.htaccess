@@ -10,7 +10,7 @@ Options -Indexes
     RewriteEngine On
 
     # Esta línea es la que soluciona tu problema en subcarpetas
-    RewriteBase /ucot/public/
+   RewriteBase /UCOT/public/
 
     # Redirect Trailing Slashes...
     RewriteCond %{REQUEST_FILENAME} !-d

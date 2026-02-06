@@ -19,8 +19,7 @@ function togglePassword() {
     }
 }
 
-// Asegúrate de que el botón en tu HTML sea así:
-// <button type="submit" id="btn-submit" class="btn btn-success" disabled>ACTUALIZAR</button>
+
 
 function validarCoincidencia() {
     const password = document.getElementById('password');
@@ -47,12 +46,12 @@ function validarCoincidencia() {
         matchIcon.className = "fas fa-check-circle text-success";
         matchFeedback.innerText = "Las contraseñas coinciden";
         matchFeedback.style.color = "#198754";
-        if(btnSubmit) btnSubmit.disabled = false; // Habilita el botón si coinciden
+        if(btnSubmit) btnSubmit.disabled = false; 
     } else {
         matchIcon.className = "fas fa-times-circle text-danger";
         matchFeedback.innerText = "Las contraseñas no coinciden";
         matchFeedback.style.color = "#dc3545";
-        if(btnSubmit) btnSubmit.disabled = true; // Deshabilita si no coinciden
+        if(btnSubmit) btnSubmit.disabled = true; 
     }
 }
 

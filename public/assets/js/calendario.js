@@ -4,7 +4,7 @@ const grid = document.getElementById('calendarGrid');
         for (let h = 0; h < 24; h++) {
             const label = document.createElement('div');
             label.className = 'time-label';
-            label.style.gridRow = h + 2; // +2 porque la fila 1 es la de los días
+            label.style.gridRow = h + 2; 
             label.textContent = h === 12 ? "12 PM" : h > 12 ? (h-12) + " PM" : h === 0 ? "12 AM" : h + " AM";
             grid.appendChild(label);
         }

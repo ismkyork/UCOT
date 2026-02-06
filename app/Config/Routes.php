@@ -34,6 +34,7 @@ $routes->get('alumno/feedback', 'Alumno::feedback');
 $routes->post('alumno/feedback/guardar', 'Alumno::guardar');
 
 
+
 $routes->get('alumno/inicio_alumno', 'Alumno::inicio_alumno'); 
 $routes->get('/alumno/pago_estatico/(:num)', 'Alumno::pago_estatico/$1');
 $routes->get('/alumno/pago_estatico', 'Alumno::pago_estatico');

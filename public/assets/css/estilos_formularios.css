@@ -1,4 +1,4 @@
-/* PALETA UCOT - DISEÑO REDONDEADO PROFESIONAL */
+/* PALETA UCOT - */
 :root {
     --ucot-cian: #33C2D1;
     --ucot-negro: #212529;
@@ -12,7 +12,7 @@ Formularios
 .card-personalizada {
     background-color: #ffffff !important;
     border: 1px solid #e3e8ee !important;
-    border-radius: 20px !important; /* REDONDEADO */
+    border-radius: 20px !important; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
     padding: 20px !important;
     overflow: hidden;
@@ -28,7 +28,7 @@ Formularios
 
 /* Inputs: Redondeados y cómodos */
 .form-control-personalizado {
-    border-radius: 12px !important; /* REDONDEADO */
+    border-radius: 12px !important; 
     border: 1px solid #d1d3e2 !important;
     padding: 12px 15px !important;
     transition: all 0.3s ease;
@@ -43,7 +43,7 @@ Formularios
   Botones
 =========================================*/
 .btn-redondeado {
-    border-radius: 50px !important; /* Estilo píldora */
+    border-radius: 50px !important; 
     padding: 10px 25px !important;
     font-weight: 700 !important;
     text-transform: uppercase;
@@ -96,7 +96,7 @@ Formularios
 .card-footer-limpio {
     background: #f8f9fa !important;
     border-top: 1px solid #eee !important;
-    border-radius: 0 0 20px 20px !important; /* Redondeado solo abajo */
+    border-radius: 0 0 20px 20px !important; 
     padding: 15px !important;
 }
 
@@ -111,7 +111,7 @@ Formularios
     padding: 6px 12px;
     font-size: 0.75rem;
     font-weight: 700;
-    border-radius: 50px !important; /* Estilo píldora */
+    border-radius: 50px !important; 
     text-transform: uppercase;
 }
 
@@ -127,14 +127,14 @@ Formularios
 
 .table-personalizada {
     border-radius: 15px !important;
-    overflow: hidden; /* Crucial para que las esquinas del thead no tapen el radio */
+    overflow: hidden; 
     border: 1px solid #e3e8ee !important;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
     background-color: white;
 }
 
 .table-personalizada thead {
-    background-color: var(--ucot-negro) !important; /* Negro institucional */
+    background-color: var(--ucot-negro) !important; 
     color: white !important;
 }
 
@@ -156,14 +156,14 @@ Formularios
 
 /* Estilo para los inputs dentro de la tabla */
 .form-control-tabla {
-    border-radius: 10px !important; /* Redondeado suave */
+    border-radius: 10px !important; 
     border: 1px solid #d1d3e2;
     padding: 8px 12px !important;
     transition: all 0.3s ease;
 }
 
 .form-control-tabla:focus {
-    border-color: var(--ucot-cian) !important; /* Cambio de verde a Cian */
+    border-color: var(--ucot-cian) !important;
     box-shadow: 0 0 0 0.2rem rgba(51, 194, 209, 0.15);
     outline: none;
 }
@@ -173,11 +173,11 @@ Formularios
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: var(--ucot-cian); /* Ahora marca en Cian */
+    accent-color: var(--ucot-cian); 
 }
 
 /* Fila interactiva (opcional pero recomendado) */
 .table-personalizada tbody tr:hover {
-    background-color: rgba(51, 194, 209, 0.03); /* Un toque cian muy leve al pasar el mouse */
+    background-color: rgba(51, 194, 209, 0.03); 
     transition: background-color 0.2s ease;
 }
