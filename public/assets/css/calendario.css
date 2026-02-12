@@ -1,55 +1,280 @@
-/*=========================================
-     CALENDARIO
-=========================================*/
+   :root {
+        --ucot-cian: #33C2D1;
+        --ucot-azul-menu: #2196F3; /* Azul vibrante tipo Material Design */
+        --ucot-negro: #1a1a1a;
+        --ucot-gris-claro: #f8f9fa;
+        --ucot-borde: #dee2e6;
+    }
 
-.calendar-container {
-    display: flex;
-    font-family: 'Roboto', sans-serif;
-    gap: 10px;
-    padding: 10px;
+    /* --- ESTILOS GENERALES --- */
+    .horario-card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        overflow-x: auto;
+    }
+
+    /* --- NAVEGACIÓN --- */
+    .nav-calendario {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .btn-nav {
+        background: white;
+        border: 1px solid var(--ucot-borde);
+        padding: 6px 18px;
+        border-radius: 20px;
+        color: var(--ucot-negro);
+        transition: 0.2s;
+        font-weight: 600;
+    }
+    .btn-nav:hover:not(:disabled) {
+        background: var(--ucot-gris-claro);
+        border-color: var(--ucot-cian);
+        color: var(--ucot-cian);
+    }
+    .btn-nav:disabled {
+        background-color: #f5f5f5;
+        color: #ccc;
+        border-color: #eee;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .fecha-titulo {
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: var(--ucot-negro);
+        text-transform: capitalize;
+    }
+
+    /* --- GRID --- */
+    .grid-calendario {
+        display: grid;
+        grid-template-columns: 80px repeat(7, minmax(130px, 1fr));
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--ucot-borde);
+        background-color: var(--ucot-borde);
+        gap: 1px;
+    }
+
+    .grid-celda {
+        background-color: #fff;
+        min-height: 60px;
+        position: relative;
+        font-size: 0.9rem;
+    }
+
+    /* --- ENCABEZADOS DE DÍA --- */
+    .header-columna {
+        background-color: var(--ucot-gris-claro);
+        color: var(--ucot-negro);
+        text-align: center;
+        padding: 10px 5px;
+        border-bottom: 3px solid var(--ucot-cian);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+        position: relative; /* Para el z-index de la pastilla */
+    }
+    
+    .dia-nombre {
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        margin-bottom: 2px;
+        z-index: 2;
+    }
+    .dia-numero {
+        font-size: 1.4rem;
+        font-weight: 300;
+        line-height: 1;
+        z-index: 2;
+    }
+
+    /* --- ESTILO PASTILLA PARA "HOY" --- */
+    .header-columna.es-hoy {
+        background-color: transparent !important; /* El fondo lo da el pseudo-elemento o el estilo directo */
+        border-bottom-color: var(--ucot-azul-menu);
+    }
+    /* Usamos un contenedor interno o estilo directo para simular la pastilla flotante */
+    .header-columna.es-hoy .contenido-header {
+        background-color: var(--ucot-azul-menu);
+        color: white;
+        border-radius: 50px; /* Forma de pastilla */
+        padding: 5px 20px;
+        box-shadow: 0 4px 6px rgba(33, 150, 243, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+    }
+    .header-columna.es-hoy .dia-nombre,
+    .header-columna.es-hoy .dia-numero {
+        color: white !important;
+    }
+
+    /* Columna Hora */
+    .columna-hora {
+        background-color: #fff;
+        color: var(--ucot-cian);
+        font-weight: 800;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.75rem;
+    }
+
+    /* Separadores */
+    .separador-turno {
+        grid-column: 1 / -1;
+        background-color: var(--ucot-negro);
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 6px;
+        padding: 6px 0;
+        font-size: 0.85rem;
+    }
+
+    /* Celdas Interactivas */
+    .celda-interactiva {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        z-index: 1; 
+    }
+    .celda-interactiva:hover {
+        background-color: rgba(51, 194, 209, 0.1);
+    }
+
+    /* --- CELDA DESACTIVADA (PASADO) --- */
+    .celda-pasada {
+        background-color: #f4f4f4;
+        cursor: not-allowed !important;
+        opacity: 0.5;
+        /* Patrón rayado sutil */
+        background-image: repeating-linear-gradient(
+            45deg,
+            #eeeeee,
+            #eeeeee 10px,
+            #f4f4f4 10px,
+            #f4f4f4 20px
+        );
+        color: #bbb;
+    }
+    .celda-pasada:hover {
+        background-color: #f4f4f4; /* Sin efecto hover */
+    }
+
+    /* Ajuste para que la pastilla acepte contenido dinámico del JS */
+    .materia-asignada {
+        /* Quitamos el background-color fijo para que mande el style del JS */
+        color: white; 
+        width: 98%; 
+        height: 95%; 
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: transform 0.1s ease;
+    }
+
+    /* El texto de "En Proceso" necesita letras oscuras para contraste sobre amarillo */
+    .celda-interactiva[data-estado="Pendiente"] .materia-asignada {
+        color: #212529 !important;
+    }
+
+    .materia-asignada small {
+        display: block;
+        text-transform: capitalize;
+    }
+    /* --- LÍNEA DE TIEMPO ROJA --- */
+    .linea-tiempo {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #FF4444;
+        z-index: 10;
+        pointer-events: none;
+    }
+    .linea-tiempo::before {
+        content: '';
+        position: absolute;
+        left: -5px;
+        top: -4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #FF4444;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+
+    /* --- PERSONALIZACIÓN SWEETALERT UCOT --- */
+.swal2-popup {
+    border-radius: 1.5rem !important; /* Bordes muy redondeados (24px) */
+    padding: 2rem !important;         /* Más espacio interno */
+    border: none !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; /* Sombra suave */
 }
 
-.sidebar { width: 250px; }
-
-.calendar-grid {
-    display: grid;
-    flex-grow: 1;
-    /* 1 columna para horas + 7 para días */
-    grid-template-columns: 80px repeat(7, 1fr);
-    /* 1 fila para cabecera + 24 para horas */
-    grid-template-rows: 40px repeat(24, 50px);
-    border: 1px solid #ddd;
-    background-color: white;
+.swal2-title {
+    font-size: 1.5rem !important;
+    color: #333 !important;
+    font-weight: 700 !important;
 }
 
-.day-header {
-    border-bottom: 1px solid #ddd;
-    border-left: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: #70757a;
+.swal2-html-container {
+    font-size: 1rem !important;
+    color: #6c757d !important;
 }
 
-.time-label {
-    grid-column: 1;
-    text-align: right;
-    padding-right: 10px;
-    font-size: 0.7rem;
-    color: #70757a;
-    border-bottom: 1px solid #eee;
+.swal2-actions {
+    margin-top: 1.5rem !important;
 }
 
-/* Tarjeta azul tipo Google */
-.event-card {
-    background-color: #e8f0fe;
-    color: #1a73e8;
-    border-left: 4px solid #1a73e8;
-    border-radius: 4px;
-    margin: 2px;
-    padding: 5px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    z-index: 5;
+/* Animación suave para los botones */
+.swal2-confirm, .swal2-cancel {
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+.swal2-confirm:hover, .swal2-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+
+/* Bloque que aún no se ha guardado en la BD */
+.celda-interactiva.ocupado:not([data-id-db]) .materia-asignada {
+    background-color: #71dd37 !important; /* Un verde más brillante/claro */
+    border: 2px dashed rgba(255,255,255,0.5);
+    opacity: 0.9;
+}
+
+/* Animación para indicar que es un cambio nuevo */
+.celda-interactiva.ocupado:not([data-id-db]) {
+    animation: pulse-new 1.5s infinite;
+}
+
+@keyframes pulse-new {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
 }

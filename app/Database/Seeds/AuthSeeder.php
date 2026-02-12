@@ -9,18 +9,14 @@ class AuthSeeder extends Seeder
     public function run()
     {
         $data = [
-            [
-                'email'    => 'admin@prueba.com',
-                'password' => password_hash('123456', PASSWORD_DEFAULT),
-                'rol'      => 'Profesor',
-            ],
-            [
-                'email'    => 'cliente@prueba.com',
-                'password' => password_hash('123456', PASSWORD_DEFAULT),
-                'rol'      => 'Estudiante',
-            ],
+            'correo'      => 'profesor@profesor2.com',
+            'contraseña'  => password_hash('123456', PASSWORD_DEFAULT),
+            'rol'         => 'Profesor',
+            'status'      => 'active',
+            
         ];
 
-        $this->db->table('auth')->insertBatch($data);
+        // Inserta los datos en la tabla 'auth'
+        $this->db->table('auth')->insert($data);
     }
 }

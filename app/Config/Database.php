@@ -28,7 +28,7 @@ class Database extends Config
     'DSN'          => '',
     'hostname'     => 'localhost',
     'username'     => 'root',    // <-- Agrega 'root'
-    'password'     => '0000',        // <-- Agrega tu contraseña (o vacío en XAMPP)
+    'password'     => '123456',        // <-- Agrega tu contraseña (o vacío en XAMPP)
     'database'     => 'ucot',    // <-- Agrega 'ucot'
     'DBDriver'     => 'MySQLi',
     'DBPrefix'     => '',

@@ -4,6 +4,22 @@ function validarSoloLetras(input) {
     input.value = input.value.replace(regex, "");
 }
 
+function togglePasswordById(inputId, iconElement) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        if (input.type === "password") {
+            input.type = "text";
+            iconElement.classList.remove('fa-eye');
+            iconElement.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            iconElement.classList.remove('fa-eye-slash');
+            iconElement.classList.add('fa-eye');
+        }
+    } else {
+        console.error("No se encontró el input con ID:", inputId);
+    }
+}
 // Función genérica para mostrar/ocultar contraseña 
 function togglePassword() {
     const passInput = document.getElementById('password');
@@ -19,22 +35,21 @@ function togglePassword() {
     }
 }
 
-// Asegúrate de que el botón en tu HTML sea así:
-// <button type="submit" id="btn-submit" class="btn btn-success" disabled>ACTUALIZAR</button>
+
 
 function validarCoincidencia() {
     const password = document.getElementById('password');
     const confirmPassword = document.getElementById('confirm_password');
     const matchIcon = document.getElementById('match-icon');
     const matchFeedback = document.getElementById('match-feedback');
-    const btnSubmit = document.getElementById('btn-submit');
+    const btnSubmit = document.querySelector('button[type="submit"]'); // Asegúrate que seleccione tu botón
 
     if (!password || !confirmPassword || !matchIcon || !matchFeedback) return;
 
     const val1 = password.value;
     const val2 = confirmPassword.value;
 
-    // Si el segundo campo está vacío, reseteamos el estado
+    // Si el campo de confirmación está vacío
     if (val2.length === 0) {
         matchIcon.className = "fas fa-lock text-muted";
         matchFeedback.innerText = "";
@@ -42,17 +57,26 @@ function validarCoincidencia() {
         return;
     }
 
-    // Validación de coincidencia
-    if (val1 === val2 && val1.length > 0) {
+    // RESTRICCIÓN: Deben coincidir Y tener entre 6 y 15 caracteres
+    const longitudValida = val1.length >= 6 && val1.length <= 15;
+    const coinciden = val1 === val2;
+
+    if (coinciden && longitudValida) {
         matchIcon.className = "fas fa-check-circle text-success";
         matchFeedback.innerText = "Las contraseñas coinciden";
         matchFeedback.style.color = "#198754";
-        if(btnSubmit) btnSubmit.disabled = false; // Habilita el botón si coinciden
+        if(btnSubmit) btnSubmit.disabled = false; 
     } else {
         matchIcon.className = "fas fa-times-circle text-danger";
-        matchFeedback.innerText = "Las contraseñas no coinciden";
         matchFeedback.style.color = "#dc3545";
-        if(btnSubmit) btnSubmit.disabled = true; // Deshabilita si no coinciden
+        
+        if (!coinciden) {
+            matchFeedback.innerText = "Las contraseñas no coinciden";
+        } else if (!longitudValida) {
+            matchFeedback.innerText = "La contraseña debe tener entre 6 y 15 caracteres";
+        }
+        
+        if(btnSubmit) btnSubmit.disabled = true; 
     }
 }
 
@@ -72,4 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBtnAux.onclick = cerrar;
         window.onclick = (e) => { if (e.target === modal) cerrar(); };
     }
+});
+/*popover*/ 
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar todos los popovers de la página
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+            trigger: 'focus' // Esto hace que se cierre al hacer clic fuera
+        })
+    })
 });

@@ -5,9 +5,9 @@
     <header class="header-ucot py-3 bg-white shadow-sm">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="logo-seccion d-flex align-items-center">
-            <img src="<?= base_url('assets/images/UCOT-Original.svg') ?>" alt="UCOT" style="height: 40px; margin-right: 10px;">
+            <img src="<?= base_url('assets/images/UCOT-Original.svg') ?>" alt="UCOT" style="height: 65px; margin-right: 5px;">
                 <span class="separador">|</span>
-                <span class="modulo-texto text-uppercase">Gestión de Citas académicas</span>
+                <span class="modulo-texto text-uppercase">UCOT - U Class On Time</span>
             </div>
         </div>
     </header>

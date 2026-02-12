@@ -1,6 +1,6 @@
 :root {
-    --ucot-blue: #3b82f6; /* El azul del logo UCOT */
-    --sidebar-bg: #1e1e2f; /* El tono oscuro azulado */
+    --ucot-blue: #3b82f6; 
+    --sidebar-bg: #1e1e2f; 
     --sidebar-width: 280px;
     --sidebar-compact-width: 80px;
     --transition-speed: 0.3s;
@@ -11,11 +11,12 @@
   ESTRUCTURA GENERAL
 =========================================*/
 body {
-    background-color: #f4f7fa; /* Fondo gris muy claro */
+    background-color: #f4f7fa; 
     color: #2e3748;
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 .main-wrapper-ucot {
@@ -24,68 +25,182 @@ body {
     min-height: 100vh;
 }
 
+.texto-animado {
+    background: linear-gradient(
+        to right, 
+        #10b981, /* Verde Esmeralda */
+        #33C2D1, /* Cian UCOT */
+        #a3e635, /* Lima Brillante */
+        #10b981  /* Cierre en Verde */
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s ease-in-out infinite;
+    font-weight: 700;
+}
+
+@keyframes shine {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
 /*=========================================
-  SIDEBAR (MENÚ IZQUIERDO)
+  SIDEBAR (CONTENEDOR)
 =========================================*/
 .sidebar-ucot {
     width: var(--sidebar-width);
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     height: 100vh;
     background-color: var(--sidebar-bg);
     z-index: 1000;
     display: flex;
     flex-direction: column;
+    padding: 0 !important;
     transition: width var(--transition-speed) var(--transition-curve);
-    overflow-x: visible !important;
+    overflow: hidden;
+    align-items: flex-start !important; /* SIEMPRE alineado a la izquierda */
 }
-.sidebar-ucot, 
+
 .content-area-ucot {
-    transition: all 0.3s ease-in-out;
-}
-
-/* Rotación del icono (opcional en lugar de cambiar la clase) */
-#icono-flecha {
-    transition: transform 0.3s ease;
-}
-
-.sidebar-compacto #icono-flecha {
-    transform: rotate(180deg); /* Si prefieres rotar en vez de cambiar el icono */
-}
-
-/* Elementos del Menú */
-.nav-list {
-    padding: 0;
-    list-style: none;
-}
-.nav-section-label {
-    padding: 25px 30px 10px;
-    font-size: 0.7rem;
-    color: #6c757d;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-}
-
-.nav-item-link {
-    border-radius: 50px !important; 
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    background-color: #ffffff;
+    border-radius: 40px 0 0 40px; 
+    min-height: 100vh;
+    padding: 0 !important;
     
-    margin: 5px 12px !important;
-    padding: 12px !important;
+    /* CAMBIO IMPORTANTE: Visible para no cortar el menú desplegable */
+    overflow: visible !important; 
+    
+    display: flex;
+    flex-direction: column;
+    transition: margin-left var(--transition-speed) var(--transition-curve);
+    z-index: 5;
+}
+
+/*=========================================
+  CABECERA (BOTÓN + TÍTULO)
+=========================================*/
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80px; /* Altura fija */
+    min-height: 80px;
+    padding: 0; /* El padding lo manejan los hijos */
+    box-sizing: border-box;
+}
+
+/* 1. EL BOTÓN PALANCA */
+.toggle-btn {
+    /* Tamaño fijo */
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    
+    /* POSICIÓN EXACTA: 19px a la izquierda */
+    margin: 0 0 0 19px !important; 
+    
     display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important; 
-    gap: 15px !important;
-    min-height: 48px;
-    text-decoration: none !important; /* Asegura que no haya subrayados */
-    color: #c4c7c5; /* Color base del texto */
+    align-items: center;
+    justify-content: center;
+    
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 12px !important;
+    border: none;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
+.toggle-btn:hover {
+    background-color: var(--ucot-blue);
+}
+
+/* Rotación del icono */
+#icono-flecha {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+}
+
+/* 2. EL TÍTULO "MENÚ PRINCIPAL" */
+.menu-label-header {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 15px; /* Separación del botón */
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+/*=========================================
+  CUERPO DEL MENÚ (LINKS)
+=========================================*/
+.sidebar-main-nav {
+    width: 100%;
+    flex: 1; /* Ocupa el espacio disponible */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.nav-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+}
+
+/* =========================================
+   ESTADO NORMAL (ABIERTO)
+   ========================================= */
+
+.nav-item-link {
+    /* Posición externa */
+    margin: 5px 0 5px 19px !important;
+    width: calc(100% - 38px) !important;
+    
+    /* CAMBIO CLAVE 1: Altura Fija igual al modo cerrado */
+    height: 42px !important; 
+    min-height: 42px !important;
+    
+    /* CAMBIO CLAVE 2: Quitamos padding vertical (arriba/abajo) */
+    /* Dejamos solo los 10px a la izquierda para separar el ícono del borde */
+    padding: 0 0 0 10px !important; 
+    
+    /* Alineación Perfecta */
+    display: flex !important;
+    align-items: center !important; /* Esto centra verticalmente el ícono y texto */
+    justify-content: flex-start !important; 
+    gap: 0 !important;
+    
+    /* Forma */
+    border-radius: 50px !important; 
+    
+    /* Estilos */
+    text-decoration: none !important;
+    color: #c4c7c5;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+/* Opcional: Si quieres que el botón de cerrar menú también sea redondo */
+.toggle-btn {
+    /* ... resto de propiedades ... */
+    border-radius: 50%; /* Esto lo hará un círculo perfecto */
+}
+
+/* 4. ESTADO ACTIVO (Abierto) */
 .nav-item-link.active {
     background-color: var(--ucot-blue) !important;
     color: #ffffff !important;
-    border-radius: 50px !important; 
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
 }
 
@@ -93,260 +208,172 @@ body {
     background-color: rgba(255, 255, 255, 0.08) !important;
     color: #ffffff !important;
 }
+
+/* EL ICONO DENTRO DEL LINK */
 .nav-item-link i {
-    min-width: 25px !important; /* Ancho fijo para el icono */
-    font-size: 1.2rem !important;
-    display: flex !important;
+    /* ANCHO FIJO: Reservamos 42px para el icono */
+    /* Esto hace que el texto siempre empiece en el mismo lugar */
+    min-width: 42px !important; 
+    width: 42px !important; 
+    height: 24px;
+    
+    /* Centrar el dibujo del icono DENTRO de su espacio reservado */
+    display: flex;
     justify-content: center !important;
+    align-items: center !important;
+    
+    font-size: 1.2rem;
+    margin: 0 !important;
 }
-
-.nav-item-link:hover, .nav-item-link.active {
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.sidebar-ucot span {
-    white-space: nowrap;
+/* 3. EL TEXTO (LADO DERECHO) */
+.nav-item-link span {
+    /* Un pequeño margen para separarlo del área del icono */
+    margin-left: 5px; 
     opacity: 1;
     transition: opacity 0.2s ease;
 }
 
-/* Botón de deslizar interno */
-.toggle-btn {
-    position: relative !important; 
-    left: 0 !important;
-    right: 0 !important;
-    top: 0 !important;
-    margin: 15px auto !important; /* Centrado automático horizontal */
-    width: 42px !important;  /* Tamaño aumentado */
-    height: 42px !important; /* Tamaño aumentado */
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    border-radius: 10px !important; /* Cuadrado con bordes suaves */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    border: none !important;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-.toggle-btn i {
-    font-size: 1.2rem !important; /* Icono más visible */
-}
-
-.toggle-btn:hover {
-    background-color: var(--ucot-blue) !important;
-}
-
-.sidebar-compacto .logo-wrapper {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px 0;
-    justify-content: center;
-}
-
-/* Mantener la posición cuando el menú se encoge */
-.sidebar-compacto .toggle-btn {
-    margin: 0 auto;
-}
-
 /*=========================================
-  CONTENIDO (HOJA BLANCA)
-=========================================*/
-.content-area-ucot {
-    flex: 1;
-    margin-left: var(--sidebar-width);
-    background-color: #ffffff;
-    border-radius: 40px 0 0 40px; /* Efecto de hoja redondeada */
-    min-height: 100vh;
-    padding: 40px;
-    transition: margin-left var(--transition-speed) var(--transition-curve);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
-    z-index: 5;
-}
-
-/*=========================================
-  ESTADOS COLAPSADOS (JS)
-=========================================*/
-.sidebar-compacto {
-    width: var(--sidebar-compact-width) !important;
-}
-.sidebar-compacto .toggle-btn {
-    margin: 0 auto;
-}
-
-.sidebar-compacto span {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.content-area-ucot.expandido {
-    margin-left: var(--sidebar-compact-width);
-}
-
-.sidebar-compacto .user-info-text,
-.sidebar-compacto .arrow-icon,
-.sidebar-compacto .nav-section-label {
-    display: none;
-}
-
-.sidebar-compacto .profile-btn {
-   justify-content: center !important;
-    padding: 12px 0 !important;
-    width: 50px; /* Tamaño reducido para modo compacto */
-    margin: 0 auto;
-}
-
-.sidebar-compacto .profile-btn i:first-child {
-    margin: 0;
-    font-size: 1.3rem;
-}
-
-.sidebar-compacto .nav-item-link {
-    margin: 5px 10px !important;
-    justify-content: center !important; /* Centra solo en modo pequeño */
-    padding: 12px 0 !important;
-}
-
-.sidebar-compacto .nav-item-link i {
-    margin: 0 !important; /* Evita desplazamientos extra */
-}
-
-.sidebar-compacto .nav-item-link span, 
-.sidebar-compacto .nav-section-label,
-.sidebar-compacto .user-info-text,
-.sidebar-compacto .arrow-icon {
-    display: none; /* Esconde texto en modo pequeño */
-}
-
-/*=========================================
-  COMPONENTES VISUALES (HEADER & INICIO)
-=========================================*/
-
-.logo-wrapper {
-    display: flex;
-    flex-direction: column; /* Botón y logo en columna para centrar mejor */
-    align-items: center;
-    padding: 20px 10px;
-    gap: 10px;
-}
-
-.sidebar-compacto .brand-name-img,
-.sidebar-compacto .nav-section-label {
-    display: none !important;
-}
-
-.logo-img-icon {
-    display: block !important; /* Asegura que no esté oculto */
-    width: 40px !important;    /* Dale un ancho fijo para probar */
-    height: 40px !important;   /* Dale un alto fijo para probar */
-    min-width: 40px;
-    min-height: 40px;
-    background-color: transparent; /* Por si el fondo es igual al logo */
-}
-
-.brand-name-img {
-    width: 100px; /* Ajusta según el espacio disponible */
-    height: auto;
-}
-
-/* Ocultar el texto cuando el menú esté colapsado (como en tu imagen 2) */
-#sidebar.collapsed .brand-name-img {
-    display: none;
-}
-
-
-
-.logo-texto {
-    font-weight: 800;
-    font-size: 1.5rem;
-    color: var(--ucot-blue);
-    letter-spacing: -1px;
-}
-
-.modulo-texto {
-    color: #697386;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.texto-animado {
-    font-size: 4rem;
-    font-weight: bold;
-    background: linear-gradient(to right, #ff8000, #0000ff , #ff8000);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: gradiente-movil 3s linear infinite;
-    display: inline-block;
-}
-
-@keyframes gradiente-movil {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-.footer-personalizado {
-    background-color: #ffffff;
-    color: #697386 !important;
-    padding: 1.5rem 0;
-    border-top: 1px solid #e3e8ee;
-    width: 100%;
-}
-
-/*=========================================
-  FOOTER Y PERFIL DROPDOWN
+  FOOTER (PERFIL)
 =========================================*/
 .sidebar-footer {
-    padding: 20px 15px;
+    padding: 20px 0 !important;
+    width: 100%;
     margin-top: auto;
-    position: relative; /* Referencia para el dropdown */
 }
 
 .profile-btn {
-    width: 100%;
+    /* Misma lógica de alineación */
+    margin-left: 19px !important;
+    width: calc(100% - 38px) !important;
+    
+    padding: 10px 0 !important;
+    display: flex;
+    align-items: center;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 10px;
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .profile-btn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
+.profile-btn i:first-child {
+    min-width: 42px !important; /* Icono alineado con todo lo demás */
+    display: flex;
+    justify-content: center;
+}
+
 .user-info-text {
+    margin-left: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 10px;
-    flex-grow: 1;
+    white-space: nowrap;
 }
 
-.user-name {
-    font-size: 0.85rem;
-    font-weight: 600;
+.user-name { font-size: 0.85rem; font-weight: 600; }
+.user-role-label { font-size: 0.7rem; color: #888; }
+.arrow-icon { margin-left: auto; padding-right: 10px; }
+
+/*=========================================
+  ESTADO COMPACTO (CERRADO)
+=========================================*/
+.sidebar-compacto {
+    width: var(--sidebar-compact-width) !important; /* 80px */
 }
 
-.user-role-label {
-    font-size: 0.7rem;
-    color: #888;
+
+/* Asegurar que el icono no tenga comportamiento extraño en compacto */
+.sidebar-compacto .nav-item-link i {
+    /* Quitamos el ancho mínimo que tiene en modo abierto */
+    min-width: auto !important; 
+    width: auto !important;
+    
+    /* Centrado y tamaño */
+    margin: 0 !important;
+    font-size: 1.2rem !important; /* Ajusta este tamaño si los quieres más grandes */
+    
+    /* Aseguramos que el flex interno del icono también centre */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Contenedor que sale hacia arriba */
+/* 3. ESTADO ACTIVO (La bola azul) */
+.sidebar-compacto .nav-item-link.active {
+    background-color: var(--ucot-blue) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4) !important;
+}
+
+.content-area-ucot.expandido {
+    margin-left: var(--sidebar-compact-width);
+}
+
+/* 4. ELEMENTOS OCULTOS */
+.sidebar-compacto .menu-label-header,
+.sidebar-compacto .nav-item-link span,
+.sidebar-compacto .user-info-text,
+.sidebar-compacto .arrow-icon {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 2. ROTAR FLECHA */
+.sidebar-compacto #icono-flecha {
+    transform: rotate(180deg);
+}
+
+/* 3. AJUSTE DE ANCHOS (Pero manteniendo la posición izquierda) */
+/* Al cerrar, el margen izquierdo sigue siendo 19px, pero el ancho se reduce a 42px */
+
+.sidebar-compacto .toggle-btn {
+    margin-left: 19px !important; /* NO TOCAR: Se mantiene fijo */
+}
+
+.sidebar-compacto .nav-item-link {
+    /* Dimensiones fijas para crear el cuadrado/círculo perfecto */
+    width: 42px !important; 
+    height: 42px !important;
+    
+    /* Posición exacta: 19px a la izquierda (igual que el botón de arriba) */
+    margin-left: 19px !important; 
+    
+    /* CENTRADO PERFECTO */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* <--- ESTA ES LA CLAVE */
+    
+    /* Eliminamos cualquier relleno que empuje el contenido */
+    padding: 0 !important;
+    
+    /* Aseguramos la forma redondeada */
+    border-radius: 50% !important; 
+}
+
+.sidebar-compacto .profile-btn {
+    width: 42px !important;
+    margin-left: 19px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+}
+
+.sidebar-compacto .profile-btn i:first-child {
+    min-width: auto !important;
+    margin: 0 !important;
+}
+
+/* Estilos adicionales para dropdowns, scrollbars, etc. */
 .dropdown-content {
-    display: none; /* Lo activa el JS */
+    display: none; 
     position: absolute;
-    bottom: 80px;  /* Ajustado para que flote sobre el botón */
+    bottom: 80px;  
     left: 15px;
     right: 15px;
     background: #252538;
@@ -365,9 +392,238 @@ body {
     font-size: 0.9rem;
     text-decoration: none;
 }
+.dropdown-item:hover { background: var(--ucot-blue); color: white; }
 
-.dropdown-item:hover {
-    background: var(--ucot-blue);
-    color: white;
+
+/*=========================================
+  HEADER SUPERIOR (ESTILO MAIN_2)
+=========================================*/
+.top-header-ucot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    height: 80px;
+    min-height: 80px;
+    padding: 0 40px;
+    border-bottom: 1px solid #eaecf0;
+    margin-bottom: 0;
+    
+    /* Z-INDEX ALTO para quedar encima del contenido al desplegar */
+    position: relative;
+    z-index: 100; 
 }
+
+/* Ajuste para que el Logo se vea bien */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Ajuste para que el texto del logo no se rompa */
+.header-left img {
+    height: 70px; /* Tamaño controlado del logo */
+    width: auto;
+}
+ 
+.titulo-sistema {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border-left: 1px solid #ccc;
+    padding-left: 15px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+}
+
+/* Botón de Perfil */
+.btn-perfil-header {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    padding: 4px 4px 4px 16px;
+    border-radius: 12px; /* Estilo Squircle moderno */
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-perfil-header:hover, 
+.btn-perfil-header[aria-expanded="true"] {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.nombre-user {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1a202c;
+    line-height: 1.2;
+}
+
+.rol-user {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+.avatar-wrapper {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    margin-left: 12px;
+}
+
+.avatar-wrapper img, 
+.avatar-initials {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px; /* Cuadrado redondeado */
+    object-fit: cover;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.avatar-initials {
+    background: #f1f5f9;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    background-color: #10b981;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+.profile-dropdown {
+    border-radius: 12px !important;
+    padding: 8px !important;
+    min-width: 240px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+    background: #ffffff !important;
+    margin-top: 10px !important;
+}
+
+.dropdown-header-custom {
+    padding: 12px 16px;
+}
+
+.profile-dropdown .dropdown-item {
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.profile-dropdown .dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    transform: translateX(4px);
+}
+
+/* Iconos de apoyo */
+.icon-circle-small {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    background: #f8fafc;
+    color: #64748b;
+    border: 1px solid #f1f5f9;
+}
+
+.bg-soft-primary { color: #33C2D1; }
+.bg-soft-danger { color: #ef4444; }
+
+.info-texto {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.nombre-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.rol-header {
+    font-size: 0.7rem;
+    color: #888;
+}
+
+/* Círculo del Avatar */
+.avatar-circle {
+    width: 38px;
+    height: 38px;
+    background-color: var(--ucot-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Ajuste del scroll */
+.scroll-content {
+    flex: 1;
+    height: calc(100vh - 80px); 
+    overflow-y: auto;
+    
+    /* ESTO ES LO QUE RECUPERA EL REDONDEADO */
+    background-color: #ffffff; 
+    border-top-left-radius: 40px; /* Ajusta el valor según tu gusto */
+    margin-top: 0;
+    
+    /* Sombra opcional para dar profundidad sobre el menú lateral */
+    box-shadow: -10px 0 20px rgba(0,0,0,0.02);
+}
+
+.scroll-content > .container-fluid {
+    flex: 1; /* Esto hace que ocupe todo el espacio sobrante y empuje el footer */
+    width: 100%;
+    padding: 30px 40px !important; /* Aquí va el relleno que quitamos arriba */
+}
+
+
+
+/*=========================================
+  ESTILO DEL FOOTER
+=========================================*/
+.footer-personalizado {
+    background-color: #ffffff;
+    color: #697386;
+    padding: 20px 0;
+    border-top: 1px solid #eaecf0;
+    width: 100%;
+    
+    /* Asegura que no se monte encima de nada */
+    margin-top: auto; 
+    flex-shrink: 0;
+}
+
+
 

@@ -121,6 +121,12 @@ class Filters extends BaseFilters
   
     'SessionGuard2' => [
         'before' => ['alumno/*']
+    ],
+    'SessionGuard' => [ 
+        'before' => [
+            'admin/*',
+            'admin'
+        ]
     ]
 ];
 }

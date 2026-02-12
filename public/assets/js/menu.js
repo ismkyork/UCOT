@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentArea = document.querySelector('.content-area-ucot'); // Clase exacta de tu CSS
     const iconoFlecha = document.querySelector('#toggleSidebar i');
 
-    // 2. Lógica del Sidebar (Colapso)
+    // 2. Lógica del Sidebar 
     if (btnColapsar) {
         btnColapsar.addEventListener('click', () => {
             // Usamos la clase que tienes en el CSS: .sidebar-compacto
             sidebar.classList.toggle('sidebar-compacto');
             
-            // Usamos la clase que tienes en el CSS: .expandido para el contenido
+            
             if (contentArea) {
                 contentArea.classList.toggle('expandido');
             }

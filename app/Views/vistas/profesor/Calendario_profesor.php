@@ -1,38 +1,57 @@
 <?= $this->extend('Template/main') ?>
-
 <?= $this->section('content') ?>
 
-<div class="container-fluid p-4">
-                    <h1>CALENDARIO</h1>
-
-    <div class="calendar-container">
-            <aside class="sidebar">
-            <h1 class="h3 mb-4 text-gray-800" style="color: var(--ucot-blue);">Reservar Cita</h1>        
-                <form id="eventForm">
-                    <input type="text" id="title" placeholder="Ejemplo: Clase de Arte" required>
-                    <select id="daySelect">
-                        <option value="2">Lunes</option>
-                        <option value="3">Martes</option>
-                        <option value="4">Miércoles</option>
-                        <option value="5">Jueves</option>
-                        <option value="6">Viernes</option>
-                    </select>
-                    <input type="number" id="startHour" placeholder="Hora inicio (0-23)" min="0" max="23" required>
-                    <input type="number" id="duration" placeholder="Duración (horas)" min="1" required>
-                    <button type="submit">Agendar</button>
-                </form>
-            </aside>
-
-            <div class="calendar-grid" id="calendarGrid">
-                <div class="time-label" style="grid-column: 1; grid-row: 1;">GMT-04</div>
-                <div class="day-header" style="grid-column: 2; grid-row: 1;">DOM </div>
-                <div class="day-header active" style="grid-column: 3; grid-row: 1;">LUN 2</div>
-                <div class="day-header" style="grid-column: 4; grid-row: 1;">MAR </div>
-                <div class="day-header" style="grid-column: 5; grid-row: 1;">MIÉ </div>
-                <div class="day-header" style="grid-column: 6; grid-row: 1;">JUE </div>
-                <div class="day-header" style="grid-column: 7; grid-row: 1;">VIE </div>
-                <div class="day-header" style="grid-column: 8; grid-row: 1;">SÁB </div>
-            </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-0" style="color: var(--ucot-negro);">Gestión de Horarios</h3>
+        <p class="text-muted small mb-0">Asigna disponibilidad (solo fechas y horas futuras).</p>
+    </div>
+    
+    <div class="d-flex align-items-center gap-3">
+        <div class="view-switcher shadow-sm">
+            <span class="btn-switch active" title="Ver Calendario Visual">
+                <i class="far fa-calendar-alt"></i>
+            </span>
+            
+            <a href="<?= base_url('profesor/HorarioLeer') ?>" class="btn-switch" title="Ver Lista de Horarios">
+                <i class="fas fa-list-ul"></i>
+            </a>
         </div>
 
+        <button class="btn btn-primary rounded-pill px-4 shadow-sm" style="background-color: var(--ucot-cian); border: none;" onclick="guardarHorario()">
+            <i class="fas fa-save me-2"></i> Guardar
+        </button>
+    </div>
+</div>
+
+<div class="horario-card">
+    <div class="nav-calendario">
+        <div class="btn-group shadow-sm" style="border-radius: 20px;">
+            <button id="btnPrev" class="btn btn-nav" onclick="cambiarSemana(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="btn btn-nav" onclick="irAHoy()">Hoy</button>
+            <button id="btnNext" class="btn btn-nav" onclick="cambiarSemana(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <div class="fecha-titulo" id="lblMesAnio"></div>
+        
+        <div style="width: 100px;"></div> 
+    </div>
+
+    <div id="contenedorGrid" class="grid-calendario">
+    </div>
+</div>
+
+<script>
+    var baseURL = "<?= base_url() ?>";
+    // Convertimos los arrays de PHP a objetos JS
+    var listaSistemas = <?= json_encode($sistemas) ?>;
+    var listaMaterias = <?= json_encode($materias) ?>;
+</script>
+
+<script src="<?= base_url('assets/js/calendario.js') ?>"></script>
 <?= $this->endSection() ?>
+

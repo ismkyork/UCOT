@@ -17,18 +17,18 @@
                                     <div class="form-group mb-4">
                                         <label class="fw-bold mb-2">Correo Electrónico</label>
                                         <input 
-                                        id="email"
-                                        type="email" name="email"
+                                        id="correo"
+                                        type="email" name="correo"
                                         class="form-control form-control-personalizado" 
-                                        placeholder="Ingresa tu email" 
-                                        value="<?= old('email') ?>" required>
+                                        placeholder="Ingresa tu Correo" 
+                                        value="<?= old('correo') ?>" required>
                                     </div>
 
                                    
                                     <div class="form-group mb-4">
-                                            <label for="password" class="fw-bold mb-2">Contraseña</label>
+                                            <label for="contraseña" class="fw-bold mb-2">Contraseña</label>
                                         <div class="position-relative d-flex align-items-center">
-                                            <input type="password" name="password" id="password" 
+                                            <input type="password" name="contraseña" id="password" 
                                                 class="form-control form-control-personalizado" 
                                                 placeholder="Ingresa tu clave" required>
                                             

@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Models;
+
 use CodeIgniter\Model;
 
-class PagoEstaticoModel extends Model {
-    protected $table      = 'pago_estatico';
+class PagoEstaticoModel extends Model 
+{
+    protected $table      = 'pagos';
     protected $primaryKey = 'id_pago';
-    
-    // IMPORTANTE: Si id_pago NO es auto-increment (porque es el nro de referencia manual), 
-    // debemos poner esto en false.
     protected $useAutoIncrement = false; 
+    
+    protected $returnType     = 'array';
 
     protected $allowedFields = [
         'id_pago', 
@@ -19,4 +21,5 @@ class PagoEstaticoModel extends Model {
         'estado_pago', 
         'fecha_confirmacion'
     ];
+    protected $useTimestamps = false; 
 }
