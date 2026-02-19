@@ -27,7 +27,7 @@
     transform: translateY(-2px);
 }
 
-/* Modal Estilo Concepto */
+/* Modal */
 .modal-overlay-concept {
     display: none;
     position: fixed;
@@ -62,12 +62,12 @@
         background-color: #f4f7f6; 
     }
 
-    /* EFECTO GLASSMORPHISM EN TARJETAS */
+    /* EFECTO EN TARJETAS */
     .card-dashboard {
-        background: rgba(255, 255, 255, 0.7) !important; /* Transparencia */
-        backdrop-filter: blur(12px) saturate(180%);     /* Desenfoque de fondo */
+        background: rgba(255, 255, 255, 0.7) !important; 
+        backdrop-filter: blur(12px) saturate(180%);     
         -webkit-backdrop-filter: blur(12px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.4) !important; /* Borde sutil brillante */
+        border: 1px solid rgba(255, 255, 255, 0.4) !important; 
         border-radius: 20px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -118,7 +118,7 @@
     .icon-circle {
         height: 45px;
         width: 45px;
-        border-radius: 12px; /* Estilo moderno squircle */
+        border-radius: 12px; 
         display: flex;
         align-items: center;
         justify-content: center;

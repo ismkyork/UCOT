@@ -245,16 +245,16 @@ class Profesor extends BaseController
         if ($id_horario !== null) {
             $citaModel = new \App\Models\CitaModel();
             
-            // 🔍 VERIFICAR si existen citas asociadas a este horario
+            // VERIFICAR si existen citas asociadas a este horario
             $citasAsociadas = $citaModel->where('id_horario', $id_horario)->countAllResults();
             
             if ($citasAsociadas > 0) {
-                // 🚫 NO se puede eliminar porque ya tiene reservas
+                // NO se puede eliminar porque ya tiene reservas
                 return redirect()->to(base_url('profesor/HorarioLeer'))
                     ->with('error', 'No puedes eliminar este horario porque ya tiene ' . $citasAsociadas . ' cita(s) agendada(s).');
             }
             
-            // ✅ Si no tiene citas, proceder con la eliminación
+            // Si no tiene citas, proceder con la eliminación
             $this->horarioModel->delete($id_horario);
             return redirect()->to(base_url('profesor/HorarioLeer'))
                 ->with('msg', 'Horario Eliminado Correctamente');
@@ -289,7 +289,7 @@ class Profesor extends BaseController
             'horario' => $horario,
             'sistemas' => $sistemas,
             'materias' => $materias,
-            'cuposOcupados' => $cuposOcupados // <--- VARIABLE CLAVE
+            'cuposOcupados' => $cuposOcupados
         ]);
     }
 
@@ -333,7 +333,7 @@ class Profesor extends BaseController
                 $hora_inicio = trim($partes[0]) . ':00';
                 $hora_fin = trim($partes[1]) . ':00';
             } else {
-                // Si no mandó bloque (quizás no cambió el radio), usamos los hidden o los originales
+                // Si no mandó bloque, usamos los hidden o los originales
                 $hora_inicio = $this->request->getPost('hora_inicio');
                 $hora_fin = $this->request->getPost('hora_fin');
                 
@@ -351,7 +351,7 @@ class Profesor extends BaseController
                 ->where('id_profesor', $perfil['id_profesor'])
                 ->where('fecha', $fecha)
                 ->where('hora_inicio', $hora_inicio)
-                ->where('id_horario !=', $id_horario) // <--- ESTO ES CRUCIAL
+                ->where('id_horario !=', $id_horario)
                 ->first();
 
             if ($duplicado) {
@@ -406,9 +406,9 @@ class Profesor extends BaseController
     $citasModel    = new \App\Models\CitaModel();
     $feedbackModel = new \App\Models\FeedbackModel();
     
-    // --- MÉTRICAS ---
+    // --- MÉTRICAS ---  Fernando, quien te enseño esa palabra?
     
-    // Citas de HOY (Sigue siendo solo para el recuadro de hoy)
+    // Citas de HOY 
     $data['total_hoy_confirmadas'] = $citasModel
         ->where('id_profesor', $id_p)
         ->where('DATE(fecha_hora_inicio)', date('Y-m-d'))
@@ -458,7 +458,7 @@ class Profesor extends BaseController
         if (isset($resultado->rates->VES)) $tasa_bcv = $resultado->rates->VES;
     } catch (\Exception $e) { }
     
-    // ACTUALIZACIÓN: Sumamos todas las citas confirmadas del profesor, sin importar el día
+    // Sumamos todas las citas confirmadas del profesor, sin importar el día
     $todas_las_citas = $citasModel
         ->select('citas.*, prof.precio_clase')
         ->join('perfil_profesor prof', 'prof.id_profesor = citas.id_profesor')
@@ -491,9 +491,6 @@ class Profesor extends BaseController
     }
 
     // --- API PARA EL CALENDARIO INTERACTIVO (AJAX) ---
-
-   // En App/Controllers/Profesor.php
-
     public function obtener_horarios_api() {
         $db = \Config\Database::connect();
         $perfil = $db->table('perfil_profesor')->where('id_auth', session()->get('id_auth'))->get()->getRowArray();
@@ -684,7 +681,7 @@ public function enviar_solicitud_retiro()
     $email->setTo('ucot2025@gmail.com');
     $email->setSubject('🧾 NUEVA SOLICITUD DE RETIRO DE FONDOS - UCOT');
     
-    // Construir mensaje HTML profesional
+    // Construir mensaje HTML
     $mensaje = $this->construirEmailRetiro($data);
     $email->setMessage($mensaje);
 
@@ -704,72 +701,11 @@ public function enviar_solicitud_retiro()
         ]);
     }
 }
-
-/**
- * Construye el cuerpo del correo en HTML
- */
 private function construirEmailRetiro($data)
 {
-    $fecha = date('d/m/Y H:i:s');
+    $data['fecha'] = date('d/m/Y H:i:s');
     
-    $html = "<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset='UTF-8'>
-        <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(145deg, #1299f3, #2287e6); color: white; padding: 20px; border-radius: 10px 10px 0 0; }
-            .content { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
-            .footer { background: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #777; border-radius: 0 0 10px 10px; }
-            .label { font-weight: bold; color: #555; }
-            .data { margin-bottom: 15px; padding-left: 15px; }
-            hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h2 style='margin:0;'>💰 Solicitud de Retiro de Fondos</h2>
-                <p style='margin:5px 0 0; opacity:0.9;'>Profesor: {$data['nombre']} {$data['apellido']}</p>
-            </div>
-            <div class='content'>
-                <p style='color: #2256e6; font-weight: bold;'>📅 Fecha de solicitud: {$fecha}</p>
-                <hr>
-                
-                <h3 style='color: #2c3e50;'>👤 DATOS PERSONALES</h3>
-                <div class='data'>
-                    <p><span class='label'>ID Profesor:</span> {$data['id_profesor']}</p>
-                    <p><span class='label'>Correo registrado:</span> {$data['correo']}</p>
-                    <p><span class='label'>Nombre completo:</span> {$data['nombre']} {$data['apellido']}</p>
-                    <p><span class='label'>Cédula:</span> {$data['tipo_cedula']}{$data['cedula']}</p>
-                    <p><span class='label'>Teléfono:</span> {$data['telefono']}</p>
-                </div>
-                
-                <hr>
-                
-                <h3 style='color: #2c3e50;'>🏦 DATOS BANCARIOS</h3>
-                <div class='data'>
-                    <p><span class='label'>Banco:</span> {$data['banco']}</p>
-                    <p><span class='label'>Número de cuenta:</span> {$data['cuenta']}</p>
-                </div>
-                
-                <hr>
-                
-                <h3 style='color: #2c3e50;'>💬 COMENTARIOS</h3>
-                <div class='data'>
-                    <p>{$data['comentarios']}</p>
-                </div>
-            </div>
-            <div class='footer'>
-                <p>Este es un mensaje automático generado desde el sistema UCOT.</p>
-                <p style='margin:0; font-size:11px;'>Por favor procesar esta solicitud en el sistema administrativo.</p>
-            </div>
-        </div>
-    </body>
-    </html>";
-    
-    return $html;
+    return view('/vistas/correos/retiro_fondos', $data);
 }
 
     

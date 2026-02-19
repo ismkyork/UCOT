@@ -602,8 +602,6 @@ class Alumno extends BaseController
             ->groupEnd()
         ->groupEnd();
 
-        // NOTA: Quitamos el where(cupos > 0) para poder traer los llenos y pintarlos de GRIS
-
         $horarios = $builder->get()->getResultArray();
 
         // 3. Procesar Estados Visuales
@@ -636,7 +634,7 @@ class Alumno extends BaseController
         $request = \Config\Services::request();
         $json = $request->getJSON();
         
-        $idAlumnoReal = $this->getIdEstudianteReal(); // (Asegúrate de tener este método en el controller)
+        $idAlumnoReal = $this->getIdEstudianteReal(); 
 
         $db = \Config\Database::connect();
         $horarioModel = new \App\Models\HorarioModel();

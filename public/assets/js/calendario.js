@@ -228,12 +228,10 @@ window.toggleDisponibilidad = function(elemento) {
                 inputC.oninput = () => {
                     let val = parseInt(inputC.value);
                     
-                    // --- AQUÍ ESTÁ EL LÍMITE QUE PEDISTE ---
                     if (val > 5) {
                         inputC.value = 5;
                         val = 5; 
                     }
-                    // ---------------------------------------
 
                     if (val > 1) { 
                         selectS.classList.add('border-warning'); 
@@ -481,7 +479,6 @@ function renderizarCeldas() {
             });
         }
     });
-    // Ya no necesitamos llamar a actualizarEstadoCeldas() aquí porque ya nacen pintadas
 }
 
 function actualizarEstadoCeldas() {

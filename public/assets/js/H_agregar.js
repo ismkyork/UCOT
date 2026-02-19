@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const avisoSistema = document.getElementById('aviso_sistema');
 
     // ---------------------------------------------------------
-    // 2. CONFIGURACIÓN DE FECHAS (Tu código original)
+    // 2. CONFIGURACIÓN DE FECHAS
     // ---------------------------------------------------------
     const hoy = new Date();
     const yyyy = hoy.getFullYear();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ---------------------------------------------------------
-    // 3. VALIDACIÓN DE HORARIOS PASADOS (Tu código original)
+    // 3. VALIDACIÓN DE HORARIOS PASADOS
     // ---------------------------------------------------------
     function validarHorarios() {
         if(!fechaInput) return;
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ---------------------------------------------------------
-    // 4. VALIDACIÓN DE GRUPOS / SISTEMA (NUEVO)
+    // 4. VALIDACIÓN DE GRUPOS / SISTEMA
     // ---------------------------------------------------------
     function validarRequisitosGrupales() {
         if (!inputCupos || !selectSistema) return;

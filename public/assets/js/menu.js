@@ -2,13 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Selectores principales
     const btnColapsar = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
-    const contentArea = document.querySelector('.content-area-ucot'); // Clase exacta de tu CSS
+    const contentArea = document.querySelector('.content-area-ucot');
     const iconoFlecha = document.querySelector('#toggleSidebar i');
 
     // 2. Lógica del Sidebar 
     if (btnColapsar) {
         btnColapsar.addEventListener('click', () => {
-            // Usamos la clase que tienes en el CSS: .sidebar-compacto
             sidebar.classList.toggle('sidebar-compacto');
             
             

@@ -57,19 +57,19 @@
                         </div>
                         <div class="ms-3">
                             <h5 class="mb-0 fw-bold text-dark">Ingresos Brutos</h5>
-                            <small class="text-muted">Total recolectado en la plataforma</small>
+                            <small class="text-muted">Total recolectado (Base en Bs.)</small>
                         </div>
                     </div>
                     <div class="row g-0 align-items-center">
                         <div class="col-6 border-end">
                             <div class="ps-2">
-                                <h4 class="mb-0 fw-bold text-primary">$<?= number_format($total_bruto_usd, 2) ?></h4>
-                                <small class="text-muted fw-bold">TOTAL USD</small>
+                                <h4 class="mb-0 fw-bold text-primary">Bs. <?= number_format($total_bruto_bs, 2, ',', '.') ?></h4>
+                                <small class="text-muted fw-bold">TOTAL BS.</small>
                             </div>
                         </div>
                         <div class="col-6 ps-4">
-                            <h4 class="mb-0 fw-bold text-dark">Bs. <?= number_format($total_bruto_bs, 2) ?></h4>
-                            <small class="text-muted fw-bold">TOTAL BS.</small>
+                            <h4 class="mb-0 fw-bold text-dark">$<?= number_format($total_bruto_usd, 2) ?></h4>
+                            <small class="text-muted fw-bold">EQUIVALENTE USD</small>
                         </div>
                     </div>
                 </div>
@@ -89,13 +89,13 @@
                     <div class="row g-0 align-items-center">
                         <div class="col-6 border-end">
                             <div class="ps-2">
-                                <h4 class="mb-0 fw-bold text-success">$<?= number_format($ganancia_ucot_usd, 2) ?></h4>
-                                <small class="text-muted fw-bold">GANANCIA USD</small>
+                                <h4 class="mb-0 fw-bold text-success">Bs. <?= number_format($ganancia_ucot_bs, 2, ',', '.') ?></h4>
+                                <small class="text-muted fw-bold">GANANCIA BS.</small>
                             </div>
                         </div>
                         <div class="col-6 ps-4">
-                            <h4 class="mb-0 fw-bold text-success">Bs. <?= number_format($ganancia_ucot_bs, 2) ?></h4>
-                            <small class="text-muted fw-bold">GANANCIA BS.</small>
+                            <h4 class="mb-0 fw-bold text-success">$<?= number_format($ganancia_ucot_usd, 2) ?></h4>
+                            <small class="text-muted fw-bold">GANANCIA USD</small>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
    :root {
         --ucot-cian: #33C2D1;
-        --ucot-azul-menu: #2196F3; /* Azul vibrante tipo Material Design */
+        --ucot-azul-menu: #2196F3;
         --ucot-negro: #1a1a1a;
         --ucot-gris-claro: #f8f9fa;
         --ucot-borde: #dee2e6;
@@ -81,7 +81,7 @@
         justify-content: center;
         align-items: center;
         transition: all 0.3s ease;
-        position: relative; /* Para el z-index de la pastilla */
+        position: relative; 
     }
     
     .dia-nombre {
@@ -101,14 +101,14 @@
 
     /* --- ESTILO PASTILLA PARA "HOY" --- */
     .header-columna.es-hoy {
-        background-color: transparent !important; /* El fondo lo da el pseudo-elemento o el estilo directo */
+        background-color: transparent !important;
         border-bottom-color: var(--ucot-azul-menu);
     }
     /* Usamos un contenedor interno o estilo directo para simular la pastilla flotante */
     .header-columna.es-hoy .contenido-header {
         background-color: var(--ucot-azul-menu);
         color: white;
-        border-radius: 50px; /* Forma de pastilla */
+        border-radius: 50px;
         padding: 5px 20px;
         box-shadow: 0 4px 6px rgba(33, 150, 243, 0.3);
         display: flex;
@@ -166,7 +166,6 @@
         background-color: #f4f4f4;
         cursor: not-allowed !important;
         opacity: 0.5;
-        /* Patrón rayado sutil */
         background-image: repeating-linear-gradient(
             45deg,
             #eeeeee,
@@ -177,12 +176,10 @@
         color: #bbb;
     }
     .celda-pasada:hover {
-        background-color: #f4f4f4; /* Sin efecto hover */
+        background-color: #f4f4f4; 
     }
 
-    /* Ajuste para que la pastilla acepte contenido dinámico del JS */
     .materia-asignada {
-        /* Quitamos el background-color fijo para que mande el style del JS */
         color: white; 
         width: 98%; 
         height: 95%; 
@@ -191,7 +188,6 @@
         transition: transform 0.1s ease;
     }
 
-    /* El texto de "En Proceso" necesita letras oscuras para contraste sobre amarillo */
     .celda-interactiva[data-estado="Pendiente"] .materia-asignada {
         color: #212529 !important;
     }
@@ -230,10 +226,10 @@
 
     /* --- PERSONALIZACIÓN SWEETALERT UCOT --- */
 .swal2-popup {
-    border-radius: 1.5rem !important; /* Bordes muy redondeados (24px) */
-    padding: 2rem !important;         /* Más espacio interno */
+    border-radius: 1.5rem !important; 
+    padding: 2rem !important;         
     border: none !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; /* Sombra suave */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; 
 }
 
 .swal2-title {
@@ -263,7 +259,7 @@
 
 /* Bloque que aún no se ha guardado en la BD */
 .celda-interactiva.ocupado:not([data-id-db]) .materia-asignada {
-    background-color: #71dd37 !important; /* Un verde más brillante/claro */
+    background-color: #71dd37 !important; 
     border: 2px dashed rgba(255,255,255,0.5);
     opacity: 0.9;
 }

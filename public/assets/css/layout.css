@@ -63,7 +63,7 @@ body {
     padding: 0 !important;
     transition: width var(--transition-speed) var(--transition-curve);
     overflow: hidden;
-    align-items: flex-start !important; /* SIEMPRE alineado a la izquierda */
+    align-items: flex-start !important; 
 }
 
 .content-area-ucot {
@@ -74,7 +74,7 @@ body {
     min-height: 100vh;
     padding: 0 !important;
     
-    /* CAMBIO IMPORTANTE: Visible para no cortar el menú desplegable */
+    /* Visible para no cortar el menú desplegable */
     overflow: visible !important; 
     
     display: flex;
@@ -92,18 +92,16 @@ body {
     width: 100%;
     height: 80px; /* Altura fija */
     min-height: 80px;
-    padding: 0; /* El padding lo manejan los hijos */
+    padding: 0; 
     box-sizing: border-box;
 }
 
 /* 1. EL BOTÓN PALANCA */
 .toggle-btn {
-    /* Tamaño fijo */
     width: 42px !important;
     height: 42px !important;
     min-width: 42px !important;
     
-    /* POSICIÓN EXACTA: 19px a la izquierda */
     margin: 0 0 0 19px !important; 
     
     display: flex !important;
@@ -135,7 +133,7 @@ body {
     color: #6c757d;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-left: 15px; /* Separación del botón */
+    margin-left: 15px;
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.2s ease;
@@ -146,7 +144,7 @@ body {
 =========================================*/
 .sidebar-main-nav {
     width: 100%;
-    flex: 1; /* Ocupa el espacio disponible */
+    flex: 1; 
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -167,17 +165,13 @@ body {
     margin: 5px 0 5px 19px !important;
     width: calc(100% - 38px) !important;
     
-    /* CAMBIO CLAVE 1: Altura Fija igual al modo cerrado */
     height: 42px !important; 
     min-height: 42px !important;
     
-    /* CAMBIO CLAVE 2: Quitamos padding vertical (arriba/abajo) */
-    /* Dejamos solo los 10px a la izquierda para separar el ícono del borde */
     padding: 0 0 0 10px !important; 
     
-    /* Alineación Perfecta */
     display: flex !important;
-    align-items: center !important; /* Esto centra verticalmente el ícono y texto */
+    align-items: center !important; 
     justify-content: flex-start !important; 
     gap: 0 !important;
     
@@ -191,10 +185,8 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Opcional: Si quieres que el botón de cerrar menú también sea redondo */
 .toggle-btn {
-    /* ... resto de propiedades ... */
-    border-radius: 50%; /* Esto lo hará un círculo perfecto */
+    border-radius: 50%; 
 }
 
 /* 4. ESTADO ACTIVO (Abierto) */
@@ -211,13 +203,10 @@ body {
 
 /* EL ICONO DENTRO DEL LINK */
 .nav-item-link i {
-    /* ANCHO FIJO: Reservamos 42px para el icono */
-    /* Esto hace que el texto siempre empiece en el mismo lugar */
     min-width: 42px !important; 
     width: 42px !important; 
     height: 24px;
     
-    /* Centrar el dibujo del icono DENTRO de su espacio reservado */
     display: flex;
     justify-content: center !important;
     align-items: center !important;
@@ -227,7 +216,6 @@ body {
 }
 /* 3. EL TEXTO (LADO DERECHO) */
 .nav-item-link span {
-    /* Un pequeño margen para separarlo del área del icono */
     margin-left: 5px; 
     opacity: 1;
     transition: opacity 0.2s ease;
@@ -263,7 +251,7 @@ body {
 }
 
 .profile-btn i:first-child {
-    min-width: 42px !important; /* Icono alineado con todo lo demás */
+    min-width: 42px !important; 
     display: flex;
     justify-content: center;
 }
@@ -284,7 +272,7 @@ body {
   ESTADO COMPACTO (CERRADO)
 =========================================*/
 .sidebar-compacto {
-    width: var(--sidebar-compact-width) !important; /* 80px */
+    width: var(--sidebar-compact-width) !important; 
 }
 
 
@@ -296,7 +284,7 @@ body {
     
     /* Centrado y tamaño */
     margin: 0 !important;
-    font-size: 1.2rem !important; /* Ajusta este tamaño si los quieres más grandes */
+    font-size: 1.2rem !important; 
     
     /* Aseguramos que el flex interno del icono también centre */
     display: flex;
@@ -330,30 +318,22 @@ body {
     transform: rotate(180deg);
 }
 
-/* 3. AJUSTE DE ANCHOS (Pero manteniendo la posición izquierda) */
-/* Al cerrar, el margen izquierdo sigue siendo 19px, pero el ancho se reduce a 42px */
-
 .sidebar-compacto .toggle-btn {
-    margin-left: 19px !important; /* NO TOCAR: Se mantiene fijo */
+    margin-left: 19px !important; 
 }
 
 .sidebar-compacto .nav-item-link {
-    /* Dimensiones fijas para crear el cuadrado/círculo perfecto */
     width: 42px !important; 
     height: 42px !important;
     
-    /* Posición exacta: 19px a la izquierda (igual que el botón de arriba) */
     margin-left: 19px !important; 
     
-    /* CENTRADO PERFECTO */
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important; /* <--- ESTA ES LA CLAVE */
+    justify-content: center !important;
     
-    /* Eliminamos cualquier relleno que empuje el contenido */
     padding: 0 !important;
     
-    /* Aseguramos la forma redondeada */
     border-radius: 50% !important; 
 }
 
@@ -396,7 +376,7 @@ body {
 
 
 /*=========================================
-  HEADER SUPERIOR (ESTILO MAIN_2)
+  HEADER SUPERIOR
 =========================================*/
 .top-header-ucot {
     display: flex;
@@ -423,7 +403,7 @@ body {
 
 /* Ajuste para que el texto del logo no se rompa */
 .header-left img {
-    height: 70px; /* Tamaño controlado del logo */
+    height: 70px; 
     width: auto;
 }
  
@@ -446,7 +426,7 @@ body {
     display: flex;
     align-items: center;
     padding: 4px 4px 4px 16px;
-    border-radius: 12px; /* Estilo Squircle moderno */
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -482,7 +462,7 @@ body {
 .avatar-initials {
     width: 100%;
     height: 100%;
-    border-radius: 8px; /* Cuadrado redondeado */
+    border-radius: 8px;
     object-fit: cover;
     border: 1px solid rgba(0,0,0,0.05);
 }
@@ -593,19 +573,17 @@ body {
     height: calc(100vh - 80px); 
     overflow-y: auto;
     
-    /* ESTO ES LO QUE RECUPERA EL REDONDEADO */
     background-color: #ffffff; 
-    border-top-left-radius: 40px; /* Ajusta el valor según tu gusto */
+    border-top-left-radius: 40px; 
     margin-top: 0;
     
-    /* Sombra opcional para dar profundidad sobre el menú lateral */
     box-shadow: -10px 0 20px rgba(0,0,0,0.02);
 }
 
 .scroll-content > .container-fluid {
-    flex: 1; /* Esto hace que ocupe todo el espacio sobrante y empuje el footer */
+    flex: 1; 
     width: 100%;
-    padding: 30px 40px !important; /* Aquí va el relleno que quitamos arriba */
+    padding: 30px 40px !important; 
 }
 
 
@@ -619,8 +597,7 @@ body {
     padding: 20px 0;
     border-top: 1px solid #eaecf0;
     width: 100%;
-    
-    /* Asegura que no se monte encima de nada */
+
     margin-top: auto; 
     flex-shrink: 0;
 }

@@ -48,19 +48,18 @@ Formularios
         width: 0;
     }
 
-    /* CONTENEDOR DE LA PASTILLA */
     .bloque-check-wrapper {
-        padding: 4px; /* Espacio entre pastillas */
+        padding: 4px;
     }
 
-    /* ESTILO DE LA ETIQUETA (LA PASTILLA VISUAL) */
+    /* ESTILO DE LA ETIQUETA */
     .label-bloque {
         display: block;
         width: 100%;
         padding: 10px 5px;
         background-color: #fff;
         border: 1px solid #dee2e6;
-        border-radius: 50px; /* Borde redondeado completo */
+        border-radius: 50px;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
@@ -81,7 +80,7 @@ Formularios
 
     /* SELECCIONADO (CHECKED) */
     .input-oculto:checked + .label-bloque {
-        background-color: #17a2b8; /* Color Info */
+        background-color: #17a2b8; 
         border-color: #17a2b8;
         color: #fff;
         box-shadow: 0 4px 6px rgba(23, 162, 184, 0.3);
@@ -93,7 +92,7 @@ Formularios
     .bloque-deshabilitado .label-bloque {
         background-color: #e9ecef;
         border-color: #dee2e6;
-        color: #adb5bd; /* Texto gris claro */
+        color: #adb5bd; 
         cursor: not-allowed;
         text-decoration: line-through;
         box-shadow: none;
@@ -252,7 +251,7 @@ Formularios
 
 /* Efecto hover para las pestañas no activas */
 .nav-pills .nav-link:hover:not(.active) {
-    background-color: #f0fbfc !important; /* Un azul casi blanco */
+    background-color: #f0fbfc !important;
     color: var(--ucot-cian) !important;
 }
 
@@ -262,16 +261,16 @@ Toggle boton
    ========================================= */
 .view-switcher {
     display: inline-flex;
-    background-color: #f1f3f5; /* Fondo gris muy suave */
-    border-radius: 50px;       /* Forma de pastilla */
+    background-color: #f1f3f5; 
+    border-radius: 50px;     
     padding: 4px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* Sombra interna sutil */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); 
 }
 
 .view-switcher .btn-switch {
     border-radius: 50px;
     padding: 8px 24px;
-    color: #adb5bd; /* Gris desactivado */
+    color: #adb5bd; 
     text-decoration: none;
     transition: all 0.3s ease;
     display: flex;
@@ -280,10 +279,10 @@ Toggle boton
     font-size: 1.1rem;
 }
 
-/* ESTADO ACTIVO (Blanco con sombra, estilo iOS/Material) */
+/* ESTADO ACTIVO */
 .view-switcher .btn-switch.active {
     background-color: #ffffff;
-    color: var(--ucot-cian); /* Tu color Cian */
+    color: var(--ucot-cian); 
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     font-weight: bold;
 }
@@ -303,7 +302,7 @@ Toggle boton
     justify-content: center;
     color: white;
     font-weight: 700;
-    overflow: hidden; /* Importante para recortar la imagen */
+    overflow: hidden; 
     flex-shrink: 0;
 }
 
@@ -311,7 +310,7 @@ Toggle boton
 .avatar-circle img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Recorta la imagen para llenar el círculo */
+    object-fit: cover; 
     object-position: center;
 }
 

@@ -38,21 +38,19 @@ class Admin extends BaseController
         log_message('error', 'Fallo Tasa UCOT: ' . $e->getMessage()); 
     }
 
-   // 3. CÁLCULO DE INGRESOS Y GANANCIAS (Base en USD)
     $porcentaje_comision = 0.15;
     
     // Obtenemos la suma de los pagos confirmados
     $ingresos = $pagoModel->where('estado_pago', 'confirmado')->selectSum('monto')->get()->getRow();
     
-    // Interpretamos el valor de la base de datos como USD directamente
-    $total_bruto_usd = (float)($ingresos->monto ?? 0); 
+    $total_bruto_bs = (float)($ingresos->monto ?? 0); 
 
     // Calculamos la contraparte en Bolívares multiplicando por la tasa del día
-    $total_bruto_bs = $total_bruto_usd * $tasa_bcv;
+    $total_bruto_usd = $total_bruto_bs / $tasa_bcv;
 
     // Calculamos la ganancia neta (15%) sobre ambos montos
-    $ganancia_ucot_usd = $total_bruto_usd * $porcentaje_comision;
-    $ganancia_ucot_bs  = $total_bruto_bs * $porcentaje_comision;
+    $ganancia_ucot_bs = $total_bruto_bs * $porcentaje_comision;
+    $ganancia_ucot_usd  = $total_bruto_usd * $porcentaje_comision;
 
     // 4. ASIGNACIÓN DE ESTADÍSTICAS (Sin sobreescribir $data)
     $data['total_profesores']  = $loginModel->where('rol', 'Profesor')->countAllResults();

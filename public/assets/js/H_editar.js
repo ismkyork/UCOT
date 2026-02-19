@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 3. INICIALIZACIÓN DE BLOQUEOS DEL SERVIDOR
     // ---------------------------------------------------------
     // Marcamos los radios que ya venían deshabilitados desde PHP (porque tienen alumnos inscritos)
-    // para que el JS nunca los toque ni los habilite por error.
     radios.forEach(r => {
         if (r.disabled) {
             r.setAttribute('data-bloqueado-original', 'true');
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ---------------------------------------------------------
-    // 5. VALIDACIÓN DE HORARIOS (LÓGICA CORREGIDA)
+    // 5. VALIDACIÓN DE HORARIOS
     // ---------------------------------------------------------
     function validarHorarios() {
         if (!fechaInput) return;
